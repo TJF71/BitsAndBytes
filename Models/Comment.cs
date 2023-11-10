@@ -1,16 +1,23 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using System.ComponentModel.DataAnnotations;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Blog.Models
 {
     public class Comment
     {
 
-        //Public Class Details
+        
         private DateTimeOffset _created;
         private DateTimeOffset? _updated;
+        
+        // Primary Key
         public int Id { get; set; }
+
+        // Foreign Keys
+        [Required]
+        public string? BlogPostId { get; set; }
+
+        [Required]
+        public string? AuthorId { get; set; }
 
         [Required]
         [Display(Name = "Body")]
@@ -36,11 +43,11 @@ namespace Blog.Models
         [StringLength(200 , ErrorMessage = "The {0} must be at least {2} and at most {1} characters long.", MinimumLength = 2)]
         public string? UpdatedReason { get; set; }
 
-        //Foreign Keys
-
 
         // Navigation Properties
-        public virtual ICollection<BlogPost> BlogPosts { get; set; } = new HashSet<BlogPost>();
+        public virtual BlogPost? BlogPost { get; set; }
+
+        public virtual BlogUser? Author { get; set; } 
 
     }
 }

@@ -7,20 +7,25 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 namespace Blog.Models
 {
    
-    //Public Class Details
+  
     public class BlogPost
     {
 
         private DateTimeOffset _created;
         private DateTimeOffset? _updated;
+        
+        //Primary Key
         public int Id { get; set; }
+
+        //Foreing Key
+        [Required]
+        public int CategoryId { get; set; }
 
         [Required]
         [Display(Name = "Title")]
         [StringLength(200, ErrorMessage = "The {0} must be at least {2} and max {1} characters long.", MinimumLength = 2)]
         public string? Title { get; set; }
 
-        [Required]
         [Display(Name = "Abstract")]
         [StringLength(600, ErrorMessage = "The {0} must be at least {2} and max {1} characters long.", MinimumLength = 2)]
         public string? Abstract { get; set; }
@@ -50,9 +55,6 @@ namespace Blog.Models
 
         public bool IsPublished { get; set; }
 
-        [Required]
-        public int CategoryId {  get; set; }
-
         [NotMapped]
         public IFormFile? ImageFile { get; set; }
 
@@ -62,9 +64,8 @@ namespace Blog.Models
 
 
         // Navigation Properties
-        public virtual AppUser? AppUser { get; set; }
 
-        public virtual ICollection<Category> Categories { get; set; } = new HashSet<Category>();
+        public virtual Category? Category { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
 

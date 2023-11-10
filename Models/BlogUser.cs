@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Blog.Models
 {
-    public class AppUser : IdentityUser
+    public class BlogUser : IdentityUser
     {
 
         [Required]
@@ -22,6 +22,9 @@ namespace Blog.Models
 
         [NotMapped]
         public string? FullName2 { get { return $"{LastName} {FirstName}"; } }
+
+        // Navigation Items
+        public virtual ICollection<Comment> Collection { get; set; } = new HashSet<Comment>();
 
 
     }
