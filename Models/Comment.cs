@@ -47,6 +47,7 @@ namespace Blog.Models
         // Navigation Properties
         public virtual BlogPost? BlogPost { get; set; }
 
+        //  Navigation to Author
         public virtual BlogUser? Author { get; set; } 
 
     }

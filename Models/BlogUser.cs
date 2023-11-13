@@ -26,6 +26,7 @@ namespace Blog.Models
         // Navigation Items
         public virtual ICollection<Comment> Collection { get; set; } = new HashSet<Comment>();
 
+        public virtual ICollection<BlogPost> BlogPosts { get; set; } = new HashSet<BlogPost>();
 
     }
 }
