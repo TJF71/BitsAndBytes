@@ -7,16 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Blog.Data;
 using Blog.Models;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace Blog.Controllers
 {
     public class BlogPostsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<BlogUser> _userManager;
+        //private readonly IImageService _imageService;
+        private readonly IEmailSender _emailService;
 
-        public BlogPostsController(ApplicationDbContext context)
+        public BlogPostsController(ApplicationDbContext context, UserManager<BlogUser> userManager)
+                                          
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: BlogPosts

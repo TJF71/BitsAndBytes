@@ -7,16 +7,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Blog.Data;
 using Blog.Models;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace Blog.Controllers
 {
     public class CategoriesController : Controller
+
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<BlogUser> _userManager;
+        private readonly IEmailSender _emailService;
 
-        public CategoriesController(ApplicationDbContext context)
+        public CategoriesController(ApplicationDbContext context,
+                                        UserManager<BlogUser> userManager,
+                                        IEmailSender emailSender)
         {
             _context = context;
+            _userManager = userManager;
+            _emailService = emailSender;
         }
 
         // GET: Categories
