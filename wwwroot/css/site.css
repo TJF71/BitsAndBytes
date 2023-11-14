@@ -1,22 +1,75 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+}
+
+.my-page-item {
+    display: inline-block;
+    list-style: none;
+}
+
+.my-page-link {
+    display: block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #fff;
+    text-align: center;
+    text-decoration: none;
+    color: #252525;
+    border-radius: 4px;
+    margin: 5px;
+    box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.1), 0 2px 5px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.my-page-item a.my-page-link:hover, a.my-page-link:active {
+    color: #fff;
+    background-color: #ff993b;
+}
+
+.my-page-item my-page-link li:first-child a {
+    border-radius: 40px 0 0 40px;
+}
+
+.my-page-item my-page-link li:last-child a {
+    border-radius: 0 40px 40px 0;
+}
+
+.tagcloud > .disabledTag {
+    background-color: lightgray;
+    color: gray;
+    font-weight: bold
+}
+
+.tagcloud > a:hover {
+    color: white !important;
+}
+
+.tagcloud a {
+    color: black;
+}
+
+.tagcloud > .disabledTag:hover {
+    background-color: lightgray;
+    color: darkgray !important;
+    border-color: lightgray;
 }
