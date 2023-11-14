@@ -52,7 +52,7 @@ namespace Blog.Controllers
         // GET: Comments/Create
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["BlogPostId"] = new SelectList(_context.BlogPlosts, "Id", "Content");
             return View();
         }
 
@@ -61,10 +61,16 @@ namespace Blog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BlogPostId,AuthorId,Body,Created,Updated,UpdatedReason")] Comment comment)
+        public async Task<IActionResult> Create([Bind("Id,Body, BlogPostId")] Comment comment)
         {
+
+            ModelState.Remove("AuthorId");
+
             if (ModelState.IsValid)
             {
+                comment.AuthorId = _userManager.GetUserId(User);
+                comment.Created = DateTimeOffset.Now;
+
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
