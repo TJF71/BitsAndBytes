@@ -14,7 +14,7 @@ namespace Blog.Models
 
         // Foreign Keys
         [Required]
-        public string? BlogPostId { get; set; }
+        public int? BlogPostId { get; set; }
 
         [Required]
         public string? AuthorId { get; set; }

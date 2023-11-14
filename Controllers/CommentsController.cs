@@ -52,7 +52,7 @@ namespace Blog.Controllers
         // GET: Comments/Create
         public IActionResult Create()
         {
-            ViewData["BlogPostId"] = new SelectList(_context.BlogPlosts, "Id", "Content");
+            ViewData["BlogPostId"] = new SelectList(_context.BlogPosts, "Id", "Content");
             return View();
         }
 
@@ -73,12 +73,13 @@ namespace Blog.Controllers
 
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details","BlogPosts", new { id = comment.BlogPostId  });
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", comment.AuthorId);
+          
+            ViewData["BlogPostId"] = new SelectList(_context.BlogPosts, "Id", "Content", comment.BlogPostId);
             return View(comment);
         }
-
+        
         // GET: Comments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

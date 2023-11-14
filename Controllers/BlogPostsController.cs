@@ -17,10 +17,10 @@ namespace Blog.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<BlogUser> _userManager;
         //private readonly IImageService _imageService;
-        private readonly IEmailSender _emailService;
+        //private readonly IEmailSender _emailService;
 
         public BlogPostsController(ApplicationDbContext context, UserManager<BlogUser> userManager)
-                                          
+
         {
             _context = context;
             _userManager = userManager;
@@ -29,20 +29,22 @@ namespace Blog.Controllers
         // GET: BlogPosts
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.BlogPlosts.Include(b => b.Category);
+            var applicationDbContext = _context.BlogPosts.Include(b => b.Category);
             return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: BlogPosts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.BlogPlosts == null)
+            if (id == null || _context.BlogPosts == null)
             {
                 return NotFound();
             }
 
-            var blogPost = await _context.BlogPlosts
+            var blogPost = await _context.BlogPosts
                 .Include(b => b.Category)
+                .Include(b => b.Comments)
+                .ThenInclude(c => c.Author)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (blogPost == null)
             {
@@ -55,7 +57,7 @@ namespace Blog.Controllers
         // GET: BlogPosts/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Catergories, "Id", "Name");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
             return View();
         }
 
@@ -72,24 +74,24 @@ namespace Blog.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Catergories, "Id", "Name", blogPost.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
             return View(blogPost);
         }
 
         // GET: BlogPosts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.BlogPlosts == null)
+            if (id == null || _context.BlogPosts == null)
             {
                 return NotFound();
             }
 
-            var blogPost = await _context.BlogPlosts.FindAsync(id);
+            var blogPost = await _context.BlogPosts.FindAsync(id);
             if (blogPost == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Catergories, "Id", "Name", blogPost.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
             return View(blogPost);
         }
 
@@ -125,19 +127,19 @@ namespace Blog.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Catergories, "Id", "Name", blogPost.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
             return View(blogPost);
         }
 
         // GET: BlogPosts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.BlogPlosts == null)
+            if (id == null || _context.BlogPosts == null)
             {
                 return NotFound();
             }
 
-            var blogPost = await _context.BlogPlosts
+            var blogPost = await _context.BlogPosts
                 .Include(b => b.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (blogPost == null)
@@ -153,23 +155,23 @@ namespace Blog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.BlogPlosts == null)
+            if (_context.BlogPosts == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.BlogPlosts'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.BlogPosts'  is null.");
             }
-            var blogPost = await _context.BlogPlosts.FindAsync(id);
+            var blogPost = await _context.BlogPosts.FindAsync(id);
             if (blogPost != null)
             {
-                _context.BlogPlosts.Remove(blogPost);
+                _context.BlogPosts.Remove(blogPost);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool BlogPostExists(int id)
         {
-          return (_context.BlogPlosts?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.BlogPosts?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

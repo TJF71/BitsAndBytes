@@ -1,6 +1,7 @@
 ﻿using Blog.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Collections;
 
 namespace Blog.Data
 {
@@ -11,13 +12,11 @@ namespace Blog.Data
         { 
         }
 
-        public virtual DbSet<BlogPost> BlogPlosts { get; set; } = default!;
+        public virtual DbSet<BlogPost> BlogPosts { get; set; } = default!;
         public virtual DbSet<Tag> Tags { get; set; } = default!;
-        public virtual DbSet<Category> Catergories { get; set; } = default!;
+        public virtual DbSet<Category> Categories { get; set; } = default!;
         public virtual DbSet<Comment> Comments { get; set; } = default!;
-
-
-
+ 
     }
 
 }

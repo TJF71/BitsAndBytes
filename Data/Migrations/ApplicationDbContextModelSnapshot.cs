@@ -34,9 +34,6 @@ namespace Blog.Data.Migrations
                         .HasMaxLength(600)
                         .HasColumnType("character varying(600)");
 
-                    b.Property<string>("BlogUserId")
-                        .HasColumnType("text");
-
                     b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
@@ -72,11 +69,9 @@ namespace Blog.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BlogUserId");
-
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("BlogPlosts");
+                    b.ToTable("BlogPosts");
                 });
 
             modelBuilder.Entity("Blog.Models.BlogUser", b =>
@@ -178,7 +173,7 @@ namespace Blog.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Catergories");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Blog.Models.Comment", b =>
@@ -193,11 +188,8 @@ namespace Blog.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("BlogPostId")
+                    b.Property<int?>("BlogPostId")
                         .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("BlogPostId1")
                         .HasColumnType("integer");
 
                     b.Property<string>("Body")
@@ -219,7 +211,7 @@ namespace Blog.Data.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.HasIndex("BlogPostId1");
+                    b.HasIndex("BlogPostId");
 
                     b.ToTable("Comments");
                 });
@@ -395,10 +387,6 @@ namespace Blog.Data.Migrations
 
             modelBuilder.Entity("Blog.Models.BlogPost", b =>
                 {
-                    b.HasOne("Blog.Models.BlogUser", null)
-                        .WithMany("BlogPosts")
-                        .HasForeignKey("BlogUserId");
-
                     b.HasOne("Blog.Models.Category", "Category")
                         .WithMany("BlogPosts")
                         .HasForeignKey("CategoryId")
@@ -411,14 +399,16 @@ namespace Blog.Data.Migrations
             modelBuilder.Entity("Blog.Models.Comment", b =>
                 {
                     b.HasOne("Blog.Models.BlogUser", "Author")
-                        .WithMany("Collection")
+                        .WithMany("Comments")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Blog.Models.BlogPost", "BlogPost")
                         .WithMany("Comments")
-                        .HasForeignKey("BlogPostId1");
+                        .HasForeignKey("BlogPostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Author");
 
@@ -498,9 +488,7 @@ namespace Blog.Data.Migrations
 
             modelBuilder.Entity("Blog.Models.BlogUser", b =>
                 {
-                    b.Navigation("BlogPosts");
-
-                    b.Navigation("Collection");
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("Blog.Models.Category", b =>

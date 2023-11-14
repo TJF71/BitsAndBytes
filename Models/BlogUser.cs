@@ -24,9 +24,9 @@ namespace Blog.Models
         public string? FullName2 { get { return $"{LastName} {FirstName}"; } }
 
         // Navigation Items
-        public virtual ICollection<Comment> Collection { get; set; } = new HashSet<Comment>();
+        public virtual ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
 
-        public virtual ICollection<BlogPost> BlogPosts { get; set; } = new HashSet<BlogPost>();
+
 
     }
 }

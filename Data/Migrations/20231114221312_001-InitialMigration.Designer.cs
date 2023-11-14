@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Blog.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231110213005_002_Initial")]
-    partial class _002_Initial
+    [Migration("20231114221312_001-InitialMigration")]
+    partial class _001InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,7 +74,7 @@ namespace Blog.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("BlogPlosts");
+                    b.ToTable("BlogPosts");
                 });
 
             modelBuilder.Entity("Blog.Models.BlogUser", b =>
@@ -176,7 +176,7 @@ namespace Blog.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Catergories");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Blog.Models.Comment", b =>
@@ -191,11 +191,8 @@ namespace Blog.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("BlogPostId")
+                    b.Property<int?>("BlogPostId")
                         .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("BlogPostId1")
                         .HasColumnType("integer");
 
                     b.Property<string>("Body")
@@ -217,7 +214,7 @@ namespace Blog.Data.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.HasIndex("BlogPostId1");
+                    b.HasIndex("BlogPostId");
 
                     b.ToTable("Comments");
                 });
@@ -405,14 +402,16 @@ namespace Blog.Data.Migrations
             modelBuilder.Entity("Blog.Models.Comment", b =>
                 {
                     b.HasOne("Blog.Models.BlogUser", "Author")
-                        .WithMany("Collection")
+                        .WithMany("Comments")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Blog.Models.BlogPost", "BlogPost")
                         .WithMany("Comments")
-                        .HasForeignKey("BlogPostId1");
+                        .HasForeignKey("BlogPostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Author");
 
@@ -492,7 +491,7 @@ namespace Blog.Data.Migrations
 
             modelBuilder.Entity("Blog.Models.BlogUser", b =>
                 {
-                    b.Navigation("Collection");
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("Blog.Models.Category", b =>

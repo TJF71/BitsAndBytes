@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Blog.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class _001_Initial : Migration
+    public partial class _001InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -54,7 +54,7 @@ namespace Blog.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Catergories",
+                name: "Categories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -66,7 +66,7 @@ namespace Blog.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Catergories", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -189,7 +189,7 @@ namespace Blog.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BlogPlosts",
+                name: "BlogPosts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -208,11 +208,11 @@ namespace Blog.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BlogPlosts", x => x.Id);
+                    table.PrimaryKey("PK_BlogPosts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BlogPlosts_Catergories_CategoryId",
+                        name: "FK_BlogPosts_Categories_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "Catergories",
+                        principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -228,9 +228,9 @@ namespace Blog.Data.Migrations
                 {
                     table.PrimaryKey("PK_BlogPostTag", x => new { x.BlogPostsId, x.TagsId });
                     table.ForeignKey(
-                        name: "FK_BlogPostTag_BlogPlosts_BlogPostsId",
+                        name: "FK_BlogPostTag_BlogPosts_BlogPostsId",
                         column: x => x.BlogPostsId,
-                        principalTable: "BlogPlosts",
+                        principalTable: "BlogPosts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -247,13 +247,12 @@ namespace Blog.Data.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    BlogPostId = table.Column<string>(type: "text", nullable: false),
+                    BlogPostId = table.Column<int>(type: "integer", nullable: false),
                     AuthorId = table.Column<string>(type: "text", nullable: false),
                     Body = table.Column<string>(type: "character varying(5000)", maxLength: 5000, nullable: false),
                     Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     Updated = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    UpdatedReason = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
-                    BlogPostId1 = table.Column<int>(type: "integer", nullable: true)
+                    UpdatedReason = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -265,10 +264,11 @@ namespace Blog.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Comments_BlogPlosts_BlogPostId1",
-                        column: x => x.BlogPostId1,
-                        principalTable: "BlogPlosts",
-                        principalColumn: "Id");
+                        name: "FK_Comments_BlogPosts_BlogPostId",
+                        column: x => x.BlogPostId,
+                        principalTable: "BlogPosts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -309,8 +309,8 @@ namespace Blog.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_BlogPlosts_CategoryId",
-                table: "BlogPlosts",
+                name: "IX_BlogPosts_CategoryId",
+                table: "BlogPosts",
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
@@ -324,9 +324,9 @@ namespace Blog.Data.Migrations
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_BlogPostId1",
+                name: "IX_Comments_BlogPostId",
                 table: "Comments",
-                column: "BlogPostId1");
+                column: "BlogPostId");
         }
 
         /// <inheritdoc />
@@ -363,10 +363,10 @@ namespace Blog.Data.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "BlogPlosts");
+                name: "BlogPosts");
 
             migrationBuilder.DropTable(
-                name: "Catergories");
+                name: "Categories");
         }
     }
 }
