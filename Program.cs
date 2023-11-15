@@ -1,5 +1,7 @@
 using Blog.Data;
 using Blog.Models;
+using Blog.Services;
+using Blog.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +18,10 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<BlogUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+// Custom services
+builder.Services.AddScoped<IBlogServices, BlogServices>();
+
 
 var app = builder.Build();
 

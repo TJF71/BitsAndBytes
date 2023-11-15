@@ -9,6 +9,7 @@ using Blog.Data;
 using Blog.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Identity;
+using Blog.Services.Interfaces;
 
 namespace Blog.Controllers
 {
@@ -16,21 +17,24 @@ namespace Blog.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<BlogUser> _userManager;
+        private readonly IBlogServices _blogServices;
         //private readonly IImageService _imageService;
         //private readonly IEmailSender _emailService;
 
-        public BlogPostsController(ApplicationDbContext context, UserManager<BlogUser> userManager)
+        public BlogPostsController(ApplicationDbContext context, UserManager<BlogUser> userManager, IBlogServices blogServices)
 
         {
             _context = context;
             _userManager = userManager;
+            _blogServices = blogServices;
         }
 
         // GET: BlogPosts
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.BlogPosts.Include(b => b.Category);
-            return View(await applicationDbContext.ToListAsync());
+            IEnumerable<BlogPost> blogPosts = await _blogServices.GetAllBlogPostsAsync();
+
+            return View(blogPosts);
         }
 
         // GET: BlogPosts/Details/5
@@ -41,7 +45,7 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            var blogPost = await _context.BlogPosts
+            BlogPost? blogPost = await _context.BlogPosts    //GetBlogPostByIdAsync(int? id)
                 .Include(b => b.Category)
                 .Include(b => b.Comments)
                 .ThenInclude(c => c.Author)
