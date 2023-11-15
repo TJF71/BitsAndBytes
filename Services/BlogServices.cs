@@ -47,7 +47,7 @@ namespace Blog.Services
             {
 
                 IEnumerable<BlogPost> blogPosts = await _context.BlogPosts
-                                                        .Where(b => b.IsDeleted == false)
+                                                        .Where(b => b.IsDeleted == false && b.IsPublished == true)
                                                         .Include(b => b.Category)
                                                         .ToListAsync();
 

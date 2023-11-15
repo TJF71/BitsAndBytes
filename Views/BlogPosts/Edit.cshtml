@@ -4,6 +4,116 @@
     ViewData["Title"] = "Edit";
 }
 
+
+
+<style>
+    .ck-editor__editable_inline {
+        min-height: 600px;
+    }
+
+    input.largerCheckbox {
+        width: 30px;
+        height: 30px;
+    }
+
+    label.form-check-label {
+        font-size: 22px;
+    }
+</style>
+
+
+<div class="post-single-wrapper axil-section-gap bg-color-white">
+    <div class="container">
+        <h1>Edit</h1>
+
+        <h4>BlogPost</h4>
+    </div>
+    <hr />
+    <main class="container mt-5">
+
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-12 col-lg-4">
+                    <div class="form-group">
+                        <label asp-for="ImageFile" class="control-label">Blog Post Image</label>
+                        <img class="img-fluid border rounded-3 mb-2" style="max-height: 350px;" src="" id="blogImage">
+                        <input asp-for="ImageFile" type="file" class="form-control mt-3 pt-2" accept=".png,.jpg,.jpeg,.gif"
+                               onchange="document.getElementById('blogImage').src = window.URL.createObjectURL(this.files[0])" />
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="CategoryId" class="control-label"></label>
+                        <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="CategoryId" class="control-label"></label>
+                        @*   <input asp-for="CategoryId" class="form-control" /> *@
+                        <span asp-validation-for="CategoryId" class="text-danger" asp-items="ViewBag.CategoryId"></span>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label asp-for="Title" class="control-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Abstract" class="control-label"></label>
+                        <textarea asp-for="Abstract" class="form-control" rows="1"></textarea>
+                        <span asp-validation-for="Abstract" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Content" class="control-label"></label>
+                        <textarea asp-for="Content" class="form-control" rows="1"></textarea>
+                        <span asp-validation-for="Content" class="text-danger"></span>
+                    </div>
+
+
+                    @*                     <div class="form-group">
+                    <label asp-for="" class="control-label">Category</label>
+                    <select asp-for="" class="form-control" asp-items=""></select>
+                    </div>
+                    </div>
+                    <div class="col-12 col-lg-8">
+                    <div class="form-group">
+                    <label asp-for="" class="control-label"></label>
+                    <textarea asp-for="" class="editor form-control"></textarea>
+                    <span asp-validation-for="" class="text-danger"></span>
+                    </div>
+
+                    </div> *@
+                </div>
+
+
+
+                <div class="form-group d-flex justify-content-end">
+                    <label class="form-check-label me-4 mt-2" asp-for="IsPublished">Publish?</label>
+                    <input class="largerCheckbox me-20" type="checkbox" asp-for="IsPublished" />@*  @Html.DisplayNameFor(model => model.IsPublished) *@
+                    <span asp-validation-for="IsPublished" class="text-danger"></span>
+                </div>
+
+
+                <div class="form-group d-flex justify-content-end">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+
+        </form>
+        <div class="form-group mt-5 start-0">
+            <a asp-action="Index">Back</a>
+        </div>
+    </main>
+</div>
+
+
+
+
+
+
 <h1>Edit</h1>
 
 <h4>BlogPost</h4>
