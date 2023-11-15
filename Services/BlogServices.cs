@@ -20,13 +20,36 @@ namespace Blog.Services
         }
 
 
+
         //GET: BlogPosts
+
+        public async Task<BlogPost> GetBlogPostByIdAsync(int? id)
+        {
+            try
+            {
+                BlogPost? blogPost = await _context.BlogPosts
+                                          .Include(b => b.Category)
+                                          .Include(b => b.Comments)
+                                          .ThenInclude(b => b.Author)
+                                          .FirstOrDefaultAsync(m => m.Id == id && m.IsDeleted == false && m.IsPublished == true);
+                return blogPost!;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<IEnumerable<BlogPost>> GetAllBlogPostsAsync()
         {
             try
             {
 
-                IEnumerable<BlogPost> blogPosts = await _context.BlogPosts.Include(b => b.Category).ToListAsync();
+                IEnumerable<BlogPost> blogPosts = await _context.BlogPosts
+                                                        .Where(b => b.IsDeleted == false)
+                                                        .Include(b => b.Category)
+                                                        .ToListAsync();
 
                 return blogPosts;
 
@@ -39,13 +62,37 @@ namespace Blog.Services
         }
 
 
-        // had to add lines below to fix error in View
-        //private IActionResult View(List<BlogPost> blogPosts)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task CreateBlogPostAsync(BlogPost blogPost)
+        {
+            try
+            {
+                _context.Add(blogPost);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
 
 
+        //GET: BlogPost details
+
+
+        public async Task  UpdateBlogPostAsync(BlogPost blogPost)
+        {
+            try
+            {
+                _context.Update(blogPost);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

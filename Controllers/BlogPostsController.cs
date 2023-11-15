@@ -45,18 +45,20 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            BlogPost? blogPost = await _context.BlogPosts    //GetBlogPostByIdAsync(int? id)
-                .Include(b => b.Category)
-                .Include(b => b.Comments)
-                .ThenInclude(c => c.Author)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (blogPost == null)
+            //GetBlogPostByIdAsync(int? id)
+
+            BlogPost? blogPosts = await _blogServices.GetBlogPostByIdAsync(id);
+
+
+            if (blogPosts == null)
             {
                 return NotFound();
             }
 
-            return View(blogPost);
+            return View(blogPosts);
         }
+
+
 
         // GET: BlogPosts/Create
         public IActionResult Create()
@@ -74,13 +76,21 @@ namespace Blog.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(blogPost);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //_context.Add(blogPost);
+                //await _context.SaveChangesAsync();
+                //return RedirectToAction(nameof(Index));
+
+                blogPost.CreatedDate = DateTime.Now;
+
+                await _blogServices.CreateBlogPostAsync(blogPost);
+                return RedirectToAction("Index");   
+
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
             return View(blogPost);
         }
+
+
 
         // GET: BlogPosts/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -98,7 +108,6 @@ namespace Blog.Controllers
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
             return View(blogPost);
         }
-
         // POST: BlogPosts/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -115,12 +124,11 @@ namespace Blog.Controllers
             {
                 try
                 {
-                    _context.Update(blogPost);
-                    await _context.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BlogPostExists(blogPost.Id))
+                    if (!await BlogPostExists(blogPost.Id))
                     {
                         return NotFound();
                     }
@@ -143,9 +151,9 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            var blogPost = await _context.BlogPosts
-                .Include(b => b.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var blogPost = await _blogServices.GetBlogPostByIdAsync(id);
+
+
             if (blogPost == null)
             {
                 return NotFound();
@@ -166,16 +174,17 @@ namespace Blog.Controllers
             var blogPost = await _context.BlogPosts.FindAsync(id);
             if (blogPost != null)
             {
-                _context.BlogPosts.Remove(blogPost);
-            }
+               blogPost.IsDeleted = true;
+                await _blogServices.UpdateBlogPostAsync(blogPost);
 
-            await _context.SaveChangesAsync();
+
+            }
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BlogPostExists(int id)
+        private async Task<bool> BlogPostExists(int id)
         {
-            return (_context.BlogPosts?.Any(e => e.Id == id)).GetValueOrDefault();
+            return ((await _blogServices.GetAllBlogPostsAsync()).Any(e => e.Id == id));
         }
     }
 }
