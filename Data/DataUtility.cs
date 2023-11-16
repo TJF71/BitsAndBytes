@@ -112,7 +112,7 @@ namespace Blog.Data
                     EmailConfirmed = true
                 };
 
-                BlogUser? blogUserModerator = await userManager.FindByEmailAsync(moderatorEmail!);
+                BlogUser? moderatorUser = await userManager.FindByEmailAsync(moderatorEmail!);
 
                 if (blogUser == null)
                 {
