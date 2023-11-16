@@ -3,6 +3,7 @@ using Blog.Models;
 using Blog.Services;
 using Blog.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,7 +22,9 @@ builder.Services.AddControllersWithViews();
 
 // Custom services
 builder.Services.AddScoped<IBlogServices, BlogServices>();
-
+builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IEmailSender, EmailService>();
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
 var app = builder.Build();
 

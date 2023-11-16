@@ -20,6 +20,27 @@ namespace Blog.Services
         }
 
 
+        public async Task<IEnumerable<BlogPost>> GetAllDeletedBlogPostsAsync()
+        {
+            try
+            {
+
+                IEnumerable<BlogPost> blogPosts = await _context.BlogPosts
+                                                        .Where(b => b.IsDeleted == true)
+                                                        .Include(b => b.Category)
+                                                        .ToListAsync();
+
+                return blogPosts;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
 
         //GET: BlogPosts
 

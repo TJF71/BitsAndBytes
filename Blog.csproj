@@ -10,6 +10,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\NewFolder1\**" />
+    <Compile Remove="Models\NewFolder\**" />
+    <Content Remove="Models\NewFolder1\**" />
+    <Content Remove="Models\NewFolder\**" />
+    <EmbeddedResource Remove="Models\NewFolder1\**" />
+    <EmbeddedResource Remove="Models\NewFolder\**" />
+    <None Remove="Models\NewFolder1\**" />
+    <None Remove="Models\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="4.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.13" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.13" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.13" />
@@ -18,6 +30,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.13" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.9" />
+    <PackageReference Include="MimeKit" Version="4.3.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
   </ItemGroup>
 

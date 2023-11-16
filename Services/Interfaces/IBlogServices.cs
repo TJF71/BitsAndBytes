@@ -6,7 +6,10 @@ namespace Blog.Services.Interfaces
 {
     public interface IBlogServices
     {
+        
         public Task<IEnumerable<BlogPost>> GetAllBlogPostsAsync();
+
+        public Task<IEnumerable<BlogPost>> GetAllDeletedBlogPostsAsync();
 
         public Task<BlogPost> GetBlogPostByIdAsync(int? id);
 
