@@ -18,6 +18,8 @@ namespace Blog.Services.Interfaces
         //edit
         public Task UpdateBlogPostAsync(BlogPost blogPost);
 
+        public Task<IEnumerable<Category>> GetCategoriesAsync();
+
     }
 
 }

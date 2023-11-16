@@ -70,6 +70,7 @@ namespace Blog.Services
                 IEnumerable<BlogPost> blogPosts = await _context.BlogPosts
                                                         .Where(b => b.IsDeleted == false && b.IsPublished == true)
                                                         .Include(b => b.Category)
+                                                        .Include (b => b.Comments)  
                                                         .ToListAsync();
 
                 return blogPosts;
@@ -108,6 +109,22 @@ namespace Blog.Services
             {
                 _context.Update(blogPost);
                 await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
+        public async Task <IEnumerable<Category>>  GetCategoriesAsync()
+        {
+            try
+            {
+                IEnumerable<Category> categories = await _context.Categories.ToListAsync();
+
+                return categories;
             }
             catch (Exception)
             {
