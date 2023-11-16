@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//// Add services to the container.
+//var connectionString = DataUtility.GetConnectionString(builder.Configuration) ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 // Add services to the container.
 var connectionString = DataUtility.GetConnectionString(builder.Configuration) ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
@@ -20,13 +22,18 @@ builder.Services.AddDefaultIdentity<BlogUser>(options => options.SignIn.RequireC
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
-// Custom services
+// Custom Services
 builder.Services.AddScoped<IBlogServices, BlogServices>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IEmailSender, EmailService>();
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
 var app = builder.Build();
+var scope = app.Services.CreateScope();
+
+await DataUtility.ManageDataAsync(scope.ServiceProvider);
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -43,7 +50,11 @@ else
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
 app.UseRouting();
+
 
 app.UseAuthorization();
 

@@ -1,4 +1,10 @@
-﻿@model Blog.Models.BlogPost
+﻿@using Blog.Enums;
+@using Blog.Models.Enums;
+@using Blog.Services.Interfaces;
+
+
+@model Blog.Models.BlogPost
+@inject IImageService _ImageService
 
 @{
     ViewData["Title"] = "Details";
@@ -58,13 +64,13 @@
                                             <div class="post-meta">
                                                 <div class="post-author-avatar border-rounded">
                                                     [Your Image]
-                                                    <img src="" alt="Author Images" style="height:80px;width:80px">
-                                                </div>
+                                                    <img src="@_ImageService.ConvertByteArrayToFile(null, null, DefaultImage.AuthorImage)" alt="Author Images" style="height:80px;width:80px">
+                                            </div>
                                                 <div class="content">
                                                     <h6 class="post-author-name">
                                                         <a class="hover-flip-item-wrapper" href="author.html">
                                                             <span class="hover-flip-item">
-                                                                <span data-text="[Your Name]">[Your Name]</span>
+                                                                <span data-text="T. Farrell">T. Farrell</span>
                                                             </span>
                                                         </a>
                                                     </h6>

@@ -1,22 +1,36 @@
-﻿using Blog.Services.Interfaces;
+﻿using Blog.Enums;
+using Blog.Services.Interfaces;
 
 namespace Blog.Services
 {
     public class ImageService : IImageService
 
     {
-        private readonly string? _defaultImage = "/img/DefaultContactImage.png";
-        public string? ConvertByteArrayToFile(byte[]? fileData, string? extension)
+        private readonly string? _defaultBlogUserImage = "/img/BlogUser.png";
+        private readonly string? _defaultBlogPostImage = "/img/BlogDefault.png";
+        private readonly string? _defaultCategoryImage = "/img/BlogCategories.png";
+        private readonly string? _defaultAuthorImage = "/img/BlogAuthor.png";
+
+
+        public string? ConvertByteArrayToFile(byte[]? fileData, string? extension, DefaultImage defaultImage)
         {
             try
             {
-                if (fileData == null)
+                if (fileData == null || fileData.Length == 0)
                 {
                     // show default
-                    return _defaultImage;
-                }
+                  
+                    switch(defaultImage)
+                    {
+                        case DefaultImage.AuthorImage: return _defaultAuthorImage;
+                        case DefaultImage.BlogPostImage: return _defaultBlogPostImage;
+                        case DefaultImage.CategoryImage: return _defaultCategoryImage;
+                        case DefaultImage.BlogUserImage: return _defaultBlogUserImage;
+                    }
 
-                string? imageBase64Data = Convert.ToBase64String(fileData);
+                }
+    
+                string? imageBase64Data = Convert.ToBase64String(fileData!);
                 imageBase64Data = string.Format($"data: {extension}; base64, {imageBase64Data}");
 
                 return imageBase64Data;

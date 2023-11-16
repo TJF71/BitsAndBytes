@@ -39,6 +39,14 @@ namespace Blog.Controllers
 
 
 
+        // GET:  DeletedBlogPosts
+        public async Task<IActionResult> DeletedBlogPosts()
+        {
+            IEnumerable<BlogPost> blogPosts = await _blogServices.GetAllDeletedBlogPostsAsync();
+
+            return View(blogPosts);
+
+        }
 
 
         // GET: BlogPosts/Details/5
