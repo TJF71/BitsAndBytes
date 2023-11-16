@@ -24,8 +24,8 @@
 
 </head>
 <body>
-
-    <div class="main-wrapper">
+    <partial name="_LogoutPartial"/>
+    <div class="main-wrapper"/>
         <div class="mouse-cursor cursor-outer"></div>
         <div class="mouse-cursor cursor-inner"></div>
 
@@ -177,7 +177,7 @@
                                 {
                                     <div class="dropdown-menu animate__slideInDown">
                                         <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index"><p style="color:black">My Profile</p></a>
-                                        <a class="dropdown-item" href=""><p style="color:black">Logout</p></a>
+                                        <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit();"><p style="color:black">Logout</p></a>
                                     </div>
                                 }
                                 else

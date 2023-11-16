@@ -12,24 +12,30 @@ var builder = WebApplication.CreateBuilder(args);
 //var connectionString = DataUtility.GetConnectionString(builder.Configuration) ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 // Add services to the container.
 var connectionString = DataUtility.GetConnectionString(builder.Configuration) ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-
-
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<BlogUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
+builder.Services.AddIdentity<BlogUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true) /*make sure to use AddIdentity*/
+                .AddDefaultUI()
+                .AddDefaultTokenProviders()
+                .AddEntityFrameworkStores<ApplicationDbContext>(); /*one line of code*/
+
+
+builder.Services.AddControllersWithViews();  /*should this even be here?*/
 
 // Custom Services
-builder.Services.AddScoped<IBlogServices, BlogServices>();
+builder.Services.AddScoped<IBlogServices, BlogServices>();  
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IEmailSender, EmailService>();
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
+builder.Services.AddMvc();
+
 var app = builder.Build();
 var scope = app.Services.CreateScope();
+
+
 
 await DataUtility.ManageDataAsync(scope.ServiceProvider);
 

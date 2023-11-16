@@ -112,7 +112,7 @@ namespace Blog.Data
                     EmailConfirmed = true
                 };
 
-                BlogUser? blogUserModerator = await userManager.FindByEmailAsync(moderatorEmail!);
+                blogUser = await userManager.FindByEmailAsync(moderatorEmail!);  /*reusing the already declared blogUser variable*/
 
                 if (blogUser == null)
                 {
@@ -123,9 +123,13 @@ namespace Blog.Data
 
 
             }
-            catch (Exception)
-            {
 
+                catch (Exception ex)
+            {
+                Console.WriteLine("**************ERROR************************");
+                Console.WriteLine("Error Seeding Default Blog Users");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("*******************************************");
                 throw;
             }
 
