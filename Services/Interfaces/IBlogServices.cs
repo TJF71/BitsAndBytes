@@ -22,6 +22,7 @@ namespace Blog.Services.Interfaces
 
         public Task<IEnumerable<Category>> GetCategoriesAsync();
 
+        public IEnumerable<BlogPost> SearchBlogPosts(string searchString);
     }
 
 }

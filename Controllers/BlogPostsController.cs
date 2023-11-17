@@ -41,8 +41,8 @@ namespace Blog.Controllers
             return View(blogPosts);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> SearchIndex(string? searchString)
+
+        public async Task<IActionResult> SearchIndex(string? searchString, int? pageNum)
         {
             if (string.IsNullOrWhiteSpace(searchString))
             {
@@ -50,10 +50,10 @@ namespace Blog.Controllers
             }
 
             int pageSize = 4;
-            int page = 1;
+            int page = pageNum ?? 1;
 
            
-            IPagedList<BlogPost> blogPosts = await (await _blogServices.SearchBlogPosts(searchString)).ToPaged;
+            IPagedList<BlogPost> blogPosts = await _blogServices.SearchBlogPosts(searchString).ToPagedListAsync(page, pageSize);
 
             ViewData["Search"] = searchString;
 
