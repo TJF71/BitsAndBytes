@@ -1,4 +1,7 @@
-﻿@model IEnumerable<Blog.Models.BlogPost>
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@model IPagedList<Blog.Models.BlogPost>;
+@inject IImageService _ImageService;
 
 @{
     ViewData["Title"] = "Index";
@@ -25,6 +28,19 @@
                     <partial name="_BlogCardPartial" model="blogPost" />
 
                 }
+
+                <div>
+                    <div>
+                        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                    </div>
+                    @Html.PagedListPager(Model, pageNum => Url.Action("Index", new{ pageNum}),
+                    new PagedListRenderOptions
+                    {
+                        LiElementClasses = new string[] {"my-page-item"},
+                        PageClasses = new string[]  {"my-page-link"}
+                    }
+                    )
+                </div>
 
             </div>
 

@@ -10,6 +10,7 @@ using Blog.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Identity;
 using Blog.Services.Interfaces;
+using X.PagedList;
 
 namespace Blog.Controllers
 {
@@ -31,10 +32,12 @@ namespace Blog.Controllers
         }
 
         // GET: BlogPosts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNum)
         {
-            IEnumerable<BlogPost> blogPosts = await _blogServices.GetAllBlogPostsAsync();
+            int pageSize = 4;
+            int page = pageNum ?? 1;
 
+            IPagedList<BlogPost> blogPosts =  await (await _blogServices.GetAllBlogPostsAsync()).ToPagedListAsync(page, pageSize);
             return View(blogPosts);
         }
 
