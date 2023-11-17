@@ -6,7 +6,7 @@
 
 
 <!-- Start Author Area  -->
-<partial name="_AuthorAreaPartial"/>
+<partial name="_AuthorAreaPartial" />
 <!-- End Author Area  -->
 <!-- Start Post List Wrapper  -->
 <div class="axil-post-list-area axil-section-gap bg-color-white">
@@ -22,13 +22,20 @@
             <div class="col-lg-8 col-xl-8">
                 @foreach (BlogPost blogPost in Model)
                 {
-                
-                    <partial name="_BlogCardPartial" model="blogPost"/>
+                    <partial name="_BlogCardPartial" model="blogPost" />
 
-               
                 }
 
             </div>
+
+
+            <div class="col-lg-8 col-xl-8">
+
+                <partial name="_SideBarPartial" />
+
+
+            </div>
+
             <!-- End Post List  -->
             <!-- Start Sidebar Area  -->
             <div class="col-lg-4 col-xl-4 mt_md--40 mt_sm--40">
@@ -184,9 +191,10 @@
                         <!-- End Post List  -->
                     </div>
 
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
 
 

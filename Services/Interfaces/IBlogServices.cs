@@ -13,6 +13,8 @@ namespace Blog.Services.Interfaces
 
         public Task<BlogPost> GetBlogPostByIdAsync(int? id);
 
+        public Task<IEnumerable<BlogPost>> GetPopularBlogPostsAsync();
+
         public Task CreateBlogPostAsync(BlogPost blogPost);
 
         //edit

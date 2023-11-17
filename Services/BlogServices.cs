@@ -41,7 +41,6 @@ namespace Blog.Services
         }
 
 
-
         //GET: BlogPosts
 
         public async Task<BlogPost> GetBlogPostByIdAsync(int? id)
@@ -82,6 +81,32 @@ namespace Blog.Services
                 throw;
             }
         }
+
+
+        public async Task<IEnumerable<BlogPost>> GetPopularBlogPostsAsync()
+        {
+            try
+            {
+
+                IEnumerable<BlogPost> blogPosts = await _context.BlogPosts
+                                                        .Where(b => b.IsDeleted == false && b.IsPublished == true)
+                                                        .Include(b => b.Category)
+                                                        .Include(b => b.Comments)
+                                                        .Include(b => b.Tags)
+                                                        .OrderByDescending(b => b.Comments.Count)
+                                                        .ToListAsync();
+
+                return blogPosts;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
 
 
         public async Task CreateBlogPostAsync(BlogPost blogPost)

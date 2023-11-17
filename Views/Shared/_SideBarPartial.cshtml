@@ -1,0 +1,71 @@
+﻿@inject IBlogServices _BlogService
+@inject IImageService _ImageService
+
+
+<!-- Start Sidebar Area  -->
+<div class="sidebar-inner">
+
+    <!-- Start Single Widget  -->
+    <div class="axil-single-widget widget widget_categories mb--30">
+        <ul>
+            @foreach (Category category in (await _BlogService.GetCategoriesAsync()).Take(4))
+            {
+                <li class="cat-item">
+                    <a href="#" class="inner">
+                        <div class="thumbnail">
+                            <img src="@_ImageService.ConvertByteArrayToFile(category?.ImageData, category?.ImageType, DefaultImage.CategoryImage)" alt="">
+                        </div>
+                        <div class="content">
+                            <h5 class="title">@category?.Name</h5>
+                        </div>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+    <!-- End Single Widget  -->
+    <!-- Start Single Widget  -->
+    <div class="axil-single-widget widget widget_search mb--30">
+        <h5 class="widget-title">Search</h5>
+        <form action="#">
+            <div class="axil-search form-group">
+                <button type="submit" class="search-button"><i class="fal fa-search"></i></button>
+                <input type="text" class="form-control" placeholder="Search">
+            </div>
+        </form>
+    </div>
+
+    <!-- End Single Widget  -->
+    <!-- Start Single Widget  -->
+    <div class="axil-single-widget widget widget_postlist mb--30">
+        <h5 class="widget-title">Popular on Blogar</h5>
+        <!-- Start Post List  -->
+        <div class="post-medium-block">
+            @foreach (BlogPost blogPost in (await _BlogService.GetPopularBlogPostsAsync()).Take(3))
+            {
+                <div class="cat-item">
+                    <a href="#" class="inner">
+                        <div class="thumbnail">
+                            <img src="@_ImageService.ConvertByteArrayToFile(blogPost?.ImageData, blogPost?.ImageType, DefaultImage.BlogPostImage)" alt="">
+                        </div>
+                        <div class="content">
+                            <h5 class="title">@blogPost?.Title</h5>
+                        </div>
+                    </a>
+                </div>
+            }
+
+
+
+
+
+
+        </div>
+        <!-- End Post List  -->
+
+    </div>
+
+
+</div>
+
+
