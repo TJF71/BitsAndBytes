@@ -41,6 +41,28 @@ namespace Blog.Controllers
             return View(blogPosts);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> SearchIndex(string? searchString)
+        {
+            if (string.IsNullOrWhiteSpace(searchString))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            int pageSize = 4;
+            int page = 1;
+
+            IEnumerable<BlogPost> allBlogPosts = await _blogServices.GetAllBlogPostsAsync();
+
+
+            IPagedList<BlogPost> blogPosts = await allBlogPosts.ToPagedListAsync(page, pageSize);
+
+            ViewData["Search"] = searchString;
+
+            return View(nameof(Index), blogPosts);
+
+        }
+
 
 
         // GET:  DeletedBlogPosts

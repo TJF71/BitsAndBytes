@@ -24,18 +24,19 @@
         </ul>
     </div>
     <!-- End Single Widget  -->
+
     <!-- Start Single Widget  -->
     <div class="axil-single-widget widget widget_search mb--30">
         <h5 class="widget-title">Search</h5>
-        <form action="#">
+        <form  asp-controller="BlogPosts" asp-action="SearchIndex">
             <div class="axil-search form-group">
                 <button type="submit" class="search-button"><i class="fal fa-search"></i></button>
-                <input type="text" class="form-control" placeholder="Search">
+                <input type="text" class="form-control" placeholder="Search" name="searchString">
             </div>
         </form>
     </div>
-
     <!-- End Single Widget  -->
+
     <!-- Start Single Widget  -->
     <div class="axil-single-widget widget widget_postlist mb--30">
         <h5 class="widget-title">Popular on Blogar</h5>

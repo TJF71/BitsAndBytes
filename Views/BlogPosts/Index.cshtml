@@ -5,6 +5,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    string? searchString = ViewBag.Search;
 }
 
 
@@ -17,7 +18,15 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="page-title">
-                    <h2 class="title mb--40">Welcome to my weblog!</h2>
+                    @if (string.IsNullOrEmpty(searchString))
+                    {
+                        <h2 class="title mb--40">Welcome to my Blog!</h2>
+                    }
+                    else
+                    {
+                        <h2 class="title mb--40">Search Results for '@searchString'</h2>
+                    }
+
                 </div>
             </div>
 
@@ -116,7 +125,7 @@
                     </div>
                     <!-- End Single Widget  -->
                     <!-- Start Single Widget  -->
-                    <div class="axil-single-widget widget widget_postlist mb--30">
+@*                     <div class="axil-single-widget widget widget_postlist mb--30">
                         <h5 class="widget-title">Popular on Blogar</h5>
                         <!-- Start Post List  -->
                         <div class="post-medium-block">
@@ -192,7 +201,7 @@
                         <!-- End Post List  -->
 
                     </div>
-                    <!-- End Single Widget  -->
+ *@                    <!-- End Single Widget  -->
                     <!-- Start Single Widget  -->
                     <div class="axil-single-widget widget widget_social mb--30">
                         <h5 class="widget-title">Stay In Touch</h5>
