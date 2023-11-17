@@ -157,5 +157,39 @@ namespace Blog.Services
                 throw;
             }
         }
+
+        public IEnumerable<BlogPost> SearchBlogPosts(string searchString)  //called a method signature (the whole line)
+        {
+            try
+            {
+                searchString = searchString.Trim().ToLower();
+
+                IEnumerable<BlogPost> blogPosts = _context.BlogPosts
+                                                    .Where(b => b.IsPublished == true && b.IsDeleted == false)
+                                                    .Where(b => b.Title!.ToLower().Contains(searchString)
+                                                           || (!string.IsNullOrEmpty(b.Abstract) && b.Abstract.ToLower().Contains(searchString))
+                                                           || b.Content!.ToLower().Contains(searchString)
+                                                           || b.Tags.Any(t => t.Body!.ToLower().Contains(searchString))
+                                                           || b.Category!.Name!.ToLower().Contains(searchString)
+                                                           || b.Comments.Any(c => c.Body!.ToLower().Contains(searchString)
+                                                                            || c.Author!.FirstName!.ToLower().Contains(searchString)
+                                                                            || c.Author!.LastName!.ToLower().Contains(searchString))
+                                                           )
+                                                    .Include(b => b.Category)
+                                                    .Include(b => b.Tags)
+                                                    .Include(b => b.Comments).ThenInclude(c => c.Author)
+                                                    .AsNoTracking()
+                                                    .OrderByDescending(b => b.UpdatedDate ?? b.CreatedDate)
+                                                    .AsEnumerable();
+
+                return blogPosts;
+            }
+            catch (Exception)
+            {
+                return new List<BlogPost>();
+                throw;
+            }
+        }
+
     }
 }

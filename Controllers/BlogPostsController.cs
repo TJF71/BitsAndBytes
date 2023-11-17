@@ -52,10 +52,8 @@ namespace Blog.Controllers
             int pageSize = 4;
             int page = 1;
 
-            IEnumerable<BlogPost> allBlogPosts = await _blogServices.GetAllBlogPostsAsync();
-
-
-            IPagedList<BlogPost> blogPosts = await allBlogPosts.ToPagedListAsync(page, pageSize);
+           
+            IPagedList<BlogPost> blogPosts = await (await _blogServices.SearchBlogPosts(searchString)).ToPaged;
 
             ViewData["Search"] = searchString;
 
