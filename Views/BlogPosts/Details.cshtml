@@ -1,6 +1,4 @@
 ﻿
-
-
 @model Blog.Models.BlogPost
 @inject IImageService _ImageService
 
@@ -43,45 +41,49 @@
                                                 <a class="hover-flip-item-wrapper" href="#">
                                                     <span class="hover-flip-item">
                                                         <span data-text="@Model.Category?.Name">[Category]</span>
+                                                        @Model?.Category
                                                     </span>
                                                 </a>
                                             </div>
                                         </div>
 
 
-                                        <dt class="col-sm-2">
+@*                                         <dt class="col-sm-2">
                                             @Html.DisplayNameFor(model => model.Title)
-                                        </dt>
+                                        </dt> *@
 
 
                                         <h1 class="title">
-                                            @Html.DisplayNameFor(model => model.Title)
+                                            @Model?.Title
+                                           @*  @Html.DisplayNameFor(model => model.Title) *@  @*This just displayed the word "Title"*@
                                         </h1>
                                         <!-- Post Meta  -->
                                         <div class="post-meta-wrapper">
                                             <div class="post-meta">
                                                 <div class="post-author-avatar border-rounded">
-                                                    [Your Image]
-                                                    <img src="@_ImageService.ConvertByteArrayToFile(null, null, DefaultImage.AuthorImage)" alt="Author Images" style="height:80px;width:80px">
+                                                    @* [Your Image] *@
+                                                    <img src="@_ImageService.ConvertByteArrayToFile(null, null, DefaultImage.BlogUserImage)" alt="Author Images"
+                                                    style="height:80px;width:80px">
                                             </div>
                                                 <div class="content">
                                                     <h6 class="post-author-name">
                                                         <a class="hover-flip-item-wrapper" href="author.html">
                                                             <span class="hover-flip-item">
-                                                                <span data-text="T. Farrell">T. Farrell</span>
+                                                                <span data-text="T. Farrell"> </span>
+
                                                             </span>
                                                         </a>
                                                     </h6>
                                                     <ul class="post-meta-list">
-                                                        <li>[Date here]</li>
-                                                        <li>[{Number of} Comments]</li>
+                                                        <li>@Model?.CreatedDate.ToString("MMM dd, yyyy")</li>
+                                                        <li>@Model?.Comments.Count</li>
                                                     </ul>
                                                 </div>
                                             </div>
                                             <ul class="social-share-transparent justify-content-end">
                                                 <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                                <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+@*                                                 <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                                                <li><a href="#"><i class="fab fa-twitter"></i></a></li> *@
                                                 <li><a href="#"><i class="fas fa-link"></i></a></li>
                                             </ul>
                                         </div>
@@ -98,7 +100,8 @@
                 <div class="axil-post-details">
                     <p class="has-medium-font-size">
                         <!--Abstract here-->
-                        [Abstract]
+               @*          [Abstract] *@
+                        @Model?.Abstract
                     </p>
                     <figure class="wp-block-image alignwide text-center">
                         <!--Blog Image here-->
@@ -107,12 +110,16 @@
                         <input asp-for="ImageFile" type="file" class="form-control mt-3 pt-2" accept=".png,.jpg,.jpeg,.gif"
                                onchange="document.getElementById('blogImage').src = window.URL.createObjectURL(this.files[0])" />
 
-
-
                         <img src="" alt="Show the blog's Image here or a default Image" />
+
+
+                        <img src="@_ImageService.ConvertByteArrayToFile(null, null, DefaultImage.AuthorImage)" alt="Author Images"
+                             style="height:80px;width:80px">
+
                     </figure>
 
-                    [Blog Content]
+                 @*    [Blog Content] *@
+                 @Model?.Content
 
                     <div class="">
                         <!--Tags listed here-->
@@ -121,7 +128,10 @@
                         <a href="#">Tag2</a>
                         <a href="#">Tag3</a>
                         <a href="#">Tag4</a>
+                        
+                        @Model?.Tags
 
+                        
                     </div>
                     <div class="social-share-block">
                         <div class="post-like">
@@ -132,8 +142,8 @@
                         </div>
                         <ul class="social-icon icon-rounded-transparent md-size">
                             <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                            <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                            <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+@*                             <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                            <li><a href="#"><i class="fab fa-twitter"></i></a></li> *@
                             <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
                         </ul>
                     </div>
