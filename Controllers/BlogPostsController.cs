@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Identity;
 using Blog.Services.Interfaces;
 using X.PagedList;
+using X.PagedList.Web.Common;
+using Blog.Helpers;
 
 namespace Blog.Controllers
 {
@@ -19,16 +21,16 @@ namespace Blog.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<BlogUser> _userManager;
         private readonly IBlogServices _blogServices;
-        //private readonly IImageService _imageService;
+        private readonly IImageService _imageService;
      //   private readonly IEmailSender _emailService;
 
-        public BlogPostsController(ApplicationDbContext context, UserManager<BlogUser> userManager, IBlogServices blogServices)
+        public BlogPostsController(ApplicationDbContext context, UserManager<BlogUser> userManager, IBlogServices blogServices, IImageService imageService)
 
         {
             _context = context;
             _userManager = userManager;
             _blogServices = blogServices;
-            
+            _imageService = imageService;
         }
 
         // GET: BlogPosts
@@ -73,17 +75,17 @@ namespace Blog.Controllers
         }
 
 
-        // GET: BlogPosts/Details/5
-        public async Task<IActionResult> Details(int? id)
+        //GET: BlogPosts/Details/5
+        public async Task<IActionResult> Details(string? slug)
         {
-            if (id == null || _context.BlogPosts == null)
+            if (string.IsNullOrEmpty(slug))
             {
                 return NotFound();
             }
 
             //GetBlogPostByIdAsync(int? id)
 
-            BlogPost? blogPosts = await _blogServices.GetBlogPostByIdAsync(id);
+            BlogPost? blogPosts = await _blogServices.GetBlogPostBySlugAsync(slug); //GetBlogPostBySlugAsync
 
 
             if (blogPosts == null)
@@ -108,20 +110,39 @@ namespace Blog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CategoryId,Title,Abstract,Content,CreatedDate,UpdatedDate,Slug,IsDeleted,IsPublished,ImageData,ImageType")] BlogPost blogPost)
+        public async Task<IActionResult> Create([Bind("Id,Title,Abstract,Content,IsPublished, CategoryId, ImageFile")] BlogPost blogPost)
         {
+            ModelState.Remove("Slug");
+
+
             if (ModelState.IsValid)
             {
-                //_context.Add(blogPost);
-                //await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
+                string? newSlug = StringHelper.BlogPostSlug(blogPost.Title);
 
-                blogPost.CreatedDate = DateTime.Now;
+                if(!await _blogServices.IsValidSlugAsnyc(newSlug, blogPost.Id))
+                {
+                    ModelState.AddModelError("Title", "A similar title/Slug is already in use.");
+
+                    ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
+                    return View(blogPost);
+                }
+
+                blogPost.Slug = newSlug;
+                blogPost.CreatedDate = DateTimeOffset.Now;
+
+                if (blogPost.ImageFile != null)
+                {
+                    blogPost.ImageData = await _imageService.ConvertFileToByteArrayAsync(blogPost.ImageFile);
+                    blogPost.ImageType = blogPost.ImageFile.ContentType;
+                }
+
 
                 await _blogServices.CreateBlogPostAsync(blogPost);
+
                 return RedirectToAction("Index");   
 
             }
+            // make service call
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
             return View(blogPost);
         }

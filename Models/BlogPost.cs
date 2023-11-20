@@ -49,7 +49,8 @@ namespace Blog.Models
             }
         }
 
-        public string? Slug { get; set; }
+        [Required]
+        public string? Slug { get; set; } // "an-interesting-blog-post
 
         public bool IsDeleted { get; set; }
 

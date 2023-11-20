@@ -65,11 +65,11 @@ namespace Blog.Services
         {
             try
             {
-
+               
                 IEnumerable<BlogPost> blogPosts = await _context.BlogPosts
                                                         .Where(b => b.IsDeleted == false && b.IsPublished == true)
                                                         .Include(b => b.Category)
-                                                        .Include (b => b.Comments)  
+                                                        .Include(b => b.Comments)
                                                         .ToListAsync();
 
                 return blogPosts;
@@ -106,7 +106,23 @@ namespace Blog.Services
             }
         }
 
+        public async Task<BlogPost> GetBlogPostBySlugAsync(string? slug)
+        {
+            try
+            {
+                BlogPost? blogPost = await _context.BlogPosts
+                                          .Include(b => b.Category)
+                                          .Include(b => b.Comments)
+                                          .ThenInclude(b => b.Author)
+                                          .FirstOrDefaultAsync(m => m.Slug == slug && m.IsDeleted == false && m.IsPublished == true);
+                return blogPost!;
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
+        }
 
 
         public async Task CreateBlogPostAsync(BlogPost blogPost)
@@ -128,7 +144,7 @@ namespace Blog.Services
         //GET: BlogPost details
 
 
-        public async Task  UpdateBlogPostAsync(BlogPost blogPost)
+        public async Task UpdateBlogPostAsync(BlogPost blogPost)
         {
             try
             {
@@ -143,7 +159,7 @@ namespace Blog.Services
         }
 
 
-        public async Task <IEnumerable<Category>>  GetCategoriesAsync()
+        public async Task<IEnumerable<Category>> GetCategoriesAsync()
         {
             try
             {
@@ -191,5 +207,42 @@ namespace Blog.Services
             }
         }
 
+        public async Task<bool> IsValidSlugAsnyc(string? slug, int? blogPostId)
+        {
+            try
+            {
+                // This indicates that a new blog is being created
+                if (blogPostId == null || blogPostId == 0)
+                {
+                    bool isSlug = !await _context.BlogPosts.AnyAsync(b => b.Slug == slug);
+
+                    return isSlug;
+                }
+                else
+                {
+                    // Editing an existing BlogPost
+                    BlogPost? blogPost = await _context.BlogPosts.AsNoTracking().FirstOrDefaultAsync(b => b.Id == blogPostId);
+
+                    string? oldSlug = blogPost?.Slug;
+
+                    if (!string.Equals(oldSlug, slug))
+                    {
+                        return !await _context.BlogPosts.AnyAsync(b => b.Id != blogPost!.Id && b.Slug == slug);
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+
     }
 }
+
+
