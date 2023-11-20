@@ -41,7 +41,7 @@
                                                 <a class="hover-flip-item-wrapper" href="#">
                                                     <span class="hover-flip-item">
                                                         <span data-text="@Model.Category?.Name">[Category]</span>
-                                                        @Model?.Category
+                                   @*                      @Model?.Category *@
                                                     </span>
                                                 </a>
                                             </div>
@@ -113,7 +113,7 @@
                     </p>
                     <figure class="wp-block-image alignwide text-center">
                         <!--Blog Image here-->
-                        [Image]
+                        @* [Image] *@
 
                         <input asp-for="ImageFile" type="file" class="form-control mt-3 pt-2" accept=".png,.jpg,.jpeg,.gif"
                                onchange="document.getElementById('blogImage').src = window.URL.createObjectURL(this.files[0])" />
@@ -180,8 +180,8 @@
                                     </p>
                                     <ul class="social-share-transparent size-md">
                                         <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                        <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+@*                                         <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                                        <li><a href="#"><i class="fab fa-twitter"></i></a></li> *@
                                         <li><a href="#"><i class="far fa-envelope"></i></a></li>
                                         <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
                                     </ul>
