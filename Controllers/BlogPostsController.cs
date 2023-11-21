@@ -51,9 +51,6 @@ namespace Blog.Controllers
 
 
 
-
-
-
         [Authorize(Roles = "Admin")]
         // GET: BlogPosts/Delete/5
         public async Task<IActionResult> Delete(int? id)
