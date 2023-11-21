@@ -60,7 +60,7 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            // replaced GetBlogPostAsync(id) 
+    
             BlogPost? blogPost = await _blogServices.GetBlogPostByIdAsync(id);
 
             //var blogPost = await _blogService.GetBlogPostAsync(id);
@@ -106,7 +106,7 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            // replaced GetBlogPostAsync(id)
+           
             BlogPost? blogPost = await _blogServices.GetBlogPostByIdAsync(id);
 
             if (blogPost == null)
@@ -130,7 +130,7 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            // replaced GetBlogPostAsync(id)
+          
             BlogPost? blogPost = await _blogServices.GetBlogPostByIdAsync(id);
 
             if (blogPost == null)
@@ -144,13 +144,6 @@ namespace Blog.Controllers
 
             return RedirectToAction(nameof(AuthorArea));
         }
-
-
-
-
-
-
-
 
 
         // GET: BlogPosts
