@@ -61,6 +61,10 @@ namespace Blog.Services
             }
         }
 
+
+
+
+
         public async Task<IEnumerable<BlogPost>> GetBlogPostByCategoryId(int? id)
         {
             try
@@ -105,6 +109,27 @@ namespace Blog.Services
                
                 IEnumerable<BlogPost> blogPosts = await _context.BlogPosts
                                                         .Where(b => b.IsDeleted == false && b.IsPublished == true)
+                                                        .Include(b => b.Category)
+                                                        .Include(b => b.Comments)
+                                                        .ToListAsync();
+
+                return blogPosts;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
+        public async Task<IEnumerable<BlogPost>> GetAllBlogPostsForAuthorAsync()
+        {
+            try
+            {
+
+                IEnumerable<BlogPost> blogPosts = await _context.BlogPosts
                                                         .Include(b => b.Category)
                                                         .Include(b => b.Comments)
                                                         .ToListAsync();
@@ -277,7 +302,6 @@ namespace Blog.Services
             }
 
         }
-
 
     }
 }

@@ -1,12 +1,14 @@
 ﻿using Blog.Data;
 using Blog.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Composition.Convention;
 
 namespace Blog.Services.Interfaces
 {
     public interface IBlogServices
     {
-        
+   
+        public Task<IEnumerable<BlogPost>> GetAllBlogPostsForAuthorAsync();
         public Task<IEnumerable<BlogPost>> GetAllBlogPostsAsync();
 
         public Task<IEnumerable<BlogPost>> GetAllDeletedBlogPostsAsync();
@@ -18,8 +20,6 @@ namespace Blog.Services.Interfaces
         public Task<IEnumerable<BlogPost>> GetBlogPostByCategoryId(int? id);
 
         public Task<Category> GetCategoryByIdAsync(int? id);
-
-    
 
         public Task<IEnumerable<BlogPost>> GetPopularBlogPostsAsync();
 

@@ -36,6 +36,123 @@ namespace Blog.Controllers
 
         // AdminArea
 
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AuthorArea(int? pageNum)
+        {
+            int pageSize = 3;
+            int page = pageNum ?? 1;
+
+            // relpaced GetBlogPostsAsync()
+            IPagedList<BlogPost> blogPosts = await (await _blogServices.GetAllBlogPostsForAuthorAsync())
+                                                                      .ToPagedListAsync(page, pageSize);
+
+            return View(blogPosts);
+        }
+
+
+
+
+
+
+        [Authorize(Roles = "Admin")]
+        // GET: BlogPosts/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            // replaced GetBlogPostAsync(id) 
+            BlogPost? blogPost = await _blogServices.GetBlogPostByIdAsync(id);
+
+            //var blogPost = await _blogService.GetBlogPostAsync(id);
+
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (blogPost == null)
+            {
+                return NotFound();
+            }
+
+            blogPost.IsDeleted = true;
+
+            await _blogServices.UpdateBlogPostAsync(blogPost);
+
+            return RedirectToAction(nameof(AuthorArea));
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Undelete(int? id)
+        {
+            // replaced GetBlogPostAsync(id) 
+            var blogPost = await _blogServices.GetBlogPostByIdAsync(id);
+
+            if (blogPost != null)
+            {
+                blogPost.IsPublished = false;
+
+                await _blogServices.UpdateBlogPostAsync(blogPost);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Publish(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            // replaced GetBlogPostAsync(id)
+            BlogPost? blogPost = await _blogServices.GetBlogPostByIdAsync(id);
+
+            if (blogPost == null)
+            {
+                return NotFound();
+            }
+
+            blogPost.IsPublished = true;
+
+            await _blogServices.UpdateBlogPostAsync(blogPost);
+
+            return RedirectToAction(nameof(AuthorArea));
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Unpublish(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            // replaced GetBlogPostAsync(id)
+            BlogPost? blogPost = await _blogServices.GetBlogPostByIdAsync(id);
+
+            if (blogPost == null)
+            {
+                return NotFound();
+            }
+
+            blogPost.IsPublished = false;
+
+            await _blogServices.UpdateBlogPostAsync(blogPost);
+
+            return RedirectToAction(nameof(AuthorArea));
+        }
+
+
+
+
+
+
 
 
 
@@ -234,45 +351,45 @@ namespace Blog.Controllers
         }
 
         // GET: BlogPosts/Delete/5
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.BlogPosts == null)
-            {
-                return NotFound();
-            }
+        //[Authorize(Roles = "Admin")]
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null || _context.BlogPosts == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var blogPost = await _blogServices.GetBlogPostByIdAsync(id);
+        //    var blogPost = await _blogServices.GetBlogPostByIdAsync(id);
 
 
-            if (blogPost == null)
-            {
-                return NotFound();
-            }
+        //    if (blogPost == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(blogPost);
-        }
+        //    return View(blogPost);
+        //}
 
         // POST: BlogPosts/Delete/5
-        [Authorize(Roles = "Admin")]
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.BlogPosts == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.BlogPosts'  is null.");
-            }
-            var blogPost = await _context.BlogPosts.FindAsync(id);
-            if (blogPost != null)
-            {
-               blogPost.IsDeleted = true;
-                await _blogServices.UpdateBlogPostAsync(blogPost);
+        //[Authorize(Roles = "Admin")]
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    if (_context.BlogPosts == null)
+        //    {
+        //        return Problem("Entity set 'ApplicationDbContext.BlogPosts'  is null.");
+        //    }
+        //    var blogPost = await _context.BlogPosts.FindAsync(id);
+        //    if (blogPost != null)
+        //    {
+        //       blogPost.IsDeleted = true;
+        //        await _blogServices.UpdateBlogPostAsync(blogPost);
 
 
-            }
-            return RedirectToAction(nameof(Index));
-        }
+        //    }
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private async Task<bool> BlogPostExists(int id)
         {
