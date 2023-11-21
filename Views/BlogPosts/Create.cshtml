@@ -1,5 +1,9 @@
 ﻿@model Blog.Models.BlogPost
 
+@* @using Blog.Services.Interfaces; *@
+@inject IImageService _ImageService
+
+
 @{
     ViewData["Title"] = "Create";
 }
@@ -35,6 +39,7 @@
                 <div class="col-12 col-lg-4">
                     <div class="form-group">
                         <label asp-for="ImageFile" class="control-label">Blog Post Image</label>
+                      @*   <img id="contactImage" class="square-img" src="@_ImageService.ConvertByteArrayToFile(Model?.ImageData, Model?.ImageType)"> *@
                         <img class="img-fluid border rounded-3 mb-2" style="max-height: 350px;" src="" id="blogImage">
                         <input asp-for="ImageFile" type="file" class="form-control mt-3 pt-2" accept=".png,.jpg,.jpeg,.gif"
                                onchange="document.getElementById('blogImage').src = window.URL.createObjectURL(this.files[0])" />
