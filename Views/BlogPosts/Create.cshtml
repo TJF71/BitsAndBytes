@@ -39,7 +39,9 @@
                 <div class="col-12 col-lg-4">
                     <div class="form-group">
                         <label asp-for="ImageFile" class="control-label">Blog Post Image</label>
-                      @*   <img id="contactImage" class="square-img" src="@_ImageService.ConvertByteArrayToFile(Model?.ImageData, Model?.ImageType)"> *@
+
+                            @*Why is the line below not working here.  It's working on contact Pro*@
+@*                         <img id="contactImage" class="square-img" src="@_ImageService.ConvertByteArrayToFile(Model?.ImageData, Model?.ImageType)">  *@
                         <img class="img-fluid border rounded-3 mb-2" style="max-height: 350px;" src="" id="blogImage">
                         <input asp-for="ImageFile" type="file" class="form-control mt-3 pt-2" accept=".png,.jpg,.jpeg,.gif"
                                onchange="document.getElementById('blogImage').src = window.URL.createObjectURL(this.files[0])" />
@@ -50,13 +52,6 @@
                         <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
                     </div>
 
-
-@*                     <div class="form-group">
-                        <label asp-for="CategoryId" class="control-label"></label>
-                        <input asp-for="CategoryId" class="form-control" /> 
-                        <span asp-validation-for="CategoryId" class="text-danger" asp-items="ViewBag.CategoryId"></span>
-                    </div> *@
-    
 
 
                     <div class="form-group">
