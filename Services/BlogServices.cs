@@ -51,7 +51,7 @@ namespace Blog.Services
                                           .Include(b => b.Category)
                                           .Include(b => b.Comments)
                                           .ThenInclude(b => b.Author)
-                                          .FirstOrDefaultAsync(m => m.Id == id && m.IsDeleted == false && m.IsPublished == true);
+                                          .FirstOrDefaultAsync(m => m.Id == id);
                 return blogPost!;
             }
             catch (Exception)
