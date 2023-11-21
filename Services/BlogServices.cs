@@ -61,6 +61,42 @@ namespace Blog.Services
             }
         }
 
+        public async Task<IEnumerable<BlogPost>> GetBlogPostByCategoryId(int? id)
+        {
+            try
+            {
+                IEnumerable<BlogPost> blogPosts = await _context.BlogPosts
+                                                        .Where(b => b.IsDeleted == false && b.IsPublished == true && b.CategoryId == id)
+                                                        .Include(b => b.Category)
+                                                        .Include(b => b.Comments)
+                                                        .Include(b => b.Tags)
+                                                        .OrderByDescending(b => b.Comments.Count)
+                                                        .ToListAsync();
+                return blogPosts;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public async Task<Category> GetCategoryByIdAsync(int? Id)
+        {
+            try
+            {
+                Category? category = await _context.Categories
+                                    .FirstOrDefaultAsync(category => category.Id == Id);                  
+ 
+                return category!;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
         public async Task<IEnumerable<BlogPost>> GetAllBlogPostsAsync()
         {
             try

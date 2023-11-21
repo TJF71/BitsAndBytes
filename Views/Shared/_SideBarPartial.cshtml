@@ -5,39 +5,57 @@
 <!-- Start Sidebar Area  -->
 <div class="sidebar-inner">
 
+    <div class="axil-single-widget widget widget_categories mb--30">
+        <form asp-action="Index" asp-controller="Contacts" method="post">
+            <div class="mt-5 ">
+                <label class="form-label fw-bold text-dark">CATEGORY FILTER</label>
+                <select name="categoryId" class="form-control" asp-items="ViewBag.Categories"
+                        onchange="this.form.submit()" onfocus="this.selectedIndex=-1;this.blur();">
+                    <option>All Categories</option>
+                </select>
+            </div>
+        </form>
+    </div>
+
     <!-- Start Single Widget  -->
     <div class="axil-single-widget widget widget_categories mb--30">
         <ul>
             @foreach (Category category in (await _BlogService.GetCategoriesAsync()).Take(4))
             {
                 <li class="cat-item">
-                    <a href="#" class="inner">
-                        <div class="thumbnail">
-                            <img src="@_ImageService.ConvertByteArrayToFile(category?.ImageData, category?.ImageType, DefaultImage.CategoryImage)" alt="">
-                        </div>
-                        <div class="content">
-                            <h5 class="title">@category?.Name</h5>
-                        </div>
-                    </a>
+                    @* <a href="#" class="inner"> *@
+                    <form method="get" asp-controller="BlogPosts" asp-action="CategoryIndex">
+                        <button type="submit" class="inner">
+                            <div class="thumbnail">
+                                <img src="@_ImageService.ConvertByteArrayToFile(category?.ImageData, category?.ImageType, DefaultImage.CategoryImage)" alt="">
+                            </div>
+                            <div class="content">
+                                <h5 class="title">@category?.Name</h5>
+                            </div>
+                        </button>
+                        <input type="hidden" value="@category?.Id" name="categoryId">
+
+
+                    </form>
+
+                    @*  </a> *@
                 </li>
             }
         </ul>
     </div>
     <!-- End Single Widget  -->
-
     <!-- Start Single Widget  -->
     <div class="axil-single-widget widget widget_search mb--30">
         <h5 class="widget-title">Search</h5>
-        <form  method="get" asp-controller="BlogPosts" asp-action="SearchIndex">
+        <form method="get" asp-controller="BlogPosts" asp-action="SearchIndex">
             <div class="axil-search form-group">
                 <button type="submit" class="search-button"><i class="fal fa-search"></i></button>
                 <input type="text" class="form-control" placeholder="Search" name="searchString"
-                        value="@ViewBag.Search">
+                       value="@ViewBag.Search">
             </div>
         </form>
     </div>
     <!-- End Single Widget  -->
-
     <!-- Start Single Widget  -->
     <div class="axil-single-widget widget widget_postlist mb--30">
         <h5 class="widget-title">Popular on Blogar</h5>

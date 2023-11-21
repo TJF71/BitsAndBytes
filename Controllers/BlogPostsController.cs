@@ -23,7 +23,7 @@ namespace Blog.Controllers
         private readonly UserManager<BlogUser> _userManager;
         private readonly IBlogServices _blogServices;
         private readonly IImageService _imageService;
-     //   private readonly IEmailSender _emailService;
+        //   private readonly IEmailSender _emailService;
 
         public BlogPostsController(ApplicationDbContext context, UserManager<BlogUser> userManager, IBlogServices blogServices, IImageService imageService)
 
@@ -46,7 +46,7 @@ namespace Blog.Controllers
             int pageSize = 4;
             int page = pageNum ?? 1;
 
-            IPagedList<BlogPost> blogPosts =  await (await _blogServices.GetAllBlogPostsAsync()).ToPagedListAsync(page, pageSize);
+            IPagedList<BlogPost> blogPosts = await (await _blogServices.GetAllBlogPostsAsync()).ToPagedListAsync(page, pageSize);
             return View(blogPosts);
         }
 
@@ -63,13 +63,31 @@ namespace Blog.Controllers
             int pageSize = 4;
             int page = pageNum ?? 1;
 
-           
+
             IPagedList<BlogPost> blogPosts = await _blogServices.SearchBlogPosts(searchString).ToPagedListAsync(page, pageSize);
 
             ViewData["Search"] = searchString;
 
             return View(nameof(Index), blogPosts);
 
+        }
+
+        public async Task<IActionResult> CategoryIndex(int? categoryId, int? pageNum)
+        {
+            if (categoryId == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            int pageSize = 4;
+            int page = pageNum ?? 1;
+
+            
+            IPagedList<BlogPost> blogPosts = await (await _blogServices.GetBlogPostByCategoryId(categoryId)).ToPagedListAsync(page, pageSize);
+
+            ViewData["categoryId"] = categoryId;
+
+            return View(nameof(Index), blogPosts);
         }
 
 
