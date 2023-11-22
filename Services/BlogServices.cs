@@ -3,6 +3,7 @@ using Blog.Models;
 using Blog.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
 
@@ -90,8 +91,8 @@ namespace Blog.Services
             try
             {
                 Category? category = await _context.Categories
-                                    .FirstOrDefaultAsync(category => category.Id == Id);                  
- 
+                                    .FirstOrDefaultAsync(category => category.Id == Id);
+
                 return category!;
             }
             catch (Exception)
@@ -106,7 +107,7 @@ namespace Blog.Services
         {
             try
             {
-               
+
                 IEnumerable<BlogPost> blogPosts = await _context.BlogPosts
                                                         .Where(b => b.IsDeleted == false && b.IsPublished == true)
                                                         .Include(b => b.Category)
@@ -303,6 +304,52 @@ namespace Blog.Services
 
         }
 
+        public async Task AddTagAsync(IEnumerable<int> tagId, int blogPostId)
+        {
+            try
+            {
+                BlogPost? blogPost = await _context.BlogPosts.Include(b => b.Tags)
+                                        .FirstOrDefaultAsync(b => b.Id == blogPostId);
+                foreach (int TagId in tagId)
+                {
+                    Tag? tags = await _context.Tags.FindAsync(TagId);
+                    if(blogPost != null && tags  != null)
+                    {
+                        blogPost.Tags.Add(tags);
+                    }
+
+                }
+
+                await _context.SaveChangesAsync();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task RemoveTagAsync(int blogPostId)
+        {
+            try
+            {
+                BlogPost? blogPost = await _context.BlogPosts.Include(b => b.Tags)
+                        .FirstOrDefaultAsync(b => b.Id == blogPostId);
+
+                if (blogPost != null)
+                {
+                    blogPost.Tags.Clear();
+                    _context.Update(blogPost);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
 

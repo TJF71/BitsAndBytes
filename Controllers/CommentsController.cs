@@ -65,7 +65,7 @@ namespace Blog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Body, BlogPostId")] Comment comment)
+        public async Task<IActionResult> Create([Bind("Id,Body, BlogPostId")] Comment comment, string? blogPostSlug)
         {
 
             ModelState.Remove("AuthorId");
