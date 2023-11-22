@@ -13,18 +13,22 @@
     <Compile Remove="Models\Enums\**" />
     <Compile Remove="Models\NewFolder1\**" />
     <Compile Remove="Models\NewFolder\**" />
+    <Compile Remove="NewFolder\**" />
     <Compile Remove="Views\Home\**" />
     <Content Remove="Models\Enums\**" />
     <Content Remove="Models\NewFolder1\**" />
     <Content Remove="Models\NewFolder\**" />
+    <Content Remove="NewFolder\**" />
     <Content Remove="Views\Home\**" />
     <EmbeddedResource Remove="Models\Enums\**" />
     <EmbeddedResource Remove="Models\NewFolder1\**" />
     <EmbeddedResource Remove="Models\NewFolder\**" />
+    <EmbeddedResource Remove="NewFolder\**" />
     <EmbeddedResource Remove="Views\Home\**" />
     <None Remove="Models\Enums\**" />
     <None Remove="Models\NewFolder1\**" />
     <None Remove="Models\NewFolder\**" />
+    <None Remove="NewFolder\**" />
     <None Remove="Views\Home\**" />
   </ItemGroup>
 
@@ -49,7 +53,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="NewFolder\" />
     <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
