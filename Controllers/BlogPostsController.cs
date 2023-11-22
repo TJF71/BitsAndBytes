@@ -27,7 +27,7 @@ namespace Blog.Controllers
         private readonly IEmailSender _emailService;
         private readonly IConfiguration _configuration;
 
-        public BlogPostsController(ApplicationDbContext context, UserManager<BlogUser> userManager, IBlogServices blogServices, 
+        public BlogPostsController(ApplicationDbContext context, UserManager<BlogUser> userManager, IBlogServices blogServices,
                                                                 IImageService imageService, IEmailSender emailSender, IConfiguration configuration)
 
         {
@@ -40,10 +40,30 @@ namespace Blog.Controllers
         }
 
         // EMAIL Area Contact Me
+
+        [Authorize]
+        public async Task<IActionResult> ContactMe()
+
+        {
+            string? blogUserId = _userManager.GetUserId(User);
+
+            if(blogUserId == null)
+            {
+                return NotFound();
+            }
+
+            BlogUser? blogUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == blogUserId);
+            
+            return View(blogUser);
+        }
+
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> ConactMe([Bind("FirstName,LastName,Email")] BlogUser blogUser, string? message)
+        public async Task<IActionResult> ContactMe([Bind("FirstName,LastName,Email")] BlogUser blogUser, string? message)
         {
             string? swalMessage = string.Empty;
 
@@ -121,7 +141,7 @@ namespace Blog.Controllers
             {
                 //blogPost.IsPublished = false;
 
-                blogPost.IsDeleted = false; 
+                blogPost.IsDeleted = false;
 
                 await _blogServices.UpdateBlogPostAsync(blogPost);
             }
@@ -139,7 +159,7 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-           
+
             BlogPost? blogPost = await _blogServices.GetBlogPostByIdAsync(id);
 
             if (blogPost == null)
@@ -163,7 +183,7 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-          
+
             BlogPost? blogPost = await _blogServices.GetBlogPostByIdAsync(id);
 
             if (blogPost == null)
@@ -236,7 +256,7 @@ namespace Blog.Controllers
             int pageSize = 4;
             int page = pageNum ?? 1;
 
-            
+
             IPagedList<BlogPost> blogPosts = await (await _blogServices.GetBlogPostByCategoryId(categoryId)).ToPagedListAsync(page, pageSize);
 
             ViewData["categoryId"] = categoryId;
@@ -305,7 +325,7 @@ namespace Blog.Controllers
             {
                 string? newSlug = StringHelper.BlogPostSlug(blogPost.Title);
 
-                if(!await _blogServices.IsValidSlugAsnyc(newSlug, blogPost.Id))
+                if (!await _blogServices.IsValidSlugAsnyc(newSlug, blogPost.Id))
                 {
                     ModelState.AddModelError("Title", "A similar title/Slug is already in use.");
 
@@ -328,7 +348,7 @@ namespace Blog.Controllers
                 ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
                 ViewData["Tags"] = new MultiSelectList(_context.Tags, "Id", "Name", currentTags);
 
-                return RedirectToAction(nameof(Index));  
+                return RedirectToAction(nameof(Index));
 
             }
             // make service call
