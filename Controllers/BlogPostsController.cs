@@ -23,7 +23,7 @@ namespace Blog.Controllers
         private readonly UserManager<BlogUser> _userManager;
         private readonly IBlogServices _blogServices;
         private readonly IImageService _imageService;
-        //   private readonly IEmailSender _emailService;
+        private readonly IEmailSender _emailService;
 
         public BlogPostsController(ApplicationDbContext context, UserManager<BlogUser> userManager, IBlogServices blogServices, IImageService imageService)
 
