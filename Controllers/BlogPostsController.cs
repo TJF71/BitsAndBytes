@@ -158,6 +158,20 @@ namespace Blog.Controllers
             return View(blogPosts);
         }
 
+        [AllowAnonymous]
+        public async Task<IActionResult> PopularPosts(int? pageNum)
+        {
+            int pageSize = 4;
+            int page = pageNum ?? 1;
+
+            IPagedList<BlogPost> blogPosts = await (await _blogServices.GetPopularBlogPostsAsync()).ToPagedListAsync(page, pageSize);
+            //return View(blogPosts);
+            return View(nameof(Index), blogPosts);
+
+        }
+
+
+
 
         // GET: BlogPosts Search Index
         [AllowAnonymous]

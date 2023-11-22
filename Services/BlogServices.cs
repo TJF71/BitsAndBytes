@@ -112,6 +112,7 @@ namespace Blog.Services
                                                         .Where(b => b.IsDeleted == false && b.IsPublished == true)
                                                         .Include(b => b.Category)
                                                         .Include(b => b.Comments)
+                                                        .Include(b => b.Tags)
                                                         .ToListAsync();
 
                 return blogPosts;
@@ -133,6 +134,7 @@ namespace Blog.Services
                 IEnumerable<BlogPost> blogPosts = await _context.BlogPosts
                                                         .Include(b => b.Category)
                                                         .Include(b => b.Comments)
+                                                        .Include(b => b.Tags)
                                                         .ToListAsync();
 
                 return blogPosts;

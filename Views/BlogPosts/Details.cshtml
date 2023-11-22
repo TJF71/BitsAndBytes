@@ -111,8 +111,6 @@
                         <!--Blog Image here-->
                         @* [Image] *@
 
-                        <input asp-for="ImageFile" type="file" class="form-control mt-3 pt-2" accept=".png,.jpg,.jpeg,.gif"
-                               onchange="document.getElementById('blogImage').src = window.URL.createObjectURL(this.files[0])" />
 
                         <img src="@_ImageService.ConvertByteArrayToFile(null, null, DefaultImage.AuthorImage)"
                              alt="Show the blog's Image here or a default Image" style="height:120px;width:120px" />

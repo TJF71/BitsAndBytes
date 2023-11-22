@@ -4,12 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Blog</title>
- 
+
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
-    rel="stylesheet" 
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
-    crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous">
 
 
     <link rel="stylesheet" href="~/assets/css/vendor/font-awesome.css">
@@ -24,25 +24,25 @@
 
 </head>
 <body>
-    <partial name="_LogoutPartial"/>
-    <div class="main-wrapper"/>
-        <div class="mouse-cursor cursor-outer"></div>
-        <div class="mouse-cursor cursor-inner"></div>
+    <partial name="_LogoutPartial" />
+    <div class="main-wrapper" />
+    <div class="mouse-cursor cursor-outer"></div>
+    <div class="mouse-cursor cursor-inner"></div>
 
-        <div id="my_switcher" class="my_switcher">
-            <ul>
-                <li>
-                    <a href="javascript: void(0);" data-theme="light" class="setColor light">
-                        <span title="Light Mode">Light</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="javascript: void(0);" data-theme="dark" class="setColor dark">
-                        <span title="Dark Mode">Dark</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
+    <div id="my_switcher" class="my_switcher">
+        <ul>
+            <li>
+                <a href="javascript: void(0);" data-theme="light" class="setColor light">
+                    <span title="Light Mode">Light</span>
+                </a>
+            </li>
+            <li>
+                <a href="javascript: void(0);" data-theme="dark" class="setColor dark">
+                    <span title="Dark Mode">Dark</span>
+                </a>
+            </li>
+        </ul>
+    </div>
 
     <!-- Start Header -->
     <header class="header axil-header header-light header-sticky header-with-shadow">
@@ -68,15 +68,14 @@
                                     <a href="#">Posts</a>
                                     <ul class="axil-submenu">
                                         <li>
-                           @*                  <a class="hover-flip-item-wrapper" asp-action="Index" asp-controller="Home"> *@
-                                                <a class="hover-flip-item-wrapper" asp-action="Index" asp-controller="BlogPosts">
+                                            <a class="hover-flip-item-wrapper" asp-action="Index" asp-controller="BlogPosts">
                                                 <span class="">
                                                     <span>All Posts</span>
                                                 </span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="hover-flip-item-wrapper" asp-action="Index" asp-controller="BlogPosts">
+                                            <a class="hover-flip-item-wrapper" asp-action="PopularPosts" asp-controller="BlogPosts">
                                                 <span class="">
                                                     <span> Popular Posts</span>
                                                 </span>
@@ -158,8 +157,8 @@
                         <form asp-controller="BlogPosts" asp-action="SearchIndex" class="header-search-form d-sm-block d-none">
                             <div class="axil-search form-group">
                                 <button type="submit" class="search-button"><i class="fal fa-search"></i></button>
-                                <input type="text" class="form-control" placeholder="Search" 
-                                name="searchString" value="@ViewBag.Search">
+                                <input type="text" class="form-control" placeholder="Search"
+                                       name="searchString" value="@ViewBag.Search">
                             </div>
                         </form>
                         <div class="mobile-search-wrapper d-sm-none d-block">
@@ -178,7 +177,7 @@
                                         <img src="" alt="">
                                         <span class="status online"></span>
                                     </span>
-@*                                     <span>@blogUser?.FullName</span> *@
+                                    @*                                     <span>@blogUser?.FullName</span> *@
                                 </a>
                                 @if (User.Identity!.IsAuthenticated)
                                 {
@@ -270,7 +269,7 @@
                             <h5 class="follow-title mb--0 mr--20">Follow Us</h5>
                             <ul class="social-icon color-tertiary md-size justify-content-start">
                                 <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-@*                                 <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                                @*                                 <li><a href="#"><i class="fab fa-instagram"></i></a></li>
                                 <li><a href="#"><i class="fab fa-twitter"></i></a></li> *@
                                 <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
                             </ul>
@@ -281,7 +280,6 @@
             </div>
         </div>
         <!-- End Footer Top Area  -->
-
         <!-- Start Copyright Area  -->
         <div class="copyright-area">
             <div class="container">
@@ -302,33 +300,33 @@
                                         </span>
                                     </a>
                                 </li>
-@*                                 <li>
-                                    <a class="hover-flip-item-wrapper" href="#">
-                                        <span class="hover-flip-item">
-                                            <span data-text="Terms of Use">Terms of Use</span>
-                                        </span>
-                                    </a>
+                                @*                                 <li>
+                                <a class="hover-flip-item-wrapper" href="#">
+                                <span class="hover-flip-item">
+                                <span data-text="Terms of Use">Terms of Use</span>
+                                </span>
+                                </a>
                                 </li> *@
-@*                                 <li>
-                                    <a class="hover-flip-item-wrapper" href="#">
-                                        <span class="hover-flip-item">
-                                            <span data-text="AdChoices">AdChoices</span>
-                                        </span>
-                                    </a>
+                                @*                                 <li>
+                                <a class="hover-flip-item-wrapper" href="#">
+                                <span class="hover-flip-item">
+                                <span data-text="AdChoices">AdChoices</span>
+                                </span>
+                                </a>
                                 </li> *@
-@*                                 <li>
-                                    <a class="hover-flip-item-wrapper" href="#">
-                                        <span class="hover-flip-item">
-                                            <span data-text="Advertise with Us">Advertise with Us</span>
-                                        </span>
-                                    </a>
+                                @*                                 <li>
+                                <a class="hover-flip-item-wrapper" href="#">
+                                <span class="hover-flip-item">
+                                <span data-text="Advertise with Us">Advertise with Us</span>
+                                </span>
+                                </a>
                                 </li> *@
-@*                                 <li>
-                                    <a class="hover-flip-item-wrapper" href="#">
-                                        <span class="hover-flip-item">
-                                            <span data-text="Blogar Store">Blogar Store</span>
-                                        </span>
-                                    </a>
+                                @*                                 <li>
+                                <a class="hover-flip-item-wrapper" href="#">
+                                <span class="hover-flip-item">
+                                <span data-text="Blogar Store">Blogar Store</span>
+                                </span>
+                                </a>
                                 </li> *@
                             </ul>
                         </div>
@@ -345,21 +343,19 @@
         <!-- End Copyright Area  -->
     </div>
     <!-- End Footer Area  -->
-
-
     <!-- JS
     ============================================ -->
     <!-- Modernizer JS -->
     <script src="~/assets/js/vendor/modernizr.min.js"></script>
     <!-- jQuery JS -->
     <script src="~/assets/js/vendor/jquery.js"></script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
-    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-    crossorigin="anonymous"></script>
-    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+
     <!-- Bootstrap JS -->
-@*     Use your Bootstrap version here *@
+    @*     Use your Bootstrap version here *@
     <script src="~/assets/js/vendor/slick.min.js"></script>
     <script src="~/assets/js/vendor/tweenmax.min.js"></script>
     <script src="~/assets/js/vendor/js.cookie.js"></script>
