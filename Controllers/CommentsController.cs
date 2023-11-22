@@ -77,7 +77,8 @@ namespace Blog.Controllers
 
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details","BlogPosts", new { id = comment.BlogPostId  });
+                string? slug = blogPostSlug;
+                return RedirectToAction("Details","BlogPosts", new {slug});
             }
           
             ViewData["BlogPostId"] = new SelectList(_context.BlogPosts, "Id", "Content", comment.BlogPostId);
