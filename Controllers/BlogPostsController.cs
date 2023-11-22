@@ -14,6 +14,7 @@ using X.PagedList;
 using X.PagedList.Web.Common;
 using Blog.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Blog.Services;
 
 namespace Blog.Controllers
 {
@@ -24,15 +25,46 @@ namespace Blog.Controllers
         private readonly IBlogServices _blogServices;
         private readonly IImageService _imageService;
         private readonly IEmailSender _emailService;
+        private readonly IConfiguration _configuration;
 
-        public BlogPostsController(ApplicationDbContext context, UserManager<BlogUser> userManager, IBlogServices blogServices, IImageService imageService)
+        public BlogPostsController(ApplicationDbContext context, UserManager<BlogUser> userManager, IBlogServices blogServices, 
+                                                                IImageService imageService, IEmailSender emailSender, IConfiguration configuration)
 
         {
             _context = context;
             _userManager = userManager;
             _blogServices = blogServices;
             _imageService = imageService;
+            _emailService = emailSender;
+            _configuration = configuration;
         }
+
+        // EMAIL Area Contact Me
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public async Task<IActionResult> ConactMe([Bind("FirstName,LastName,Email")] BlogUser blogUser, string? message)
+        {
+            string? swalMessage = string.Empty;
+
+            try
+            {
+                string? adminEmail = _configuration["AdminEmail"] ?? Environment.GetEnvironmentVariable("AdminEmail");
+                await _emailService.SendEmailAsync(adminEmail!, $"Contact Me Message From = {blogUser.FullName}", message!);
+                swalMessage = "Email sent successfully!";
+
+            }
+            catch (Exception)
+            {
+                swalMessage = "Error, Undable to send email,";
+                return RedirectToAction("Index", new { Message = swalMessage });
+                throw;
+
+            }
+            return RedirectToAction("Index", new { Message = swalMessage });
+        }
+
+
 
         // AdminArea
 

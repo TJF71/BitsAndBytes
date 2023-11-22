@@ -7,12 +7,12 @@ using MailKit.Net.Smtp;
 
 namespace Blog.Services
 {
-    public class EmailService : IEmailSender
+    public class emailService : IEmailSender
     {
         private readonly EmailSettings _emailSettings;
 
 
-        public EmailService(IOptions<EmailSettings> emailSettings)
+        public emailService(IOptions<EmailSettings> emailSettings)
         {
             _emailSettings = emailSettings.Value;
         }
