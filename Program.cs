@@ -27,7 +27,7 @@ builder.Services.AddControllersWithViews();  /*should this even be here?*/
 // Custom Services
 builder.Services.AddScoped<IBlogServices, BlogServices>();  
 builder.Services.AddScoped<IImageService, ImageService>();
-builder.Services.AddScoped<IEmailSender, emailService>();
+builder.Services.AddScoped<IEmailSender, EmailService>();
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
 builder.Services.AddMvc();
