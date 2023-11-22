@@ -249,7 +249,7 @@ namespace Blog.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Abstract,Content,IsPublished, CategoryId, ImageFile")] BlogPost blogPost,
+        public async Task<IActionResult> Create([Bind("Id,Title,Abstract,Content,IsPublished, CategoryId,ImageFile")] BlogPost blogPost,
             IEnumerable<int> selected)
         {
             ModelState.Remove("Slug");
@@ -282,7 +282,7 @@ namespace Blog.Controllers
                 ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
                 ViewData["Tags"] = new MultiSelectList(_context.Tags, "Id", "Name", currentTags);
 
-                return View(blogPost);   
+                return RedirectToAction(nameof(Index));  
 
             }
             // make service call

@@ -33,27 +33,21 @@
     <hr />
     <main class="container mt-5">
 
-        <form asp-action="Create" asp-controller="BlogPost" method="post">
+        <form asp-action="Create" asp-controller="BlogPosts" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
                 <div class="col-12 col-lg-4">
                     <div class="form-group">
-                        <label asp-for="ImageFile" class="control-label">Blog Post Image</label>
-
-                            @*Why is the line below not working here.  It's working on contact Pro*@
-@*                         <img id="contactImage" class="square-img" src="@_ImageService.ConvertByteArrayToFile(Model?.ImageData, Model?.ImageType)">  *@
-                        <img class="img-fluid border rounded-3 mb-2" style="max-height: 350px;" src="" id="blogImage">
+                        <label asp-for="ImageData" class="control-label">Blog Post Image</label>
+                        <img class="img-fluid border rounded-3 mb-2" style="max-height: 350px;" 
+                        src="@_ImageService.ConvertByteArrayToFile(Model?.ImageData, Model?.ImageType, DefaultImage.BlogPostImage )" id="blogImage">
                         <input asp-for="ImageFile" type="file" class="form-control mt-3 pt-2" accept=".png,.jpg,.jpeg,.gif"
                                onchange="document.getElementById('blogImage').src = window.URL.createObjectURL(this.files[0])" />
                     </div>
-
                     <div class="form-group">
                         <label asp-for="CategoryId" class="control-label"></label>
                         <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
                     </div>
-
-
-
                     <div class="form-group">
                         <label asp-for="Title" class="control-label"></label>
                         <input asp-for="Title" class="form-control" />
@@ -64,7 +58,6 @@
                         <textarea asp-for="Abstract" class="form-control" rows="1"></textarea>
                         <span asp-validation-for="Abstract" class="text-danger"></span>
                     </div>
-
                 </div>
 
                     <div class="col-12 col-lg-8">
