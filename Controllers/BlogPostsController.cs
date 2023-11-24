@@ -316,7 +316,7 @@ namespace Blog.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Abstract,Content,IsPublished, CategoryId,ImageFile")] BlogPost blogPost,
-            IEnumerable<int> selected)
+            string? stringTags, IEnumerable<int> selected)
         {
             ModelState.Remove("Slug");
 
@@ -347,6 +347,13 @@ namespace Blog.Controllers
                 IEnumerable<int> currentTags = blogPost.Tags.Select(t => t.Id);
                 ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
                 ViewData["Tags"] = new MultiSelectList(_context.Tags, "Id", "Name", currentTags);
+
+                if(string.IsNullOrEmpty(stringTags) == false)
+                {
+                    IEnumerable<string> tags = stringTags.Split(',');
+
+                    await _blogServices.AddTagsToBlogPostAsync(tags, blogPost.Id);
+                }
 
                 return RedirectToAction(nameof(Index));
 

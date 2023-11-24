@@ -1,6 +1,7 @@
 ﻿using Blog.Data;
 using Blog.Models;
 using Blog.Services.Interfaces;
+using Humanizer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -352,6 +353,61 @@ namespace Blog.Services
                 throw;
             }
         }
+
+
+        public async Task<IEnumerable<Tag>> GetTagsAsync()
+        {
+            try
+            {
+                IEnumerable<Tag> tags = await _context.Tags.ToListAsync();
+                return tags;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task AddTagsToBlogPostAsync(IEnumerable<string>? tags, int? blogPostId)
+        {
+            if (blogPostId == null || tags == null) { return; }
+
+            try
+            {
+                BlogPost? blogPost = await _context.BlogPosts.Include(b => b.Tags).FirstOrDefaultAsync(b => b.Id == blogPostId);
+
+                if (blogPost == null) { return; }
+
+                foreach (string tagName in tags)
+                {
+                    if (string.IsNullOrEmpty(tagName.Trim())) continue;
+
+                    Tag? tag = await _context.Tags.FirstOrDefaultAsync(t => t.Name!.Trim().ToLower() == tagName.Trim().ToLower());
+
+                    // If not found
+                    if (tag == null)
+                    {
+                        tag = new Tag() { Name = tagName.Trim().Titleize() }; // this is a tag => This is a Tag
+                        await _context.AddAsync(tag);
+                    }
+
+                    blogPost.Tags.Add(tag);
+                }
+
+                await _context.SaveChangesAsync();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
+
+
     }
 }
 

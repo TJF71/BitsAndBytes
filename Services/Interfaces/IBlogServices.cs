@@ -10,6 +10,11 @@ namespace Blog.Services.Interfaces
         public Task AddTagAsync(IEnumerable<int> tagId, int blogPostId);
 
         public Task RemoveTagAsync(int blogPostId);
+
+        public Task AddTagsToBlogPostAsync(IEnumerable<string>? tags, int? blogPostId);
+        public Task<IEnumerable<Tag>> GetTagsAsync();
+
+
         public Task<IEnumerable<BlogPost>> GetAllBlogPostsForAuthorAsync();
         public Task<IEnumerable<BlogPost>> GetAllBlogPostsAsync();
 
