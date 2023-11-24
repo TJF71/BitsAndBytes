@@ -44,7 +44,7 @@
                 <div class="form-floating">
                     <label asp-for="Input.ImageData" style="width: 100%;"></label>
 
-                    <img id="userImage" class="img-fluid img-thumbnail rounded" src="@_ImageService.ConvertByteArrayToFile(Model.Input.ImageData,Model.Input.ImageType,(int)DefaultImage.BlogUserImage)" />
+                    <img id="userImage" class="img-fluid img-thumbnail rounded" src="@_ImageService.ConvertByteArrayToFile(Model.Input.ImageData,Model.Input.ImageType,DefaultImage.BlogUserImage)" />
 
                     <input type="file" asp-for="Input.ImageFile" class="form-control" accept=".png,.jpg,.jpeg,.gif,.tif"
                            style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"

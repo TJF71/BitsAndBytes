@@ -71,12 +71,12 @@ namespace Blog.Areas.Identity.Pages.Account.Manage
             [Required]
             [Display(Name = "First Name")]
             [StringLength(50, ErrorMessage = "The {0} must be at least {2} and max {1} characters long.", MinimumLength = 2)]
-            public string? FirstName { get; set; }
+            public string FirstName { get; set; }
 
             [Required]
             [Display(Name = "Last Name")]
             [StringLength(50, ErrorMessage = "The {0} must be at least {2} and max {1} characters long.", MinimumLength = 2)]
-            public string? LastName { get; set; }
+            public string LastName { get; set; }
 
             public byte[] ImageData { get; set; }
             public string ImageType { get; set; }
@@ -98,7 +98,8 @@ namespace Blog.Areas.Identity.Pages.Account.Manage
                 PhoneNumber = phoneNumber,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                ImageData = user.ImageData
+                ImageData = user.ImageData,
+                ImageType = user.ImageType
 
             };
         }
@@ -128,6 +129,19 @@ namespace Blog.Areas.Identity.Pages.Account.Manage
                 await LoadAsync(user);
                 return Page();
             }
+
+            //custom code
+            user.FirstName = Input.FirstName;
+            user.LastName = Input.LastName;
+
+            if (Input.ImageFile != null)
+            {
+                user.ImageData = await _imageService.ConvertFileToByteArrayAsync(Input.ImageFile);
+                user.ImageType= Input.ImageFile.ContentType;
+            }
+
+            await _userManager.UpdateAsync(user);
+            //end custome code
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
