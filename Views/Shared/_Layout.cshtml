@@ -1,5 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity;
+@inject IImageService _ImageService
+@inject SignInManager<BlogUser> SignInManager
+@inject UserManager<BlogUser> UserManager
+@{
+    BlogUser? blogUser = await UserManager.GetUserAsync(User);
+}
+
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -177,7 +186,24 @@
                                         <img src="" alt="">
                                         <span class="status online"></span>
                                     </span>
-                                    @*                                     <span>@blogUser?.FullName</span> *@
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <span class="user-img">
+                                            <img src="@_ImageService.ConvertByteArrayToFile(null, null, DefaultImage.AuthorImage)" alt="Author Images" style="height:40px;width:40px" />
+                                            <span class="status online"></span>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="user-img">
+                                            <img src="@_ImageService.ConvertByteArrayToFile(blogUser?.ImageData, blogUser?.ImageType, DefaultImage.BlogUserImage)" alt="Author Images" style="height:40px;width:40px" />
+                                            <span class="status online"></span>
+                                        </span>
+                                    }
+
+
+
+                                                                        <span>@blogUser?.FullName</span>
                                 </a>
                                 @if (User.Identity!.IsAuthenticated)
                                 {
