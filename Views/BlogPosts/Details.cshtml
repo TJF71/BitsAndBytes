@@ -47,8 +47,6 @@
                                         </div>
 
 
-
-
                                         <h1 class="title">
                                             @Model?.Title
                                             @*  @Html.DisplayNameFor(model => model.Title) *@  @*This just displayed the word "Title"*@
@@ -127,12 +125,18 @@
                     <div class="">
                         <!--Tags listed here-->
                         @*  [Tags] *@
-                        <a href="#">Tag1</a>
+@*                         <a href="#">Tag1</a>
                         <a href="#">Tag2</a>
                         <a href="#">Tag3</a>
                         <a href="#">Tag4</a>
+ *@
+                       <div class="tagcloud">
+                            @foreach(Tag tags in Model.Tags)
+                            {
+                                <a asp-action="" asp-controller="BlogPosts" asp-route-tagId="@tags.Id">@tags.Name</a>
+                            }
 
-                        @Model?.Tags
+                       </div>
 
 
                     </div>

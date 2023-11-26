@@ -34,7 +34,7 @@
     <hr />
     <main class="container mt-5">
 
-        <form asp-action="Create" asp-controller="BlogPosts" method="post">
+        <form asp-action="Create" asp-controller="BlogPosts" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
                 <div class="col-12 col-lg-4">
@@ -59,18 +59,9 @@
                         <textarea asp-for="Abstract" class="form-control" rows="1"></textarea>
                         <span asp-validation-for="Abstract" class="text-danger"></span>
                     </div>
-                    <div class="form-group" id="tagContainer">
-                        <label asp-for="Tags"></label>
-
-                        <input class="form-control" type="text" id="tagInput" name="StringTags" autocomplete="off" />
-
-                        <div class="tagcloud axil-single-widget mt-2" style="display: none;">
-                            <!-- tags go here -->
-                            @foreach (Tag tag in await _BlogServices.GetTagsAsync())
-                            {
-                                <a role="button">@tag.Name</a>
-                            }
-                        </div>
+                    <div class="form-group">
+                    <label asp-for="Tags" class="control-label">Tags</label>
+                    <select name="Selected" asp-for="Tags" class="form-control h-25" asp-items="ViewBag.Tags" multiple></select>
                     </div>
 
                 </div>
@@ -80,6 +71,22 @@
                         <label asp-for="Content" class="control-label"></label>
                         <textarea asp-for="Content" class="editor form-control" rows="1"></textarea>
                         <span asp-validation-for="Content" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Tags"></label>
+                        <div class="form-group" id="tagContainer">
+                            <input class="form-control" type="text" id="tagInput" name="StringTags" autocomplete="off" />
+
+                            <div class="tagcloud axil-single-widget mt-2" style="display: none;">
+                                <!-- tags go here -->
+                                @foreach (Tag tag in await _BlogServices.GetTagsAsync())
+                                {
+                                    <a role="button">@tag.Name</a>
+                                }
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
 

@@ -315,8 +315,9 @@ namespace Blog.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Abstract,Content,IsPublished, CategoryId,ImageFile")] BlogPost blogPost,
-            string? stringTags, IEnumerable<int> selected)
+        public async Task<IActionResult> Create([Bind("Id,Title,Abstract,Content,IsPublished, CategoryId,ImageFile")] 
+                     BlogPost blogPost,
+                     string? stringTags, IEnumerable<int> selected)
         {
             ModelState.Remove("Slug");
 
@@ -339,14 +340,12 @@ namespace Blog.Controllers
                 await _blogServices.AddTagAsync(selected, blogPost.Id);
 
                 if (blogPost.ImageFile != null)
-                {
+                {   
                     blogPost.ImageData = await _imageService.ConvertFileToByteArrayAsync(blogPost.ImageFile);
                     blogPost.ImageType = blogPost.ImageFile.ContentType;
                 }
 
-                IEnumerable<int> currentTags = blogPost.Tags.Select(t => t.Id);
-                ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
-                ViewData["Tags"] = new MultiSelectList(_context.Tags, "Id", "Name", currentTags);
+                await _blogServices.UpdateBlogPostAsync(blogPost);
 
                 if(string.IsNullOrEmpty(stringTags) == false)
                 {
@@ -359,6 +358,8 @@ namespace Blog.Controllers
 
             }
             // make service call
+            IEnumerable<int> currentTags = blogPost.Tags.Select(t => t.Id);
+            ViewData["Tags"] = new MultiSelectList(_context.Tags, "Id", "Name", currentTags);
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
             return View(blogPost);
         }

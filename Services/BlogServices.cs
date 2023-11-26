@@ -405,9 +405,20 @@ namespace Blog.Services
             }
         }
 
+        public async Task<IEnumerable<BlogPost>> GetBlogPostByTagIdAsync(int? tagId)
+        {
+            try
+            {
+                IEnumerable<BlogPost> blogPosts = (await _context.Tags.Include(t => t.BlogPosts).ThenInclude(b => b.Category).Include(t => t.BlogPosts).ThenInclude(b => b.Comments).ThenInclude(c => c.Author).FirstOrDefaultAsync(t => t.Id == tagId))!.BlogPosts;
+                
+                return blogPosts;
+            }
+            catch (Exception)
+            {
 
-
-
+                throw;
+            }
+        }
     }
 }
 

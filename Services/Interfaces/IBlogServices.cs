@@ -41,6 +41,7 @@ namespace Blog.Services.Interfaces
 
         public Task<bool> IsValidSlugAsnyc(string? title, int? blogPostId);
 
+        public Task<IEnumerable<BlogPost>> GetBlogPostByTagIdAsync(int? tagId);
 
     }
 
