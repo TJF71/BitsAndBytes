@@ -1,5 +1,8 @@
 ﻿@model Blog.Models.BlogPost
 @inject IImageService _ImageService
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<BlogUser> SignInManager
+@inject UserManager<BlogUser> UserManager
 
 @{
     ViewData["Title"] = "Details";
@@ -40,7 +43,7 @@
                                                 <a class="hover-flip-item-wrapper" href="#">
                                                     <span class="hover-flip-item">
                                                         <span data-text="@Model.Category?.Name">[Category]</span>
-                                                        @Model?.Category
+                                                   @*      @Model?.Category *@
                                                     </span>
                                                 </a>
                                             </div>
@@ -57,14 +60,14 @@
                                                 <div class="post-author-avatar border-rounded">
                                                     @* [Your Image] *@
                                                     <img src="@_ImageService.ConvertByteArrayToFile(null, null, DefaultImage.BlogUserImage)" alt="Author Images"
-                                                         style="height:80px;width:80px">
+                                                         style="height:120px;width:120px">
                                                 </div>
                                                 <div class="content">
                                                     <h6 class="post-author-name">
                                                         <a class="hover-flip-item-wrapper" href="author.html">
                                                             <span class="hover-flip-item">
 
-                                                                <span data-text="">[Name]</span>
+                                                                <span data-text="Tom Farrell">Tom Farrell</span>
 
                                                                 @*                                                                 <span class="hover-flip-item">
                                                                 <span data-text="@Model.BlogUser?.FullName">[Category]</span>
@@ -109,18 +112,11 @@
                         <!--Blog Image here-->
                         @* [Image] *@
 
-
                         <img src="@_ImageService.ConvertByteArrayToFile(null, null, DefaultImage.AuthorImage)"
                              alt="Show the blog's Image here or a default Image" style="height:120px;width:120px" />
 
-
-                        @*                         <img src="@_ImageService.ConvertByteArrayToFile(null, null, DefaultImage.AuthorImage)" alt="Author Images"
-                        style="height:80px;width:80px"> *@
-
                     </figure>
-
-                    @*    [Blog Content] *@
-                    @Model?.Content
+                    @Html.Raw((Model?.Content!).ToString())
 
                     <div class="">
                         <!--Tags listed here-->
@@ -159,7 +155,8 @@
                         <div class="media">
                             <div class="thumbnail">
                                 <a href="#">
-                                    <img src="" alt="Author Images" style="height:120px;width:120px">
+                                    <img src="@_ImageService.ConvertByteArrayToFile(null, null, DefaultImage.BlogUserImage)" alt="Author Images"
+                                         style="height:120px;width:120px">
                                 </a>
                             </div>
                             <div class="media-body">
@@ -167,7 +164,12 @@
                                     <h5 class="title">
                                         <a class="hover-flip-item-wrapper" href="#">
                                             <span class="hover-flip-item">
-                                                <span data-text="[Your Name]">[Your Name] </span>
+
+                                        @*         pan data-text="@comment.Author?.FullName">@comment.Author?.FullName
+                                            </span> *@
+
+
+                                                <span data-text="Tom Farrell">Tom Farrell</span>
                                             </span>
                                         </a>
                                     </h5>
@@ -193,7 +195,7 @@
                     <div class="axil-comment-area">
 
                         <!-- Start Comment Respond  -->
-                        [Comments Section]
+@*                         [Comments Section] *@
                         <div class="comment-respond">
                             <h4 class="title">Post a comment</h4>
 
@@ -224,18 +226,10 @@
                             <h4 class="title">@Model?.Comments.Count comments</h4>
                             <ul class="comment-list">
                                 <!-- List Comments here -->
-                                [List Comments]
-                                @*                                 @foreach (Comment comment in Model!.Comments)
-                                {
-                                <li>@comment.Author?.FullName : @comment.Body</li>
-                                }
-                                *@
-
+                                @* [List Comments] *@
                                 <!-- Start Single Comment  -->
                                 @foreach (Comment comment in Model!.Comments)
                                 {
-
-
                                     <li class="comment">
                                         <div class="comment-body">
                                             <div class="single-comment">
@@ -286,118 +280,3 @@
     </div>
 </div>
 <!-- End Post Single Wrapper  -->
-@*
-
-<h1>Details</h1>
-
-<div>
-    <h4>BlogPost</h4>
-    <hr />
-    <dl class="row">
-
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Abstract)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Abstract)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Slug)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Slug)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IsDeleted)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IsDeleted)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IsPublished)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IsPublished)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageData)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ImageData)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageType)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ImageType)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Category.Name)
-        </dd>
-    </dl>
-
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Create" asp-controller="Comments" method="post">
-
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                <input type="hidden" name="BlogPostId" value="@Model.Id" />
-                <div class="form-group">
-                    <label for="Body" class="control-label"></label>
-                    <textarea name="Body" class="form-control" required rows="4"></textarea>
-
-                </div>
-
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                </div>
-            </form>
-        </div>
-    </div>
-
-</div>
-
-
-<div class="row">
-    <ul>
-        @foreach (Comment comment in Model.Comments)
-        {
-            <li>@comment.Author?.FullName : @comment.Body</li>
-        }
-
-    </ul>
-
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
- *@

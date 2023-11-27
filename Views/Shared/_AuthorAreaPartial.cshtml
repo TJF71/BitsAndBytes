@@ -1,6 +1,7 @@
-﻿
-
-@inject IImageService _ImageService
+﻿@inject IImageService _ImageService
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<BlogUser> SignInManager
+@inject UserManager<BlogUser> UserManager
 
 @*adjust class of author image*@
 <style>
