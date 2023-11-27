@@ -7,6 +7,7 @@ namespace Blog.Services.Interfaces
 {
     public interface IBlogServices
     {
+        public Task<bool> UserLikedBlogAsync(int blogPostId, string blogUserId);
         public Task AddTagAsync(IEnumerable<int> tagId, int blogPostId);
 
         public Task RemoveTagAsync(int blogPostId);

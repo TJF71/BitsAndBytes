@@ -12,6 +12,7 @@ namespace Blog.Data
         { 
         }
 
+        public virtual DbSet<BlogLike> BlogLikes { get; set; } = default!;
         public virtual DbSet<BlogPost> BlogPosts { get; set; } = default!;
         public virtual DbSet<Tag> Tags { get; set; } = default!;
         public virtual DbSet<Category> Categories { get; set; } = default!;

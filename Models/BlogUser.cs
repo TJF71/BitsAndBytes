@@ -25,6 +25,7 @@ namespace Blog.Models
 
         // Navigation Items
         public virtual ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
+        public virtual ICollection<BlogLike> BlogLikes { get; set; } = new HashSet<BlogLike>();
         public byte[]? ImageData { get; internal set; }
         public string? ImageType { get; internal set; }
     }
