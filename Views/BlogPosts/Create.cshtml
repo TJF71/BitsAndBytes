@@ -1,230 +1,82 @@
 ﻿@model Blog.Models.BlogPost
 
-@using Blog.Services.Interfaces;
-@inject IImageService _ImageService
-@inject IBlogServices _BlogServices
-
-
 @{
     ViewData["Title"] = "Create";
 }
 
-<style>
-    .ck-editor__editable_inline {
-        min-height: 600px;
-    }
+<h1>Create</h1>
 
-    input.largerCheckbox {
-        width: 30px;
-        height: 30px;
-    }
-
-    label.form-check-label {
-        font-size: 22px;
-    }
-</style>
-
-
-<div class="post-single-wrapper axil-section-gap bg-color-white">
-    <div class="container">
-        <h1>Create</h1>
-
-        <h4>BlogPost</h4>
-    </div>
-    <hr />
-    <main class="container mt-5">
-
-        <form asp-action="Create" asp-controller="BlogPosts" method="post" enctype="multipart/form-data">
+<h4>BlogPost</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="row">
-                <div class="col-12 col-lg-4">
-                    <div class="form-group">
-                        <label asp-for="ImageData" class="control-label">Blog Post Image</label>
-                        <img class="img-fluid border rounded-3 mb-2" style="max-height: 350px;"
-                             src="@_ImageService.ConvertByteArrayToFile(Model?.ImageData, Model?.ImageType, DefaultImage.BlogPostImage )" id="blogImage">
-                        <input asp-for="ImageFile" type="file" class="form-control mt-3 pt-2" accept=".png,.jpg,.jpeg,.gif"
-                               onchange="document.getElementById('blogImage').src = window.URL.createObjectURL(this.files[0])" />
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="CategoryId" class="control-label"></label>
-                        <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Title" class="control-label"></label>
-                        <input asp-for="Title" class="form-control" />
-                        <span asp-validation-for="Title" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Abstract" class="control-label"></label>
-                        <textarea asp-for="Abstract" class="form-control" rows="1"></textarea>
-                        <span asp-validation-for="Abstract" class="text-danger"></span>
-                    </div>
-                    @*Box for the Tags*@
-@*                     <div class="form-group">
-                        <label asp-for="Tags" class="control-label">Tags</label>
-                        <select name="Selected" asp-for="Tags" class="form-control h-25" asp-items="ViewBag.Tags" multiple></select>
-                    </div> *@
-
-                </div>
-
-                <div class="col-12 col-lg-8">
-                    <div class="form-group">
-                        <label asp-for="Content" class="control-label"></label>
-                        <textarea asp-for="Content" class="editor form-control" rows="1"></textarea>
-                        <span asp-validation-for="Content" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Tags"></label>
-                        <div class="form-group" id="tagContainer">
-                            <input class="form-control" type="text" id="tagInput" name="StringTags" autocomplete="off" />
-
-
-                            <div class="tagcloud axil-single-widget mt-2" style="display: none;">
-                                <!-- tags go here -->
-                                @foreach (Tag tag in await _BlogServices.GetTagsAsync())
-                                {
-                                    <a role="button">@tag.Body</a>
-                                }
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-
-
-
-
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
             </div>
-
-            <div class="form-group d-flex justify-content-end">
-                <label class="form-check-label me-4 mt-2" asp-for="IsPublished">Publish?</label>
-                <input class="largerCheckbox me-20" type="checkbox" asp-for="IsPublished" />@*  @Html.DisplayNameFor(model => model.IsPublished) *@
-                <span asp-validation-for="IsPublished" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-
-
-            <div class="form-group d-flex justify-content-end">
+            <div class="form-group">
+                <label asp-for="Abstract" class="control-label"></label>
+                <input asp-for="Abstract" class="form-control" />
+                <span asp-validation-for="Abstract" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <input asp-for="Content" class="form-control" />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedDate" class="control-label"></label>
+                <input asp-for="CreatedDate" class="form-control" />
+                <span asp-validation-for="CreatedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdatedDate" class="control-label"></label>
+                <input asp-for="UpdatedDate" class="form-control" />
+                <span asp-validation-for="UpdatedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Slug" class="control-label"></label>
+                <input asp-for="Slug" class="form-control" />
+                <span asp-validation-for="Slug" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsPublished" /> @Html.DisplayNameFor(model => model.IsPublished)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageData" class="control-label"></label>
+                <input asp-for="ImageData" class="form-control" />
+                <span asp-validation-for="ImageData" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageType" class="control-label"></label>
+                <input asp-for="ImageType" class="form-control" />
+                <span asp-validation-for="ImageType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
-
         </form>
-        <div class="form-group mt-5 start-0">
-            <a asp-action="Index">Back</a>
-        </div>
-    </main>
+    </div>
 </div>
 
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-
-
-
-    <!--CK Editor-->
-    <script src="https://cdn.ckeditor.com/ckeditor5/37.1.0/classic/ckeditor.js"></script>
-
-    <script>
-        ClassicEditor
-            .create(document.querySelector('.editor'), {
-                licenseKey: '',
-            })
-            .then(editor => {
-                window.editor = editor;
-            });
-    </script>
-
-
-    <!-- Tags -->
-    <script>
-        // override the jQuery ":contains" selector to make it case insensitive
-        jQuery.expr[':'].contains = function (a, i, m) {
-            return $(a).text().toUpperCase()
-                .indexOf(m[3].toUpperCase()) >= 0;
-        };
-
-        $(document).ready(function () {
-
-            // add an event listener on the tag input to show the tagcloud
-            $('#tagInput').focus(function () {
-                $('.tagcloud').show(300);
-            });
-
-            // add an event listener to HIDE the tagcloud when I'm not on the tag input
-            $('form *:not("#tagInput")').focus(function () {
-                if ($('.tagcloud').is(':visible')) {
-                    $('.tagcloud').hide(300);
-                }
-            });
-
-            $('#tagInput').keyup(function () {
-
-                // get JUST the text from the input after the last comma
-                let inputTags = $(this).val().split(',');
-
-                // remove the last element of inputTags and trim any whitespace
-                let searchString = inputTags.pop().trim();
-
-                // hide all the tags which do not contain that text
-                $('.tagcloud > a:not( :contains(' + searchString + ') )').hide();
-
-                // show all the tags which do contain that text
-                $('.tagcloud > a:contains(' + searchString + ')').show();
-
-                $('.disabledTag').removeClass('disabledTag');
-
-                inputTags.forEach(tag => {
-
-                    if (tag.trim() == '') {
-                        return;
-                    }
-
-                    let matchingTags = $('.tagcloud > a:contains(' + tag.trim() + ')');
-
-                    matchingTags.each(function () {
-
-                        if ($(this).text().trim().toLowerCase() == tag.trim().toLowerCase()) {
-                            $(this).addClass('disabledTag');
-                        }
-
-                    });
-
-                });
-
-            });
-
-            $('.tagcloud > a').click(function () {
-                // if it's disabled, do nothing
-                if ($(this).hasClass('disabledTag')) {
-                    $('#tagInput').focus();
-                    return;
-                }
-
-                // get the name of the tag that was clicked
-                let tagName = $(this).text();
-
-                // get the text currrently in the tag input and split it up by the commas
-                let tags = $('#tagInput').val().split(',');
-
-                // remove the last element
-                tags.pop();
-
-                // replace it with the tag that was clicked
-                tags.push(tagName);
-
-                // change the text in the input
-                let tagsAsString = tags.map(t => t.trim()).join(', ') + ', ';
-                $('#tagInput').val(tagsAsString);
-
-                $('#tagInput').focus();
-                $('#tagInput').keyup();
-            });
-
-        });
-    </script>
-
-
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-

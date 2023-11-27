@@ -1,242 +1,95 @@
-﻿@* @using X.PagedList.Mvc.Core; *@
-@using X.PagedList
-@model IPagedList<Blog.Models.BlogPost>;
-@inject IImageService _ImageService;
+﻿@model IEnumerable<Blog.Models.BlogPost>
 
 @{
     ViewData["Title"] = "Index";
-    string? searchString = ViewBag.Search;
 }
 
+<h1>Index</h1>
 
-<!-- Start Author Area  -->
-<partial name="_AuthorAreaPartial" />
-<!-- End Author Area  -->
-<!-- Start Post List Wrapper  -->
-<div class="axil-post-list-area axil-section-gap bg-color-white">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="page-title">
-                    @if (string.IsNullOrEmpty(searchString))
-                    {
-                        <h2 class="title mb--40">Welcome to my Blog!</h2>
-                    }
-                    else
-                    {
-                        <h2 class="title mb--40">Search Results for '@searchString'</h2>
-                    }
-
-                </div>
-            </div>
-
-            <!-- Start Post List  -->
-            <div class="col-lg-8 col-xl-8">
-                @foreach (BlogPost blogPost in Model)
-                {
-                    <partial name="_BlogCardPartial" model="blogPost" />
-
-                }
-
-                <div>
-                    <div>
-                        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-                    </div>
-                    @if (string.IsNullOrEmpty(searchString))
-                    {
-                        @Html.PagedListPager(Model, pageNum => Url.Action("Index", new {pageNum}),
-                        new PagedListRenderOptions
-                        {
-                            LiElementClasses = new string[] {"my-page-item"},
-                            PageClasses = new string[] { "my-page-link" },
-                        })
-                    }
-                    else
-                    {
-                        @Html.PagedListPager(Model, pageNum => Url.Action("SearchIndex", new { searchString, pageNum }),
-                        new PagedListRenderOptions
-                        {
-                            LiElementClasses = new string[] {"my-page-item"},
-                            PageClasses = new string[] { "my-page-link" },
-                        })
-                    }
-
-                </div>
-
-            </div>
-
-
-            <div class="col-lg-4 col-xl-4  mt_md--40 mt_sm--40  ">
-
-                <partial name="_SideBarPartial" />
-
-
-            </div>
-
-            <!-- End Post List  -->
-            <!-- Start Sidebar Area  -->
-            <div class="col-lg-4 col-xl-4 mt_md--40 mt_sm--40">
-                <!-- Start Sidebar Area  -->
-@*                 <div class="sidebar-inner">
-                    <!-- Start Single Widget  -->
-                    <div class="axil-single-widget widget widget_social mb--30">
-                        <h5 class="widget-title">Stay In Touch</h5>
-                        <!-- Start Post List  -->
-                        <ul class="social-icon md-size justify-content-center">
-                            <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                                                <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                            <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fab fa-slack"></i></a></li>
-                            <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-                        </ul>
-                        <!-- End Post List  -->
-                    </div>
-                </div> *@
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-@*THIRD SEARCH BAR ON LOWER RIGHT.  THREE SEEMS EXCESSIVE*@
-<!-- Start Single Widget  -->
-@*                     <div class="axil-single-widget widget widget_search mb--30">
-                        <h5 class="widget-title">Search</h5>
-                       <form action="#">
-                            <div class="axil-search form-group">
-                                <button type="submit" class="search-button"><i class="fal fa-search"></i></button>
-                                <input type="text" class="form-control" placeholder="Search">
-                            </div>
-                        </form>
-                    </div> *@
-<!-- End Single Widget  -->
-
-
-<!-- Start Single Widget  -->
-@*                     <div class="axil-single-widget widget widget_categories mb--30">
-                    <ul>
-                    <li class="cat-item">
-                    <a href="#" class="inner">
-                    <div class="thumbnail">
-                    <img src="assets/images/post-images/category-image-01.jpg" alt="">
-                    </div>
-                    <div class="content">
-                    <h5 class="title">Tech</h5>
-                    </div>
-                    </a>
-                    </li>
-                    <li class="cat-item">
-                    <a href="#" class="inner">
-                    <div class="thumbnail">
-                    <img src="assets/images/post-images/category-image-02.jpg" alt="">
-                    </div>
-                    <div class="content">
-                    <h5 class="title">Style</h5>
-                    </div>
-                    </a>
-                    </li>
-                    <li class="cat-item">
-                    <a href="#" class="inner">
-                    <div class="thumbnail">
-                    <img src="assets/images/post-images/category-image-03.jpg" alt="">
-                    </div>
-                    <div class="content">
-                    <h5 class="title">Travel</h5>
-                    </div>
-                    </a>
-                    </li>
-                    <li class="cat-item">
-                    <a href="#" class="inner">
-                    <div class="thumbnail">
-                    <img src="assets/images/post-images/category-image-04.jpg" alt="">
-                    </div>
-                    <div class="content">
-                    <h5 class="title">Food</h5>
-                    </div>
-                    </a>
-                    </li>
-                    </ul>
-                    </div>
-                    *@                    <!-- End Single Widget  -->
-
-
-
-@*                     <div class="axil-single-widget widget widget_postlist mb--30">
-                    <h5 class="widget-title">Popular on Blogar</h5>
-                    <!-- Start Post List  -->
-                    <div class="post-medium-block">
-
-                    <!-- Start Single Post  -->
-                    <div class="content-block post-medium mb--20">
-                    <div class="post-thumbnail">
-                    <a href="post-details.html">
-                    <img src="assets/images/small-images/blog-sm-01.jpg" alt="Post Images">
-                    </a>
-                    </div>
-                    <div class="post-content">
-                    <h6 class="title">
-                    <a href="post-details.html">
-                    The underrated design book that transformed the way I
-                    work
-                    </a>
-                    </h6>
-                    <div class="post-meta">
-                    <ul class="post-meta-list">
-                    <li>Feb 17, 2019</li>
-                    <li>300k Views</li>
-                    </ul>
-                    </div>
-                    </div>
-                    </div>
-                    <!-- End Single Post  -->
-                    <!-- Start Single Post  -->
-                    <div class="content-block post-medium mb--20">
-                    <div class="post-thumbnail">
-                    <a href="post-details.html">
-                    <img src="assets/images/small-images/blog-sm-02.jpg" alt="Post Images">
-                    </a>
-                    </div>
-                    <div class="post-content">
-                    <h6 class="title">
-                    <a href="post-details.html">Here’s what you should (and shouldn’t) do when</a>
-                    </h6>
-                    <div class="post-meta">
-                    <ul class="post-meta-list">
-                    <li>Feb 17, 2019</li>
-                    <li>300k Views</li>
-                    </ul>
-                    </div>
-                    </div>
-                    </div>
-                    <!-- End Single Post  -->
-                    <!-- Start Single Post  -->
-                    <div class="content-block post-medium mb--20">
-                    <div class="post-thumbnail">
-                    <a href="post-details.html">
-                    <img src="assets/images/small-images/blog-sm-03.jpg" alt="Post Images">
-                    </a>
-                    </div>
-                    <div class="post-content">
-                    <h6 class="title">
-                    <a href="post-details.html">
-                    How a developer and designer duo at Deutsche Bank keep
-                    remote
-                    </a>
-                    </h6>
-                    <div class="post-meta">
-                    <ul class="post-meta-list">
-                    <li>Feb 17, 2019</li>
-                    <li>300k Views</li>
-                    </ul>
-                    </div>
-                    </div>
-                    </div>
-                    <!-- End Single Post  -->
-
-                    </div>
-                    <!-- End Post List  -->
-
-                    </div>
-                    *@                    <!-- End Single Widget  -->
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Abstract)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Slug)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsDeleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPublished)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageData)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Abstract)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Slug)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDeleted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsPublished)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImageData)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImageType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

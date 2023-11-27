@@ -4,140 +4,81 @@
     ViewData["Title"] = "Edit";
 }
 
+<h1>Edit</h1>
 
-
-<style>
-    .ck-editor__editable_inline {
-        min-height: 600px;
-    }
-
-    input.largerCheckbox {
-        width: 30px;
-        height: 30px;
-    }
-
-    label.form-check-label {
-        font-size: 22px;
-    }
-</style>
-
-
-
-<div class="post-single-wrapper axil-section-gap bg-color-white">
-    <div class="container">
-        <h1>Edit</h1>
-
-        <h4>BlogPost</h4>
-    </div>
-    <hr />
-    <main class="container mt-5">
-
+<h4>BlogPost</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="row">
-                <div class="col-12 col-lg-4">
-                    <div class="form-group">
-                        <label asp-for="ImageFile" class="control-label">Blog Post Image</label>
-                        <img class="img-fluid border rounded-3 mb-2" style="max-height: 350px;" src="" id="blogImage">
-                        <input asp-for="ImageFile" type="file" class="form-control mt-3 pt-2" accept=".png,.jpg,.jpeg,.gif"
-                               onchange="document.getElementById('blogImage').src = window.URL.createObjectURL(this.files[0])" />
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="CategoryId" class="control-label"></label>
-                        <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label asp-for="CategoryId" class="control-label"></label>
-                        @*   <input asp-for="CategoryId" class="form-control" /> *@
-                        <span asp-validation-for="CategoryId" class="text-danger" asp-items="ViewBag.CategoryId"></span>
-                    </div>
-
-
-
-                    <div class="form-group">
-                        <label asp-for="Title" class="control-label"></label>
-                        <input asp-for="Title" class="form-control" />
-                        <span asp-validation-for="Title" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Abstract" class="control-label"></label>
-                        <textarea asp-for="Abstract" class="form-control" rows="1"></textarea>
-                        <span asp-validation-for="Abstract" class="text-danger"></span>
-                    </div>
-
-                </div>
-
-                <div class="col-12 col-lg-8">
-                    <div class="form-group">
-                        <label asp-for="Content" class="control-label"></label>
-                        <textarea asp-for="Content" class="editor form-control" rows="1"></textarea>
-                        <span asp-validation-for="Content" class="text-danger"></span>
-                    </div>
-                </div>
-
-
-                @*                     <div class="form-group">
-                <label asp-for="" class="control-label">Category</label>
-                <select asp-for="" class="form-control" asp-items=""></select>
-                </div>
-                </div>
-                <div class="col-12 col-lg-8">
-                <div class="form-group">
-                <label asp-for="" class="control-label"></label>
-                <textarea asp-for="" class="editor form-control"></textarea>
-                <span asp-validation-for="" class="text-danger"></span>
-                </div>
-
-                </div> *@
-
-
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
-
-            <div class="form-group d-flex justify-content-end">
-                <label class="form-check-label me-4 mt-2" asp-for="IsPublished">Publish?</label>
-                <input class="largerCheckbox me-20" type="checkbox" asp-for="IsPublished" />@*  @Html.DisplayNameFor(model => model.IsPublished) *@
-                <span asp-validation-for="IsPublished" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-
-
-            <div class="form-group d-flex justify-content-end">
-                <input type="submit" value="Edit" class="btn btn-primary" />
+            <div class="form-group">
+                <label asp-for="Abstract" class="control-label"></label>
+                <input asp-for="Abstract" class="form-control" />
+                <span asp-validation-for="Abstract" class="text-danger"></span>
             </div>
-
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <input asp-for="Content" class="form-control" />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedDate" class="control-label"></label>
+                <input asp-for="CreatedDate" class="form-control" />
+                <span asp-validation-for="CreatedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdatedDate" class="control-label"></label>
+                <input asp-for="UpdatedDate" class="form-control" />
+                <span asp-validation-for="UpdatedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Slug" class="control-label"></label>
+                <input asp-for="Slug" class="form-control" />
+                <span asp-validation-for="Slug" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsPublished" /> @Html.DisplayNameFor(model => model.IsPublished)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageData" class="control-label"></label>
+                <input asp-for="ImageData" class="form-control" />
+                <span asp-validation-for="ImageData" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageType" class="control-label"></label>
+                <input asp-for="ImageType" class="form-control" />
+                <span asp-validation-for="ImageType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
         </form>
-        <div class="form-group mt-5 start-0">
-            <a asp-action="Index">Back</a>
-        </div>
-    </main>
+    </div>
 </div>
 
-
-
-
-
-<!--CK Editor-->
-<script src="https://cdn.ckeditor.com/ckeditor5/37.1.0/classic/ckeditor.js"></script>
-
-<script>
-    ClassicEditor
-        .create(document.querySelector('.editor'), {
-            licenseKey: '',
-        })
-        .then(editor => {
-            window.editor = editor;
-        });
-</script>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-
-
-
-
-
