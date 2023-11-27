@@ -120,5 +120,29 @@ namespace Blog.Controllers.API
         {
             return (_context.BlogPosts?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        [HttpGet]
+        [Route("portfolio/{count}")]
+        
+        public async Task<ActionResult<IEnumerable<BlogPost>>> GetPortfolioBlogPosts(int? count)
+        {
+
+            if (_context.BlogPosts == null || count == null)
+            {
+                return NotFound();
+            }
+
+            IEnumerable<BlogPost>? result = await _context.BlogPosts.Take(count.Value).ToListAsync();
+
+            if (result.Any())
+            {
+                return Ok(result);
+            }
+
+            return BadRequest();
+
+        }
+
+
     }
 }
