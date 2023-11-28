@@ -425,7 +425,8 @@ namespace Blog.Services
             try
             {
                 return await _context.BlogLikes
-                              .AnyAsync(bl => bl.BlogPostId == blogPostId  && bl.isLiked == true &&  bl.BlogUserId == blogUserId);
+                              .AnyAsync(bl => bl.BlogPostId == blogPostId  && bl.IsLiked == true 
+                              &&  bl.BlogUserId == blogUserId);
             }
             catch (Exception)
             {

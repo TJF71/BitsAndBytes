@@ -47,13 +47,13 @@ namespace Blog.Controllers
         {
             string? blogUserId = _userManager.GetUserId(User);
 
-            if(blogUserId == null)
+            if (blogUserId == null)
             {
                 return NotFound();
             }
 
             BlogUser? blogUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == blogUserId);
-            
+
             return View(blogUser);
         }
 
@@ -315,7 +315,7 @@ namespace Blog.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Abstract,Content,IsPublished, CategoryId,ImageFile")] 
+        public async Task<IActionResult> Create([Bind("Id,Title,Abstract,Content,IsPublished, CategoryId,ImageFile")]
                      BlogPost blogPost,
                      string? stringTags, IEnumerable<int> selected)
         {
@@ -340,14 +340,14 @@ namespace Blog.Controllers
                 await _blogServices.AddTagAsync(selected, blogPost.Id);
 
                 if (blogPost.ImageFile != null)
-                {   
+                {
                     blogPost.ImageData = await _imageService.ConvertFileToByteArrayAsync(blogPost.ImageFile);
                     blogPost.ImageType = blogPost.ImageFile.ContentType;
                 }
 
                 await _blogServices.UpdateBlogPostAsync(blogPost);
 
-                if(string.IsNullOrEmpty(stringTags) == false)
+                if (string.IsNullOrEmpty(stringTags) == false)
                 {
                     IEnumerable<string> tags = stringTags.Split(',');
 
@@ -419,13 +419,47 @@ namespace Blog.Controllers
             return View(blogPost);
         }
 
-
-
         private async Task<bool> BlogPostExists(int id)
         {
             return ((await _blogServices.GetAllBlogPostsAsync()).Any(e => e.Id == id));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> LikeBlogPost(int? blogPostId, string? blogUserId)
+        {
+            //check if the user has already liked this blog
+
+
+            //1. get the user
+            BlogUser? blogUser = await _context.Users.Include(u => u.BlogLikes)
+                .FirstOrDefaultAsync(u => u.Id == blogUserId);
+            bool result = false;
+            BlogLike blogLike = new();
+
+            if (blogUser != null && blogPostId != null)
+            {
+                // if not add a new BlogLike and set IsLiked = true
+
+            }
+            if (!blogUser.BlogLikes.Any(b1 => b1.BlogPostId == blogPostId))
+            {
+                // if a like already exists on the BlogPost for this user
+            }
+            else
+            {
+                result = blogLike.IsLiked;
+                await _context.SaveChangesAsync();
+            }
+
+            return Json(new
+            {
+                isLiked = result,
+                count = _context.BlogLikes.Where(bl => bl.BlogPostId == blogPostId && bl.IsLiked == true).Count()
+            });
+        }
+
     }
+
 }
 
 

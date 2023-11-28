@@ -6,7 +6,7 @@ namespace Blog.Models
     {
         public int Id { get; set; } 
         public int BlogPostId { get; set; }
-        public bool isLiked { get; set; }        
+        public bool IsLiked { get; set; }        
         [Required]
         public string? BlogUserId { get; set; }
     
