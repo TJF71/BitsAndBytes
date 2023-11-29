@@ -429,41 +429,37 @@ namespace Blog.Controllers
         [HttpPost]
         public async Task<IActionResult> LikeBlogPost(int? blogPostId, string? blogUserId)
         {
-            //check if the user has already liked this blog
-            //1. get the user
-            BlogUser? blogUser = await _context.Users.Include(u => u.BlogLikes)
-                .FirstOrDefaultAsync(u => u.Id == blogUserId);
-            bool result = false;
-            BlogLike blogLike = new();
+            BlogLike? blogLike = new();
 
-            if (blogUser != null && blogPostId != null)
+            if (blogUserId != null && blogPostId != null)
             {
-                // if not add a new BlogLike and set IsLiked = true
-                if (await _blogServices.UserLikedBlogAsync((int)blogPostId, blogUserId))
+                // check if user has already liked this blog.
+
+                //if not, add a new BlogLike and set IsLike = true
+                if (!await _blogServices.UserLikedBlogAsync((int)blogPostId, blogUserId))
                 {
+                    blogLike = new BlogLike()
+                    {
+                        BlogPostId = blogPostId.Value,
+                        IsLiked = true
 
-                    //BlogPost? blogLike = await _blogServices.UserLikedBlogAsync((int)blogPostId, blogUserId);
-                    //new BlogLike((int)blogPostId, blogUserId) = await _blogServices.
-                    //new BlogLike().IsLiked = await _blogServices.UserLikedBlogAsync((int)blogPostId, blogUserId);
-                    
-                   BlogLike bloglikes = new BlogLike();
-                   blogLike.IsLiked = true;
+                    };
+
+                    await _blogServices.AddBlogLikeForUserAsync(blogUserId, blogLike);
                 }
-                // if a like already exists on the BlogPost for this user
-
                 else
                 {
-                    blogLike.IsLiked = false;
+                    await _blogServices.ToggleBlogLikeAsync(blogPostId, blogUserId);
                 }
-                result = blogLike.IsLiked;
-                await _context.SaveChangesAsync();
-            }
 
-            return Json(new
-            {
-                isLiked = result,
-                count = _context.BlogLikes.Where(bl => bl.BlogPostId == blogPostId && bl.IsLiked == true).Count()
-            });
+            }
+                return Json(new 
+                { 
+                    isLiked = blogLike.IsLiked,
+                    count = _blogServices.GetBlogPostCountAsync(blogPostId)
+                
+                });            
+                
         }
 
 
