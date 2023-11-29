@@ -15,6 +15,7 @@ using X.PagedList.Web.Common;
 using Blog.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Blog.Services;
+using System.Runtime.Versioning;
 
 namespace Blog.Controllers
 {
@@ -217,7 +218,7 @@ namespace Blog.Controllers
             int page = pageNum ?? 1;
 
             IPagedList<BlogPost> blogPosts = await (await _blogServices.GetPopularBlogPostsAsync()).ToPagedListAsync(page, pageSize);
-            //return View(blogPosts);
+
             return View(nameof(Index), blogPosts);
 
         }
@@ -424,12 +425,11 @@ namespace Blog.Controllers
             return ((await _blogServices.GetAllBlogPostsAsync()).Any(e => e.Id == id));
         }
 
+
         [HttpPost]
         public async Task<IActionResult> LikeBlogPost(int? blogPostId, string? blogUserId)
         {
             //check if the user has already liked this blog
-
-
             //1. get the user
             BlogUser? blogUser = await _context.Users.Include(u => u.BlogLikes)
                 .FirstOrDefaultAsync(u => u.Id == blogUserId);
@@ -439,14 +439,22 @@ namespace Blog.Controllers
             if (blogUser != null && blogPostId != null)
             {
                 // if not add a new BlogLike and set IsLiked = true
+                if (await _blogServices.UserLikedBlogAsync((int)blogPostId, blogUserId))
+                {
 
-            }
-            if (!blogUser.BlogLikes.Any(b1 => b1.BlogPostId == blogPostId))
-            {
+                    //BlogPost? blogLike = await _blogServices.UserLikedBlogAsync((int)blogPostId, blogUserId);
+                    //new BlogLike((int)blogPostId, blogUserId) = await _blogServices.
+                    //new BlogLike().IsLiked = await _blogServices.UserLikedBlogAsync((int)blogPostId, blogUserId);
+                    
+                   BlogLike bloglikes = new BlogLike();
+                   blogLike.IsLiked = true;
+                }
                 // if a like already exists on the BlogPost for this user
-            }
-            else
-            {
+
+                else
+                {
+                    blogLike.IsLiked = false;
+                }
                 result = blogLike.IsLiked;
                 await _context.SaveChangesAsync();
             }
@@ -457,6 +465,21 @@ namespace Blog.Controllers
                 count = _context.BlogLikes.Where(bl => bl.BlogPostId == blogPostId && bl.IsLiked == true).Count()
             });
         }
+
+
+        // GET: BlogPosts
+        [AllowAnonymous]
+        public async Task<IActionResult> GetFavorites(int? pageNum, string? blogUserId)
+        {
+            int pageSize = 4;
+            int page = pageNum ?? 1;
+
+            string? id = blogUserId;
+
+            IPagedList<BlogPost> blogPosts = await (await _blogServices.GetFavoriteBlogPostsAsync(id)).ToPagedListAsync(page, pageSize);
+            return View(blogPosts);
+        }
+
 
     }
 

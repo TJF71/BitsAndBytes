@@ -3,9 +3,12 @@
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<BlogUser> SignInManager
 @inject UserManager<BlogUser> UserManager
+@inject IBlogServices _blogServices
+
 
 @{
     ViewData["Title"] = "Details";
+    // bool isLiked = await _blogServices.UserLikedBlogAsync(Model.Id, _UserManager.GetUserId(User));
 }
 
 <style>

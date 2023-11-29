@@ -434,6 +434,97 @@ namespace Blog.Services
                 throw;
             }
         }
+
+        public async Task<IEnumerable<BlogPost>> GetFavoriteBlogPostsAsync(string? blogUserId)
+        {
+            try
+            {
+                List<BlogPost> blogPosts = new();
+                if (!string.IsNullOrEmpty(blogUserId))
+                {
+                    BlogUser? blogUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == blogUserId);
+                    if (blogUser != null)
+                    {
+                        //List<int> blogPostIds = _context.BlogLikes.Where(bl => bl.BlogUserId == blogUserId && bl.IsLiked == true).Select(b => b.BlogPostId).ToList();
+                        blogPosts = await _context.BlogPosts.Where(b => b.Likes.Any(l => l.BlogUserId == blogUserId && l.IsLiked == true) &&
+                                                                                    b.IsPublished == true &&
+                                                                                    b.IsDeleted == false)
+                                                            .Include(b => b.Likes)
+                                                            .Include(b => b.Comments)
+                                                            .Include(b => b.Category)
+                                                            .Include(b => b.Tags)
+                                                            .OrderByDescending(b => b.CreatedDate)
+                                                            .ToListAsync();
+                    }
+                }
+                return blogPosts;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task AddBlogLikeForUserAsync(string? blogUserId, BlogLike? blogLike)
+        {
+            try
+            {
+                BlogUser? blogUser = await _context.Users.Include(bu => bu.BlogLikes).FirstOrDefaultAsync(bu => bu.Id == blogUserId);
+                
+                if (blogUser != null && blogLike != null)
+                {
+                    blogUser.BlogLikes.Add(blogLike);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task ToggleBlogLikeAsync(int? blogPostId, string? blogUserId)
+        {
+            try
+            {
+                BlogLike? blogLike = await _context.BlogLikes.FirstOrDefaultAsync(bl => bl.Id == blogPostId && bl.BlogUserId == blogUserId);
+
+                if (blogLike != null)
+                {
+                    // update the IsLiked property to the inverse of it's current state (T/F)
+                    blogLike.IsLiked = !blogLike.IsLiked;
+                    await _context.SaveChangesAsync();
+                }     
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public int GetBlogPostCountAsync(int? blogPostId)
+        {
+            try
+            {
+                if(blogPostId != null)
+                {
+                    int likeCount = _context.BlogLikes.Where(bl => bl.BlogPostId == blogPostId && bl.IsLiked == true).Count();
+
+                    return likeCount;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
 

@@ -1,13 +1,14 @@
 ﻿using Blog.Data;
 using Blog.Models;
 using Microsoft.AspNetCore.Mvc;
+using Npgsql.PostgresTypes;
 using System.Composition.Convention;
 
 namespace Blog.Services.Interfaces
 {
     public interface IBlogServices
     {
-        public Task<bool> UserLikedBlogAsync(int blogPostId, string blogUserId);
+
         public Task AddTagAsync(IEnumerable<int> tagId, int blogPostId);
 
         public Task RemoveTagAsync(int blogPostId);
@@ -43,6 +44,17 @@ namespace Blog.Services.Interfaces
         public Task<bool> IsValidSlugAsnyc(string? title, int? blogPostId);
 
         public Task<IEnumerable<BlogPost>> GetBlogPostByTagIdAsync(int? tagId);
+
+        public Task<bool> UserLikedBlogAsync(int blogPostId, string blogUserId);
+
+        public Task<IEnumerable<BlogPost>> GetFavoriteBlogPostsAsync(string? blogUserId);
+
+        public Task AddBlogLikeForUserAsync(string? blogUserId, BlogLike? blogLike);
+
+        public Task ToggleBlogLikeAsync(int? blogPostId, string? blogUserId);
+
+        public int GetBlogPostCountAsync(int? blogPostId);
+
 
     }
 
