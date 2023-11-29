@@ -75,6 +75,7 @@ namespace Blog.Services
                                                         .Include(b => b.Category)
                                                         .Include(b => b.Comments)
                                                         .Include(b => b.Tags)
+                                                        .Include(b => b.Likes)
                                                         .OrderByDescending(b => b.Comments.Count)
                                                         .ToListAsync();
                 return blogPosts;
@@ -137,6 +138,7 @@ namespace Blog.Services
                                                         .Include(b => b.Category)
                                                         .Include(b => b.Comments)
                                                         .Include(b => b.Tags)
+                                                        .Include(b => b.Likes)
                                                         .ToListAsync();
 
                 return blogPosts;
@@ -160,6 +162,7 @@ namespace Blog.Services
                                                         .Include(b => b.Category)
                                                         .Include(b => b.Comments)
                                                         .Include(b => b.Tags)
+                                                        .Include(b => b.Likes)
                                                         .OrderByDescending(b => b.Comments.Count)
                                                         .ToListAsync();
 

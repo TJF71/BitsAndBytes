@@ -93,7 +93,7 @@
                                             </div>
                                             <ul class="social-share-transparent justify-content-end">
                                                 <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                                @*                                                 <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                                                @*<li><a href="#"><i class="fab fa-instagram"></i></a></li>
                                                 <li><a href="#"><i class="fab fa-twitter"></i></a></li> *@
                                                 <li><a href="#"><i class="fas fa-link"></i></a></li>
                                             </ul>
@@ -142,8 +142,8 @@
 
 
                     </div>
-                    <div class="social-share-block">
-                        <div class="post-like">
+                    <div class="social-share-block" >
+                        <div class="post-like" >
                             <a id="likesButton">
                                 @if (isLiked)
                                 {
@@ -308,7 +308,7 @@
             let userId = '@userId';
 
         $().ready(function () {
-            $('#likesButton').click(function() {
+            $('#likesButton').click(function () {
 
                 // If not logged in SweeAlert!
                 if(userId == '') {
