@@ -53,6 +53,8 @@ namespace Blog.Services
                                           .Include(b => b.Category)
                                           .Include(b => b.Comments)
                                           .ThenInclude(b => b.Author)
+                                          .Include(b => b.Tags)
+                                          .Include(b => b.Likes)
                                           .FirstOrDefaultAsync(m => m.Id == id);
                 return blogPost!;
             }
@@ -62,9 +64,6 @@ namespace Blog.Services
                 throw;
             }
         }
-
-
-
 
 
         public async Task<IEnumerable<BlogPost>> GetBlogPostByCategoryId(int? id)
@@ -113,7 +112,9 @@ namespace Blog.Services
                                                         .Where(b => b.IsDeleted == false && b.IsPublished == true)
                                                         .Include(b => b.Category)
                                                         .Include(b => b.Comments)
+                                                        .ThenInclude(c => c.Author)
                                                         .Include(b => b.Tags)
+                                                        .Include (b => b.Likes)
                                                         .ToListAsync();
 
                 return blogPosts;
@@ -180,6 +181,8 @@ namespace Blog.Services
                                           .Include(b => b.Category)
                                           .Include(b => b.Comments)
                                           .ThenInclude(b => b.Author)
+                                          .Include(b => b.Tags)
+                                          .Include (b => b.Likes)
                                           .FirstOrDefaultAsync(m => m.Slug == slug && m.IsDeleted == false && m.IsPublished == true);
                 return blogPost!;
             }
@@ -420,21 +423,6 @@ namespace Blog.Services
             }
         }
 
-        public async Task<bool> UserLikedBlogAsync(int blogPostId, string blogUserId)
-        {
-            try
-            {
-                return await _context.BlogLikes
-                              .AnyAsync(bl => bl.BlogPostId == blogPostId  && bl.IsLiked == true 
-                              &&  bl.BlogUserId == blogUserId);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
         public async Task<IEnumerable<BlogPost>> GetFavoriteBlogPostsAsync(string? blogUserId)
         {
             try
@@ -465,6 +453,23 @@ namespace Blog.Services
                 throw;
             }
         }
+
+        public async Task<bool> UserLikedBlogAsync(int blogPostId, string blogUserId)
+        {
+            try
+            {
+                return await _context.BlogLikes
+                              .AnyAsync(bl => bl.BlogPostId == blogPostId && bl.IsLiked == true
+                              && bl.BlogUserId == blogUserId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
 
         public async Task AddBlogLikeForUserAsync(string? blogUserId, BlogLike? blogLike)
         {
@@ -504,7 +509,7 @@ namespace Blog.Services
             }
         }
 
-        public int GetBlogPostCountAsync(int? blogPostId)
+        public int GetBlogLikeCountAsync(int? blogPostId)
         {
             try
             {

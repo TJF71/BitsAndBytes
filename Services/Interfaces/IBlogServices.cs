@@ -45,15 +45,17 @@ namespace Blog.Services.Interfaces
 
         public Task<IEnumerable<BlogPost>> GetBlogPostByTagIdAsync(int? tagId);
 
-        public Task<bool> UserLikedBlogAsync(int blogPostId, string blogUserId);
 
         public Task<IEnumerable<BlogPost>> GetFavoriteBlogPostsAsync(string? blogUserId);
+
+        public Task<bool> UserLikedBlogAsync(int blogPostId, string blogUserId);
+
 
         public Task AddBlogLikeForUserAsync(string? blogUserId, BlogLike? blogLike);
 
         public Task ToggleBlogLikeAsync(int? blogPostId, string? blogUserId);
 
-        public int GetBlogPostCountAsync(int? blogPostId);
+        public int GetBlogLikeCountAsync(int? blogPostId);
 
 
     }

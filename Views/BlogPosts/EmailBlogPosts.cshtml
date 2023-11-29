@@ -51,6 +51,9 @@
 </div>
 
 @section scripts{
+    <!--Sweet Alerts-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
@@ -69,7 +72,7 @@
                 window.editor = editor;
             });
     </script>
-}
+
 
 <!--Sweet Alerts-->
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -96,3 +99,4 @@
 
 </script>
 
+}

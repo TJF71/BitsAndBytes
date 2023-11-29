@@ -1,14 +1,17 @@
 ﻿@model Blog.Models.BlogPost
 @inject IImageService _ImageService
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Authorization
 @inject SignInManager<BlogUser> SignInManager
-@inject UserManager<BlogUser> UserManager
+@inject UserManager<BlogUser> _UserManager
 @inject IBlogServices _blogServices
+
+
 
 
 @{
     ViewData["Title"] = "Details";
-    // bool isLiked = await _blogServices.UserLikedBlogAsync(Model.Id, _UserManager.GetUserId(User));
+    bool isLiked = await _blogServices.UserLikedBlogAsync(Model.Id, _UserManager.GetUserId(User)!);
 }
 
 <style>
@@ -142,8 +145,16 @@
                     <div class="social-share-block">
                         <div class="post-like">
                             <a id="likesButton">
-                                <i id="faThumb" class="fal fa-thumbs-up" style="background-color:#ff993b;color:white;border-color:white"></i>
-                                <span id="numLikes">0 Likes</span>
+                                @if (isLiked)
+                                {
+                                    <i id="faThumb" class="fal fa-thumbs-up" style="background-color:red;color:white;border-color:white"></i>
+                                }
+                                else
+                                {
+                                    <i id="faThumb" class="fal fa-thumbs-up"></i>
+                                }
+
+                                <span id="numLikes">@Model.Likes.Where(l => l.IsLiked==true).Count() Likes </span>
                             </a>
                         </div>
                         <ul class="social-icon icon-rounded-transparent md-size">
@@ -283,3 +294,65 @@
     </div>
 </div>
 <!-- End Post Single Wrapper  -->
+
+
+@section scripts{
+    <!--Sweet Alerts-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script type="text/javascript">
+        @{
+            string userId = _UserManager.GetUserId(User)!;
+        }
+
+            let userId = '@userId';
+
+        $().ready(function () {
+            $('#likesButton').click(function() {
+
+                // If not logged in SweeAlert!
+                if(userId == '') {
+                Swal.fire({
+                    backrop: false,
+                    icon, 'warning',
+                    title: 'Ooops',
+                    text: "You must be logged in to Like this post."
+                });
+
+
+            } else {
+                let args = {
+                    blogPostId: @Model.Id,
+                    BlogUserId: userId
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("LikeBlogPost", "BlogPosts")',
+                    data: args,
+                    success: function (result) {
+                        let data = result.isLiked;
+                        let likes = result.count;
+
+                        if (data == true) {
+                            $("#faThumb").css({ "background-color": "red", "color": "white", "border-color": "white" });
+                        } else {
+                            $("#faThumb").css({ "background-color": "", "color": "", "border-color": "" });
+                        }
+
+                        $('#numLikes').html(likes + ' Likes');
+                    },
+                    failure: function (result) {
+                        alert(result.d);
+                    },
+                    error: function (result) {
+                        alert(result.d);
+                    }
+                });
+
+            };
+        });
+
+    });
+    </script>
+}

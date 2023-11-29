@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 using Blog.Services;
 using System.Runtime.Versioning;
 
+
 namespace Blog.Controllers
 {
     public class BlogPostsController : Controller
@@ -28,8 +29,9 @@ namespace Blog.Controllers
         private readonly IEmailSender _emailService;
         private readonly IConfiguration _configuration;
 
-        public BlogPostsController(ApplicationDbContext context, UserManager<BlogUser> userManager, IBlogServices blogServices,
-                                                                IImageService imageService, IEmailSender emailSender, IConfiguration configuration)
+        public BlogPostsController(ApplicationDbContext context, UserManager<BlogUser> userManager, 
+                                    IBlogServices blogServices, IImageService imageService, IEmailSender emailSender, 
+                                    IConfiguration configuration)
 
         {
             _context = context;
@@ -456,7 +458,7 @@ namespace Blog.Controllers
                 return Json(new 
                 { 
                     isLiked = blogLike.IsLiked,
-                    count = _blogServices.GetBlogPostCountAsync(blogPostId)
+                    count = _blogServices.GetBlogLikeCountAsync(blogPostId)
                 
                 });            
                 
