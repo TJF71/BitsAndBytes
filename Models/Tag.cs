@@ -6,7 +6,7 @@ namespace Blog.Models
     {
         public int Id { get; set; }
 
-        public string? Body { get; set; }
+
 
         [Required]
         [Display(Name = "Name")]

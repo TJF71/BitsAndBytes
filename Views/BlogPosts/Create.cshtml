@@ -83,7 +83,7 @@
                                 <!-- tags go here -->
                                 @foreach (Tag tag in await _BlogServices.GetTagsAsync())
                                 {
-                                    <a role="button">@tag.Body</a>
+                                    <a role="button">@tag.Name</a>
                                 }
                             </div>
                         </div>

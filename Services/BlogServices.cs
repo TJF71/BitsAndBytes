@@ -257,7 +257,7 @@ namespace Blog.Services
                                                     .Where(b => b.Title!.ToLower().Contains(searchString)
                                                            || (!string.IsNullOrEmpty(b.Abstract) && b.Abstract.ToLower().Contains(searchString))
                                                            || b.Content!.ToLower().Contains(searchString)
-                                                           || b.Tags.Any(t => t.Body!.ToLower().Contains(searchString))
+                                                           || b.Tags.Any(t => t.Name!.ToLower().Contains(searchString))
                                                            || b.Category!.Name!.ToLower().Contains(searchString)
                                                            || b.Comments.Any(c => c.Body!.ToLower().Contains(searchString)
                                                                             || c.Author!.FirstName!.ToLower().Contains(searchString)
