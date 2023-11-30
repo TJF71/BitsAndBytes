@@ -338,9 +338,8 @@ namespace Blog.Controllers
                 }
 
                 blogPost.Slug = newSlug;
+
                 blogPost.CreatedDate = DateTimeOffset.Now;
-                await _blogServices.CreateBlogPostAsync(blogPost);
-                await _blogServices.AddTagAsync(selected, blogPost.Id);
 
                 if (blogPost.ImageFile != null)
                 {
@@ -348,7 +347,8 @@ namespace Blog.Controllers
                     blogPost.ImageType = blogPost.ImageFile.ContentType;
                 }
 
-                await _blogServices.UpdateBlogPostAsync(blogPost);
+                await _blogServices.CreateBlogPostAsync(blogPost);
+
 
                 if (string.IsNullOrEmpty(stringTags) == false)
                 {
@@ -367,7 +367,7 @@ namespace Blog.Controllers
             return View(blogPost);
         }
 
-
+        // EDIT THE CATEGORIES RELATED TO THE BLOGPOST
         // GET: BlogPosts/Edit/5
         [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Edit(int? id)
@@ -386,13 +386,19 @@ namespace Blog.Controllers
             return View(blogPost);
         }
 
+
+        //EDIT THE ACTUAL BLOGPOST
         // POST: BlogPosts/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize(Roles = "Admin,Moderator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryId,Title,Abstract,Content,CreatedDate,UpdatedDate,Slug,IsDeleted,IsPublished,ImageData,ImageType")] BlogPost blogPost)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryId,Title,Abstract,Content,CreatedDate,UpdatedDate,Slug,IsDeleted,IsPublished,ImageData,ImageType,Tags")]
+                                          BlogPost blogPost,
+                                          string? stringTags, 
+                                          IEnumerable<int> selected)
+
         {
             if (id != blogPost.Id)
             {
@@ -403,7 +409,10 @@ namespace Blog.Controllers
             {
                 try
                 {
-
+         
+                    blogPost.UpdatedDate = DateTime.Now;  // don't think this is really necesary
+                    _context.Update(blogPost);
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -418,8 +427,21 @@ namespace Blog.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            if (string.IsNullOrEmpty(stringTags) == false)
+            {
+                IEnumerable<string> tags = stringTags.Split(',');
+
+                await _blogServices.AddTagsToBlogPostAsync(tags, blogPost.Id);
+            }
+
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
+
+   
+
             return View(blogPost);
+
+
         }
 
         private async Task<bool> BlogPostExists(int id)

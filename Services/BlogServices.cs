@@ -313,15 +313,16 @@ namespace Blog.Services
 
         }
 
-        public async Task AddTagAsync(IEnumerable<int> tagId, int blogPostId)
+        public async Task AddTagAsync(IEnumerable<int> tagIds, int blogPostId)
         {
             try
             {
                 BlogPost? blogPost = await _context.BlogPosts.Include(b => b.Tags)
                                         .FirstOrDefaultAsync(b => b.Id == blogPostId);
-                foreach (int TagId in tagId)
+
+                foreach (int tagId in tagIds)
                 {
-                    Tag? tags = await _context.Tags.FindAsync(TagId);
+                    Tag? tags = await _context.Tags.FindAsync(tagId);
                     if(blogPost != null && tags  != null)
                     {
                         blogPost.Tags.Add(tags);
