@@ -400,7 +400,7 @@ namespace Blog.Controllers
         [Authorize(Roles = "Admin,Moderator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryId,Title,Abstract,Content, Slug, CreatedDate,UpdatedDate,IsDeleted,IsPublished,ImageData,ImageType,Tags")]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryId,Title,Abstract,Content, Slug, CreatedDate,UpdatedDate,IsDeleted,IsPublished,ImageFile, ImageData,ImageType,Tags")]
                                           BlogPost blogPost,
                                           string? stringTags,
                                           IEnumerable<int> selected)
