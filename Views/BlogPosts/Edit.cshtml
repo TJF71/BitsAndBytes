@@ -44,7 +44,7 @@
             <input type="hidden" asp-for="Slug"/>
             <input type="hidden" asp-for="ImageData"/>
             <input type="hidden" asp-for="ImageType"/>
-            <input type="hidden" asp-for="Tags" />
+
 
 
             <div class="row">
@@ -88,12 +88,11 @@
                         <textarea asp-for="Content" class="editor form-control" rows="1"></textarea>
                         <span asp-validation-for="Content" class="text-danger"></span>
                     </div>
+                    @*TAG CONTAINER BELOW*@
                     <div class="form-group">
                         <label asp-for="Tags"></label>
                         <div class="form-group" id="tagContainer">
                             <input class="form-control" type="text" id="tagInput" name="StringTags" autocomplete="off" />
-
-
                             <div class="tagcloud axil-single-widget mt-2" style="display: none;">
                                 <!-- tags go here -->
                                 @foreach (Tag tag in await _BlogServices.GetTagsAsync())
