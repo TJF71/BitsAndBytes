@@ -318,7 +318,7 @@ namespace Blog.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Abstract,Content,IsPublished, CategoryId,ImageFile, ImageType, ImageFile")]
+        public async Task<IActionResult> Create([Bind("Title,Abstract,Content,IsPublished, CategoryId, ImageFile")]
                      BlogPost blogPost,
                      string? stringTags, IEnumerable<int> selected)
         {
