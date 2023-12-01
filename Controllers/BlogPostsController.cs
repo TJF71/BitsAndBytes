@@ -400,7 +400,7 @@ namespace Blog.Controllers
         [Authorize(Roles = "Admin,Moderator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryId,Title,Abstract,Content, Slug, CreatedDate,UpdatedDate,IsDeleted,IsPublished,ImageFile, ImageData,ImageType,Tags")]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryId,Title,Abstract,Content, Slug, CreatedDate,UpdatedDate,IsDeleted,IsPublished,ImageFile, ImageData, ImageType, Tags")]
                                           BlogPost blogPost,
                                           string? stringTags,
                                           IEnumerable<int> selected)
@@ -429,8 +429,7 @@ namespace Blog.Controllers
                     }
 
                     blogPost.Slug = newSlug;
-
-                    blogPost.CreatedDate = DateTimeOffset.Now;
+              
 
                     if (blogPost.ImageFile != null)
                     {
@@ -438,6 +437,7 @@ namespace Blog.Controllers
                         blogPost.ImageType = blogPost.ImageFile.ContentType;
                     }
 
+                    blogPost.CreatedDate = DateTimeOffset.Now;
 
                     _context.Update(blogPost);
                     await _context.SaveChangesAsync();
