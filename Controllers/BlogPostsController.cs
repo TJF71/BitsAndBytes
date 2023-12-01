@@ -373,12 +373,13 @@ namespace Blog.Controllers
         [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.BlogPosts == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var blogPost = await _context.BlogPosts.FindAsync(id);
+            BlogPost? blogPost = await _context.BlogPosts.Include(t => t.Tags).FirstOrDefaultAsync(b => b.Id == id);
+
             if (blogPost == null)
             {
                 return NotFound();
@@ -404,23 +405,21 @@ namespace Blog.Controllers
                                           string? stringTags,
                                           IEnumerable<int> selected)
         {
+
+
+            if (id != blogPost.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
             {
 
-
-                if (id != blogPost.Id)
-                {
-                    return NotFound();
-                }
-
-
-
-                if (ModelState.IsValid)
+                try
                 {
                     // Get a new Slug from Titile
                     string? newSlug = StringHelper.BlogPostSlug(blogPost.Title);
-                    blogPost.Slug = newSlug;
 
-                    // check to see if the Slug is sitll valid
                     if (!await _blogServices.IsValidSlugAsnyc(newSlug, blogPost.Id))
                     {
                         ModelState.AddModelError("Title", "A similar title/Slug is already in use.");
@@ -429,6 +428,9 @@ namespace Blog.Controllers
                         return View(blogPost);
                     }
 
+                    blogPost.Slug = newSlug;
+
+                    blogPost.CreatedDate = DateTimeOffset.Now;
 
                     if (blogPost.ImageFile != null)
                     {
@@ -436,37 +438,43 @@ namespace Blog.Controllers
                         blogPost.ImageType = blogPost.ImageFile.ContentType;
                     }
 
-                    try
-                    {
 
-                        blogPost.UpdatedDate = DateTime.Now;
-                        _context.Update(blogPost);
-                        await _context.SaveChangesAsync();
-                    }
-                    catch (DbUpdateConcurrencyException)
+                    _context.Update(blogPost);
+                    await _context.SaveChangesAsync();
+
+
+
+                    if (string.IsNullOrEmpty(stringTags) == false)
                     {
-                        if (!await BlogPostExists(blogPost.Id))
-                        {
-                            return NotFound();
-                        }
-                        else
-                        {
-                            throw;
-                        }
+                        IEnumerable<string> tags = stringTags.Split(',');
+
+                        await _blogServices.AddTagsToBlogPostAsync(tags, blogPost.Id);
                     }
-                    return RedirectToAction(nameof(Index));
+
                 }
-
-                if (string.IsNullOrEmpty(stringTags) == false)
+                catch (DbUpdateConcurrencyException)
                 {
-                    IEnumerable<string> tags = stringTags.Split(',');
-
-                    await _blogServices.AddTagsToBlogPostAsync(tags, blogPost.Id);
+                    if (!await BlogPostExists(blogPost.Id))
+                    {
+                        IEnumerable<int> currentTags = blogPost.Tags.Select(t => t.Id);
+                        ViewData["Tags"] = new MultiSelectList(_context.Tags, "Id", "Name", currentTags);
+                        ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
+                        return View(blogPost);
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
+                return RedirectToAction(nameof(Index));
 
-                ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
-                return View(blogPost);
+
+
             }
+
+
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
+            return View(blogPost);
 
         }
 
@@ -476,65 +484,65 @@ namespace Blog.Controllers
 
 
         private async Task<bool> BlogPostExists(int id)
+        {
+            return ((await _blogServices.GetAllBlogPostsAsync()).Any(e => e.Id == id));
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> LikeBlogPost(int? blogPostId, string? blogUserId)
+        {
+            BlogLike? blogLike = new();
+
+            if (blogUserId != null && blogPostId != null)
             {
-                return ((await _blogServices.GetAllBlogPostsAsync()).Any(e => e.Id == id));
-            }
+                // check if user has already liked this blog.
 
-
-            [HttpPost]
-            public async Task<IActionResult> LikeBlogPost(int? blogPostId, string? blogUserId)
-            {
-                BlogLike? blogLike = new();
-
-                if (blogUserId != null && blogPostId != null)
+                //if not, add a new BlogLike and set IsLike = true
+                if (!await _blogServices.UserLikedBlogAsync((int)blogPostId, blogUserId))
                 {
-                    // check if user has already liked this blog.
-
-                    //if not, add a new BlogLike and set IsLike = true
-                    if (!await _blogServices.UserLikedBlogAsync((int)blogPostId, blogUserId))
+                    blogLike = new BlogLike()
                     {
-                        blogLike = new BlogLike()
-                        {
-                            BlogPostId = blogPostId.Value,
-                            IsLiked = true
+                        BlogPostId = blogPostId.Value,
+                        IsLiked = true
 
-                        };
+                    };
 
-                        await _blogServices.AddBlogLikeForUserAsync(blogUserId, blogLike);
-                    }
-                    else
-                    {
-                        await _blogServices.ToggleBlogLikeAsync(blogPostId, blogUserId);
-                    }
-
+                    await _blogServices.AddBlogLikeForUserAsync(blogUserId, blogLike);
                 }
-                return Json(new
+                else
                 {
-                    isLiked = blogLike.IsLiked,
-                    count = _blogServices.GetBlogLikeCountAsync(blogPostId)
-
-                });
+                    await _blogServices.ToggleBlogLikeAsync(blogPostId, blogUserId);
+                }
 
             }
-
-
-            // GET: BlogPosts
-            [AllowAnonymous]
-            public async Task<IActionResult> GetFavorites(int? pageNum, string? blogUserId)
+            return Json(new
             {
-                int pageSize = 4;
-                int page = pageNum ?? 1;
+                isLiked = blogLike.IsLiked,
+                count = _blogServices.GetBlogLikeCountAsync(blogPostId)
 
-                string? id = blogUserId;
-
-                IPagedList<BlogPost> blogPosts = await (await _blogServices.GetFavoriteBlogPostsAsync(id)).ToPagedListAsync(page, pageSize);
-                return View(blogPosts);
-            }
-
+            });
 
         }
 
+
+        // GET: BlogPosts
+        [AllowAnonymous]
+        public async Task<IActionResult> GetFavorites(int? pageNum, string? blogUserId)
+        {
+            int pageSize = 4;
+            int page = pageNum ?? 1;
+
+            string? id = blogUserId;
+
+            IPagedList<BlogPost> blogPosts = await (await _blogServices.GetFavoriteBlogPostsAsync(id)).ToPagedListAsync(page, pageSize);
+            return View(blogPosts);
+        }
+
+
     }
+
+}
 
 
 

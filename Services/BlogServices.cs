@@ -484,6 +484,9 @@ namespace Blog.Services
                 if (blogUser != null && blogLike != null)
                 {
                     blogUser.BlogLikes.Add(blogLike);
+                    _context.Update(blogUser);
+                    await _context.SaveChangesAsync();
+
                 }
             }
             catch (Exception)
