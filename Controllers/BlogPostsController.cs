@@ -29,8 +29,8 @@ namespace Blog.Controllers
         private readonly IEmailSender _emailService;
         private readonly IConfiguration _configuration;
 
-        public BlogPostsController(ApplicationDbContext context, UserManager<BlogUser> userManager, 
-                                    IBlogServices blogServices, IImageService imageService, IEmailSender emailSender, 
+        public BlogPostsController(ApplicationDbContext context, UserManager<BlogUser> userManager,
+                                    IBlogServices blogServices, IImageService imageService, IEmailSender emailSender,
                                     IConfiguration configuration)
 
         {
@@ -318,7 +318,7 @@ namespace Blog.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Abstract,Content,IsPublished, CategoryId,ImageFile")]
+        public async Task<IActionResult> Create([Bind("Id,Title,Abstract,Content,IsPublished, CategoryId,ImageFile, ImageType, ImageFile")]
                      BlogPost blogPost,
                      string? stringTags, IEnumerable<int> selected)
         {
@@ -394,23 +394,46 @@ namespace Blog.Controllers
         [Authorize(Roles = "Admin,Moderator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryId,Title,Abstract,Content,CreatedDate,UpdatedDate,Slug,IsDeleted,IsPublished,ImageData,ImageType,Tags")]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryId,Title,Abstract,Content, Slug, CreatedDate,UpdatedDate,IsDeleted,IsPublished,ImageData,ImageType,Tags")]
                                           BlogPost blogPost,
-                                          string? stringTags, 
+                                          string? stringTags,
                                           IEnumerable<int> selected)
-
         {
+
+
             if (id != blogPost.Id)
             {
                 return NotFound();
             }
 
+
+
             if (ModelState.IsValid)
             {
+                // Get a new Slug from Titile
+                string? newSlug = StringHelper.BlogPostSlug(blogPost.Title);
+                blogPost.Slug = newSlug;
+
+                // check to see if the Slug is sitll valid
+                if (!await _blogServices.IsValidSlugAsnyc(newSlug, blogPost.Id))
+                {
+                    ModelState.AddModelError("Title", "A similar title/Slug is already in use.");
+
+                    ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
+                    return View(blogPost);
+                }
+
+
+                if (blogPost.ImageFile != null)
+                {
+                    blogPost.ImageData = await _imageService.ConvertFileToByteArrayAsync(blogPost.ImageFile);
+                    blogPost.ImageType = blogPost.ImageFile.ContentType;
+                }
+
                 try
                 {
-         
-                    blogPost.UpdatedDate = DateTime.Now;  // don't think this is really necesary
+
+                    blogPost.UpdatedDate = DateTime.Now;
                     _context.Update(blogPost);
                     await _context.SaveChangesAsync();
                 }
@@ -437,7 +460,7 @@ namespace Blog.Controllers
 
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
 
-   
+
 
             return View(blogPost);
 
@@ -477,13 +500,13 @@ namespace Blog.Controllers
                 }
 
             }
-                return Json(new 
-                { 
-                    isLiked = blogLike.IsLiked,
-                    count = _blogServices.GetBlogLikeCountAsync(blogPostId)
-                
-                });            
-                
+            return Json(new
+            {
+                isLiked = blogLike.IsLiked,
+                count = _blogServices.GetBlogLikeCountAsync(blogPostId)
+
+            });
+
         }
 
 
