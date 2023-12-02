@@ -37,15 +37,13 @@
     <hr />
     <main class="container mt-5">
 
-        <form asp-action="Edit" enctype="multipart/form-data">
+        <form asp-action="Edit" enctype="multipart/form-data" asp-for="BlogPosts" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-@*             <input type="hidden" asp-for="CategoryId"/> *@
             <input type="hidden" asp-for="Slug"/>
-            <input type="hidden" asp-for="Tags" />
             <input type="hidden" asp-for="ImageData"/>
             <input type="hidden" asp-for="ImageType"/>
-           @*  <input type="hidden" asp-for="ImageFile"/> *@
+
 
 
 
@@ -59,12 +57,9 @@
                                onchange="document.getElementById('blogImage').src = window.URL.createObjectURL(this.files[0])" />
                     </div>
 
-
-
                     <div class="form-group">
                         <label asp-for="CategoryId" class="control-label"></label>
-                        <input asp-for="CategoryId" class="form-control" /> 
-                        <span asp-validation-for="CategoryId" class="text-danger" asp-items="ViewBag.CategoryId"></span>
+                        <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
                     </div>
 
 
@@ -108,10 +103,15 @@
 
             <div class="form-group d-flex justify-content-end">
                 <label class="form-check-label me-4 mt-2" asp-for="IsPublished">Publish?</label>
-                <input class="largerCheckbox me-20" type="checkbox" asp-for="IsPublished" />@*  @Html.DisplayNameFor(model => model.IsPublished) *@
+                <input class="largerCheckbox me-20" type="checkbox" asp-for="IsPublished" />
                 <span asp-validation-for="IsPublished" class="text-danger"></span>
             </div>
 
+            <div class="form-group d-flex justify-content-end">
+                <label class="form-check-label me-4 mt-2" asp-for="IsDeleted">Deleted?</label>
+                <input class="largerCheckbox me-20" type="checkbox" asp-for="IsDeleted" />
+                <span asp-validation-for="IsDeleted" class="text-danger"></span>
+            </div>
 
             <div class="form-group d-flex justify-content-end">
                 <input type="submit" value="Update Post" class="btn btn-primary" />
