@@ -1,9 +1,20 @@
-﻿@model IEnumerable<Blog.Models.BlogPost>
-
-
+﻿@using X.PagedList
+@model IPagedList<BlogPost>
 
 @foreach (BlogPost blogPost in Model)
 {
     <partial name="_BlogCardPartial" model="blogPost" />
 
 }
+
+<div>
+    <div>
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    </div>
+    @Html.PagedListPager(Model, pageNum => Url.Action("Favorites", new { pageNum }),
+    new PagedListRenderOptions
+    {
+    LiElementClasses = new string[] {"my-page-item"},
+    PageClasses = new string[] {"my-page-link"}
+    })
+</div>

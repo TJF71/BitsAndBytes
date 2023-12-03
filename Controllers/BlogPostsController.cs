@@ -526,7 +526,7 @@ namespace Blog.Controllers
 
         // GET: BlogPosts
         [AllowAnonymous]
-        public async Task<IActionResult> GetFavorites(int? pageNum, string? blogUserId)
+        public async Task<IActionResult> Favorites(int? pageNum, string? blogUserId)
         {
             int pageSize = 4;
             int page = pageNum ?? 1;
