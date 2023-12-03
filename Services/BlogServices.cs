@@ -463,7 +463,7 @@ namespace Blog.Services
             try
             {
                 return await _context.BlogLikes
-                              .AnyAsync(bl => bl.BlogPostId == blogPostId && bl.IsLiked == true
+                              .AnyAsync(bl => bl.BlogPostId == blogPostId 
                               && bl.BlogUserId == blogUserId);
             }
             catch (Exception)
