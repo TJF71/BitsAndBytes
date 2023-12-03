@@ -226,8 +226,6 @@ namespace Blog.Controllers
         }
 
 
-
-
         // GET: BlogPosts Search Index
         [AllowAnonymous]
         public async Task<IActionResult> SearchIndex(string? searchString, int? pageNum)

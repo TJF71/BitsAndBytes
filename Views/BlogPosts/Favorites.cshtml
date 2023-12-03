@@ -1,0 +1,9 @@
+﻿@model IEnumerable<Blog.Models.BlogPost>
+
+
+
+@foreach (BlogPost blogPost in Model)
+{
+    <partial name="_BlogCardPartial" model="blogPost" />
+
+}

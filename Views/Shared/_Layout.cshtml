@@ -100,8 +100,8 @@
                                         </li>*@
                                     </ul>
                                 </li>
-                                <li><a asp-action="GetFavorites" asp-controller="BlogPosts">Favorites</a></li>
-                                <li><a asp-action="Create" asp-controller="Categories">Categories</a></li>
+                                <li><a asp-action="Favorites" asp-controller="BlogPosts">Favorites</a></li>
+@*                                 <li><a asp-action="Create" asp-controller="Categories">Categories</a></li> *@
                                 <li><a asp-action="Create" asp-controller="BlogPosts">Create New BlogPost</a></li>
                                 <li><a asp-action="ContactMe" asp-controller="BlogPosts">Contact Me</a></li>
                                 @if (User.IsInRole("Admin"))
