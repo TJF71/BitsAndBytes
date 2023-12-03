@@ -500,12 +500,12 @@ namespace Blog.Services
         {
             try
             {
-                BlogLike? blogLike = await _context.BlogLikes.FirstOrDefaultAsync(bl => bl.Id == blogPostId && bl.BlogUserId == blogUserId);
+                BlogLike? blogLike = await _context.BlogLikes.FirstOrDefaultAsync(bl => bl.BlogPostId == blogPostId && bl.BlogUserId == blogUserId);
 
                 if (blogLike != null)
                 {
                     // update the IsLiked property to the inverse of it's current state (T/F)
-                    blogLike.IsLiked = !blogLike.IsLiked;
+                    blogLike.IsLiked = !blogLike.IsLiked;      
                     await _context.SaveChangesAsync();
                 }     
             }
