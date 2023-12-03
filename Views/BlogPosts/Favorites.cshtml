@@ -1,6 +1,9 @@
 ﻿@using X.PagedList
 @model IPagedList<BlogPost>
 
+
+<h3> BitsAndBytes Favorites </h3>
+
 @foreach (BlogPost blogPost in Model)
 {
     <partial name="_BlogCardPartial" model="blogPost" />
@@ -8,7 +11,9 @@
 }
 
 <div>
+
     <div>
+
         Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
     </div>
     @Html.PagedListPager(Model, pageNum => Url.Action("Favorites", new { pageNum }),
