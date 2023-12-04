@@ -87,7 +87,8 @@ namespace Blog.Controllers
                 }
             }
             
-            ViewData["SwalMessage"] = swalMessage;
+            
+            ViewBag.Message = swalMessage;
 
             return RedirectToAction("Index", new { swalMessage });
 
@@ -211,12 +212,14 @@ namespace Blog.Controllers
 
         // GET: BlogPosts
         [AllowAnonymous]
-        public async Task<IActionResult> Index(int? pageNum)
+        public async Task<IActionResult> Index(int? pageNum, string? swalMessage)
         {
             int pageSize = 4;
             int page = pageNum ?? 1;
 
             IPagedList<BlogPost> blogPosts = await (await _blogServices.GetAllBlogPostsAsync()).ToPagedListAsync(page, pageSize);
+            
+            ViewData["SwalMessage"] = swalMessage;
             return View(blogPosts);
         }
 
