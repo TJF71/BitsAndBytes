@@ -80,7 +80,7 @@ namespace Blog.Controllers
                 }
                 catch (Exception)
                 {
-                    swalMessage = "Error, Undable to send email,";
+                    swalMessage = "Error, Unable to send email.";
                     return RedirectToAction("Index", new { swalMessage });
                     throw;
 
