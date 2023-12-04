@@ -525,15 +525,17 @@ namespace Blog.Controllers
 
 
         // GET: BlogPosts
-        [AllowAnonymous]
-        public async Task<IActionResult> Favorites(int? pageNum, string? blogUserId)
+        [HttpGet]
+        //public async Task<IActionResult> Favorites(int? pageNum, string? blogUserId)
+        public async Task<IActionResult> Favorites(int? pageNum)
         {
             int pageSize = 4;
             int page = pageNum ?? 1;
 
-            string? id = blogUserId;
+            //string? id = blogUserId;
+            BlogUser? blogUser = await _userManager.GetUserAsync(User);
 
-            IPagedList<BlogPost> blogPosts = await (await _blogServices.GetFavoriteBlogPostsAsync(id)).ToPagedListAsync(page, pageSize);
+            IPagedList<BlogPost> blogPosts = await (await _blogServices.GetFavoriteBlogPostsAsync(blogUser!.Id)).ToPagedListAsync(page, pageSize);
             return View(blogPosts);
         }
 

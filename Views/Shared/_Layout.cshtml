@@ -100,7 +100,16 @@
                                         </li>*@
                                     </ul>
                                 </li>
-                                <li><a asp-action="Favorites" asp-controller="BlogPosts" asp-route-blogUserId="@blogUser!.Id">Favorites</a></li>
+
+
+                                @if (blogUser != null)
+                                {
+                                    <li><a asp-action="Favorites" asp-controller="BlogPosts">Favorites</a></li>
+
+                                }
+
+
+
 @*                                 <li><a asp-action="Create" asp-controller="Categories">Categories</a></li> *@
                                 <li><a asp-action="Create" asp-controller="BlogPosts">Create New BlogPost</a></li>
                                 <li><a asp-action="ContactMe" asp-controller="BlogPosts">Contact Me</a></li>
