@@ -69,22 +69,29 @@ namespace Blog.Controllers
         public async Task<IActionResult> ContactMe([Bind("FirstName,LastName,Email")] BlogUser blogUser, string? message)
         {
             string? swalMessage = string.Empty;
-
-            try
+            if (ModelState.IsValid)
             {
-                string? adminEmail = _configuration["AdminEmail"] ?? Environment.GetEnvironmentVariable("AdminEmail");
-                await _emailService.SendEmailAsync(adminEmail!, $"Contact Me Message From = {blogUser.FullName}", message!);
-                swalMessage = "Email sent successfully!";
+                try
+                {
+                    string? adminEmail = _configuration["AdminEmail"] ?? Environment.GetEnvironmentVariable("AdminEmail");
+                    await _emailService.SendEmailAsync(adminEmail!, $"Contact Me Message From = {blogUser.FullName}", message!);
+                    swalMessage = "Email sent successfully!";
 
-            }
-            catch (Exception)
-            {
-                swalMessage = "Error, Undable to send email,";
-                return RedirectToAction("Index", new { Message = swalMessage });
-                throw;
+                }
+                catch (Exception)
+                {
+                    swalMessage = "Error, Undable to send email,";
+                    return RedirectToAction("Index", new { swalMessage });
+                    throw;
 
+                }
             }
-            return RedirectToAction("Index", new { Message = swalMessage });
+            
+            ViewData["SwalMessage"] = swalMessage;
+
+            return RedirectToAction("Index", new { swalMessage });
+
+
         }
 
 
@@ -222,7 +229,7 @@ namespace Blog.Controllers
             IPagedList<BlogPost> blogPosts = await (await _blogServices.GetPopularBlogPostsAsync()).ToPagedListAsync(page, pageSize);
 
             return View(blogPosts);
-           
+
 
         }
 
@@ -428,7 +435,7 @@ namespace Blog.Controllers
                     }
 
                     blogPost.Slug = newSlug;
-              
+
 
                     if (blogPost.ImageFile != null)
                     {
