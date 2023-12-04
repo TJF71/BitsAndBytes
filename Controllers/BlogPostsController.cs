@@ -221,7 +221,8 @@ namespace Blog.Controllers
 
             IPagedList<BlogPost> blogPosts = await (await _blogServices.GetPopularBlogPostsAsync()).ToPagedListAsync(page, pageSize);
 
-            return View(nameof(Index), blogPosts);
+            return View(blogPosts);
+           
 
         }
 
