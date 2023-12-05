@@ -64,8 +64,8 @@
             @foreach (BlogPost blogPost in (await _BlogService.GetPopularBlogPostsAsync()).Take(3))
             {
                 <div class="cat-item">
-                    <a href="#" class="inner">
-                        <div class="thumbnail">
+                    <a asp-action="Details" asp-controller="BlogPosts" asp-route-slug="@blogPost?.Slug" class="inner">
+                        <div class="thumbnail border rounded-3 overflow-hidden">
                             <img src="@_ImageService.ConvertByteArrayToFile(blogPost?.ImageData, blogPost?.ImageType, DefaultImage.BlogPostImage)" alt="">
                         </div>
                         <div class="content">
