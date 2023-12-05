@@ -376,7 +376,7 @@
                     </ul>
                 </li> *@
 @*                 <li><a href="404.html">404 Page</a></li> *@
-                <li><a href="contact.html">Contact me</a></li>
+                <li><a asp-action="ContactMe" asp-controller="BlogPosts">Contact me</a></li>
             </ul>
         </div>
     </div>
@@ -418,13 +418,15 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-9 col-md-12">
-                        <div class="copyright-left">
-                            <div class="logo">
-                                <a href="index.html">
-                                    <img class="dark-logo" src="~/assets/images/logo/bitsAndBytesDarkText.svg" alt="">
-                                    <img class="light-logo" src="~/assets/images/logo/bitsAndBytesLiteText.svg" alt="">
+                        <div class="copyright-left text-nowrap">
+   @*                          <div class="logo text-nowrap"> *@
+                                <a>
+                                    <a asp-controller="BlogPosts" asp-action="Index">
+@*                                         <img class="dark-logo" src="~/assets/images/logo/Logo_Only.svg" alt=""> *@
+                                        <img class="light-logo" src="~/assets/images/logo/Logo_Only.svg" height="0" width="40"  alt=""> BitsAndBytes
+                                    </a>
                                 </a>
-                            </div>
+            @*                 </div> *@
                             <ul class="mainmenu justify-content-start">
 @*                                 <li>
                                     <a class="hover-flip-item-wrapper" href="#">
@@ -434,14 +436,13 @@
                                     </a>
                                 </li> *@
 
-                                <li><a asp-action="ContactMe" asp-controller="BlogPosts">Contact Me</a></li>
+                                <li><a asp-action="ContactMe" asp-controller="BlogPosts">&nbsp &nbsp Contact Me</a></li>
 
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-12">
                         <div class="copyright-right text-start text-lg-end mt_md--20 mt_sm--20">
-                            @* <p class="b3">All Rights Reserved © 2022</p> *@
                             <p class="b3">&copy; @DateTime.Now.Year Tom Farrell</p>
                         </div>
                     </div>
