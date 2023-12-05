@@ -7,8 +7,8 @@ namespace Blog.Services
 
     {
         private readonly string? _defaultBlogUserImage = "/img/BlogUser.png";
-        private readonly string? _defaultBlogPostImage = "/img/BlogDefault.png";
-        private readonly string? _defaultCategoryImage = "/img/BlogCategories.png";
+        private readonly string? _defaultBlogPostImage = "/img/BitsAndBytes2.svg";
+        private readonly string? _defaultCategoryImage = "/img/BlogCategories.svg";
         private readonly string? _defaultAuthorImage = "/img/BlogAuthor.png";
 
 
