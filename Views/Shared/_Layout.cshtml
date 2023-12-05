@@ -135,7 +135,7 @@
                                             <li>
                                                 <a class="hover-flip-item-wrapper" asp-controller="BlogPosts" asp-action="Create">
                                                     <span class="">
-                                                        <span>Add New Post</span>
+                                                        <span>Create Post</span>
                                                     </span>
                                                 </a>
                                             </li>
@@ -260,8 +260,6 @@
                 <li class="">
                     <a asp-action="Index" asp-controller="BlogPosts">Home</a>
                 </li>
-
-
                 <li class="menu-item-has-children">
                     <a href="#">Posts</a>
                     <ul class="axil-submenu">
@@ -283,9 +281,19 @@
                 </li>
 
 
+                @if (blogUser != null)
+                {
+                    <li><a asp-action="Favorites" asp-controller="BlogPosts">Favorites</a></li>
 
+                }
 
-
+                <li>
+                    <a class="hover-flip-item-wrapper" asp-controller="BlogPosts" asp-action="Create">
+                        <span class="">
+                            <span>Create Post</span>
+                        </span>
+                    </a>
+                </li>
 
 
 
