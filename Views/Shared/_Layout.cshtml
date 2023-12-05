@@ -260,6 +260,35 @@
                 <li class="">
                     <a asp-action="Index" asp-controller="BlogPosts">Home</a>
                 </li>
+
+
+                <li class="menu-item-has-children">
+                    <a href="#">Posts</a>
+                    <ul class="axil-submenu">
+                        <li>
+                            <a class="hover-flip-item-wrapper" asp-action="Index" asp-controller="BlogPosts">
+                                <span class="">
+                                    <span>All Posts</span>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="hover-flip-item-wrapper" asp-action="PopularPosts" asp-controller="BlogPosts">
+                                <span class="">
+                                    <span> Popular Posts</span>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+
+
+
+
+
+
                 <li class="menu-item-has-children">
                     <a href="#">Categories</a>
                     <ul class="axil-submenu">
