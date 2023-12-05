@@ -170,7 +170,7 @@
                 </div>
                 <div class="col-xl-3 col-lg-8 col-md-8 col-sm-9 col-12">
                     <div class="header-search text-end d-flex align-items-center">
-                        @*SEARCH FORM IN UPPER RIGHT CORNER HERE*@
+                        @*SEARCH FORM START IN UPPER RIGHT CORNER HERE*@
                         <form asp-controller="BlogPosts" asp-action="SearchIndex" class="header-search-form d-sm-block d-none">
                             <div class="axil-search form-group">
                                 <button type="submit" class="search-button"><i class="fal fa-search"></i></button>
@@ -187,6 +187,9 @@
                                 </div>
                             </form>
                         </div>
+                        <!--SEARCH FORM END-->
+
+                        <!--AUTHOR START-->
                         <ul class="metabar-block">
                             <li class="nav-item dropdown has-arrow main-drop">
                                 <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown" aria-expanded="false">
@@ -197,14 +200,16 @@
                                     @if (User.IsInRole("Admin"))
                                     {
                                         <span class="user-img">
-                                            <img src="@_ImageService.ConvertByteArrayToFile(null, null, DefaultImage.AuthorImage)" alt="Author Images" style="height:40px;width:40px" />
+                                            <img src="@_ImageService.ConvertByteArrayToFile(null, null, DefaultImage.AuthorImage)" 
+                                            alt="Author Images" style="height:40px;width:40px" />
                                             <span class="status online"></span>
                                         </span>
                                     }
                                     else
                                     {
                                         <span class="user-img">
-                                            <img src="@_ImageService.ConvertByteArrayToFile(blogUser?.ImageData, blogUser?.ImageType, DefaultImage.BlogUserImage)" alt="Author Images" style="height:40px;width:40px" />
+                                            <img src="@_ImageService.ConvertByteArrayToFile(blogUser?.ImageData, blogUser?.ImageType, 
+                                            DefaultImage.BlogUserImage)" alt="Author Images" style="height:40px;width:40px" />
                                             <span class="status online"></span>
                                         </span>
                                     }
@@ -294,6 +299,64 @@
                         </span>
                     </a>
                 </li>
+
+
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="menu-item-has-children">
+                        <a href="#">Author</a>
+                        <ul class="axil-submenu">
+                            <li>
+                                <a class="hover-flip-item-wrapper" asp-controller="BlogPosts" asp-action="Index">
+                                    <span class="">
+                                        <span>Admin</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="hover-flip-item-wrapper" href="~/swagger">
+                                    <span class="">
+                                        <span>APIs</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="hover-flip-item-wrapper" asp-controller="BlogPosts" asp-action="Create">
+                                    <span class="">
+                                        <span>Create Post</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="hover-flip-item-wrapper" asp-controller="BlogPosts" asp-action="AuthorArea">
+                                    <span class="hover-flip-item">
+                                        <span data-text="Manage Posts">Manage Posts</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="hover-flip-item-wrapper" asp-controller="Categories" asp-action="Index">
+                                    <span class="hover-flip-item">
+                                        <span data-text="Manage Categories">Manage Categories</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="hover-flip-item-wrapper" asp-controller="Tags" asp-action="Index">
+                                    <span class="hover-flip-item">
+                                        <span data-text="Manage Tags">Manage Tags</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+
+
+
+
+
 
 
 
