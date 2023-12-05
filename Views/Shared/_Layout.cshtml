@@ -200,15 +200,15 @@
                                     @if (User.IsInRole("Admin"))
                                     {
                                         <span class="user-img">
-                                            <img src="@_ImageService.ConvertByteArrayToFile(null, null, DefaultImage.AuthorImage)
-                                            alt="Author Images" style="height:40px;width:40px" />
+                                            <img src="@_ImageService.ConvertByteArrayToFile(null, null, DefaultImage.AuthorImage)"
+                                                 alt="Author Images" style="height:40px;width:40px">
                                             <span class="status online"></span>
                                         </span>
                                     }
                                     else
                                     {
                                         <span class="user-img">
-                                            <img src="@_ImageService.ConvertByteArrayToFile(blogUser?.ImageData, blogUser?.ImageType, 
+                                            <img src="@_ImageService.ConvertByteArrayToFile(blogUser?.ImageData, blogUser?.ImageType,
                                             DefaultImage.BlogUserImage)" alt="Author Images" style="height:40px;width:40px" />
                                             <span class="status online"></span>
                                         </span>
@@ -400,10 +400,10 @@
                         <div class="inner d-flex align-items-center flex-wrap">
                             <h5 class="follow-title mb--0 mr--20">Follow Me</h5>
                             <ul class="social-icon color-tertiary md-size justify-content-start">
-                                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                <li><a href="https://www.facebook.com/profile.php?id=100005064616174"><i class="fab fa-facebook-f"></i></a></li>
                                 @*                                 <li><a href="#"><i class="fab fa-instagram"></i></a></li>
                                 <li><a href="#"><i class="fab fa-twitter"></i></a></li> *@
-                                <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                                <li><a href="https://www.linkedin.com/in/thomas-j-farrell-jr-75195a94"><i class="fab fa-linkedin-in"></i></a></li>
                             </ul>
                         </div>
                         <!-- End Post List  -->
