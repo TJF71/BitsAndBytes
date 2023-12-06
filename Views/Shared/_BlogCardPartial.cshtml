@@ -14,7 +14,7 @@
     <div class="post-content">
         <div class="post-cat">
             <div class="post-cat-list">
-                <a class="hover-flip-item-wrapper" asp-route-categoryId="@Model?.CategoryId" asp-action="CategoryIndex" asp-controller="BlogPosts">
+                <a class="hover-flip-item-wrapper" asp-route-categoryId="@Model?.CategoryId" asp-action="Catego" asp-controller="BlogPosts">
                     <span class="hover-flip-item">
                         <span data-text="@Model?.Category?.Name">@Model?.Category?.Name</span>
                     </span>
@@ -22,13 +22,11 @@
             </div>
         </div>
         <h4 class="title">
-            <a asp-action="Details" asp-controller="BlogPosts" asp-route-slug="@Model?.Slug">
-                @Model?.Title
-            </a>
+            <a method="get" asp-action="Details" asp-controller="BlogPosts" asp-route-slug="@Model?.Slug">@Model?.Title</a>
         </h4>
         <div class="tagcloud">@foreach(Tag tags in Model!.Tags)
             {
-                <a asp-action="" asp-controller="BlogPosts" asp-route-tagsId="@tags.Id">@tags.Name</a>
+                <a method="get" asp-action="Tags" asp-controller="BlogPosts" asp-route-tagId="@tags.Id"> @tags.Name</a>
             }
         </div>
         <div class="post-meta-wrapper">

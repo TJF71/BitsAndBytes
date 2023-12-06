@@ -7,7 +7,6 @@ namespace Blog.Models
         public int Id { get; set; }
 
 
-
         [Required]
         [Display(Name = "Name")]
         [StringLength(50, ErrorMessage = "The {0} must be at least {2} and max {1} characters long.", MinimumLength = 2)]

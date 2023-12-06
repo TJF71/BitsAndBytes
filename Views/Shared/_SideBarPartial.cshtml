@@ -17,7 +17,7 @@
         </form>
     </div>
 
-    <!-- Start Single Widget  -->
+    <!-- Start Category Filer Widget  -->
     <div class="axil-single-widget widget widget_categories mb--30">
         <ul>
             @foreach (Category category in (await _BlogService.GetCategoriesAsync()).Take(4))
@@ -44,6 +44,7 @@
         </ul>
     </div>
     <!-- End Single Widget  -->
+
     <!-- Start Single Widget  -->
     <div class="axil-single-widget widget widget_search mb--30">
         <h5 class="widget-title">Search</h5>

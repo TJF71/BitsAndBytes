@@ -299,6 +299,27 @@ namespace Blog.Controllers
 
         }
 
+        public async Task<IActionResult> Tags(int? tagId, int? pageNum)
+        {
+
+            if (tagId == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            int pageSize = 4;
+            int page = pageNum ?? 1;
+
+            IPagedList<BlogPost> blogPosts = await (await _blogServices.GetBlogPostByTagIdAsync(tagId)).ToPagedListAsync(page, pageSize);
+
+            ViewData["tagId"] = tagId;
+
+            return View(blogPosts);
+
+         }
+
+
+
 
 
         // GET:  DeletedBlogPosts

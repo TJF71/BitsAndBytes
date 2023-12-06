@@ -176,25 +176,6 @@ namespace Blog.Services
             }
         }
 
-        public async Task<BlogPost> GetBlogPostBySlugAsync(string? slug)
-        {
-            try
-            {
-                BlogPost? blogPost = await _context.BlogPosts
-                                          .Include(b => b.Category)
-                                          .Include(b => b.Comments)
-                                          .ThenInclude(b => b.Author)
-                                          .Include(b => b.Tags)
-                                          .Include (b => b.Likes)
-                                          .FirstOrDefaultAsync(m => m.Slug == slug && m.IsDeleted == false && m.IsPublished == true);
-                return blogPost!;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
 
 
         public async Task CreateBlogPostAsync(BlogPost blogPost)
@@ -412,11 +393,38 @@ namespace Blog.Services
             }
         }
 
+
+        public async Task<BlogPost> GetBlogPostBySlugAsync(string? slug)
+        {
+            try
+            {
+                BlogPost? blogPost = await _context.BlogPosts
+                                          .Include(b => b.Category)
+                                          .Include(b => b.Comments)
+                                          .ThenInclude(b => b.Author)
+                                          .Include(b => b.Tags)
+                                          .Include(b => b.Likes)
+                                          .FirstOrDefaultAsync(m => m.Slug == slug && m.IsDeleted == false && m.IsPublished == true);
+                return blogPost!;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
         public async Task<IEnumerable<BlogPost>> GetBlogPostByTagIdAsync(int? tagId)
         {
             try
             {
-                IEnumerable<BlogPost> blogPosts = (await _context.Tags.Include(t => t.BlogPosts).ThenInclude(b => b.Category).Include(t => t.BlogPosts).ThenInclude(b => b.Comments).ThenInclude(c => c.Author).FirstOrDefaultAsync(t => t.Id == tagId))!.BlogPosts;
+                IEnumerable<BlogPost> blogPosts = (await _context.Tags.Include(t => t.BlogPosts)
+                                            .ThenInclude(b => b.Category)
+                                            .Include(t => t.BlogPosts)
+                                            .ThenInclude(b => b.Comments)
+                                            .ThenInclude(c => c.Author)
+                                            .FirstOrDefaultAsync(t => t.Id == tagId))!.BlogPosts;
                 
                 return blogPosts;
             }
