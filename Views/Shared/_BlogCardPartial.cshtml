@@ -28,7 +28,7 @@
         </h4>
         <div class="tagcloud">@foreach(Tag tags in Model!.Tags)
             {
-                <a asp-action="GetBlostbyTagId" asp-controller="BlogPosts" asp-route-tagsId="@tags.Id">@tags.Name</a>
+                <a asp-action="" asp-controller="BlogPosts" asp-route-tagsId="@tags.Id">@tags.Name</a>
             }
         </div>
         <div class="post-meta-wrapper">
