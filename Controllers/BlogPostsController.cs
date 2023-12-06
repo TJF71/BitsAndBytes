@@ -278,7 +278,7 @@ namespace Blog.Controllers
 
 
 
-        public async Task<IActionResult> CategoryIndex(int? categoryId, int? pageNum)
+        public async Task<IActionResult> Categories(int? categoryId, int? pageNum)
         {
             if (categoryId == null)
             {

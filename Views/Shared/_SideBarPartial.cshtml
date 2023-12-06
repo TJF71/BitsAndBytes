@@ -24,7 +24,7 @@
             {
                 <li class="cat-item">
                     @* <a href="#" class="inner"> *@
-                    <form method="get" asp-controller="BlogPosts" asp-action="CategoryIndex">
+                    <form method="get" asp-controller="BlogPosts" asp-action="Categories">
                         <button type="submit" class="inner">
                             <div class="thumbnail">
                                 <img src="@_ImageService.ConvertByteArrayToFile(category?.ImageData, category?.ImageType, DefaultImage.CategoryImage)" alt="">
