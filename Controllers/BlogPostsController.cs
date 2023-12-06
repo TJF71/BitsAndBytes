@@ -223,18 +223,6 @@ namespace Blog.Controllers
             return View(blogPosts);
         }
 
-        [AllowAnonymous]
-        public async Task<IActionResult> PopularPosts(int? pageNum)
-        {
-            int pageSize = 4;
-            int page = pageNum ?? 1;
-
-            IPagedList<BlogPost> blogPosts = await (await _blogServices.GetPopularBlogPostsAsync()).ToPagedListAsync(page, pageSize);
-
-            return View(blogPosts);
-
-
-        }
 
 
         // GET: BlogPosts Search Index
@@ -258,6 +246,38 @@ namespace Blog.Controllers
 
         }
 
+        // GET: BlogPosts
+        [HttpGet]
+        //public async Task<IActionResult> Favorites(int? pageNum, string? blogUserId)
+        public async Task<IActionResult> Favorites(int? pageNum)
+        {
+            int pageSize = 4;
+            int page = pageNum ?? 1;
+
+            //string? id = blogUserId;
+            BlogUser? blogUser = await _userManager.GetUserAsync(User);
+
+            IPagedList<BlogPost> blogPosts = await (await _blogServices.GetFavoriteBlogPostsAsync(blogUser!.Id)).ToPagedListAsync(page, pageSize);
+            return View(blogPosts);
+        }
+
+
+
+        [AllowAnonymous]
+        public async Task<IActionResult> PopularPosts(int? pageNum)
+        {
+            int pageSize = 4;
+            int page = pageNum ?? 1;
+
+            IPagedList<BlogPost> blogPosts = await (await _blogServices.GetPopularBlogPostsAsync()).ToPagedListAsync(page, pageSize);
+
+            return View(blogPosts);
+
+
+        }
+
+
+
         public async Task<IActionResult> CategoryIndex(int? categoryId, int? pageNum)
         {
             if (categoryId == null)
@@ -273,7 +293,10 @@ namespace Blog.Controllers
 
             ViewData["categoryId"] = categoryId;
 
-            return View(nameof(Index), blogPosts);
+            //return View(nameof(Index), blogPosts);
+
+            return View(blogPosts);
+
         }
 
 
@@ -535,20 +558,6 @@ namespace Blog.Controllers
         }
 
 
-        // GET: BlogPosts
-        [HttpGet]
-        //public async Task<IActionResult> Favorites(int? pageNum, string? blogUserId)
-        public async Task<IActionResult> Favorites(int? pageNum)
-        {
-            int pageSize = 4;
-            int page = pageNum ?? 1;
-
-            //string? id = blogUserId;
-            BlogUser? blogUser = await _userManager.GetUserAsync(User);
-
-            IPagedList<BlogPost> blogPosts = await (await _blogServices.GetFavoriteBlogPostsAsync(blogUser!.Id)).ToPagedListAsync(page, pageSize);
-            return View(blogPosts);
-        }
 
 
     }
