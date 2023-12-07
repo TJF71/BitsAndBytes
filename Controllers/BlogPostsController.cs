@@ -440,6 +440,7 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
+
             IEnumerable<int> currentTags = blogPost.Tags.Select(t => t.Id);
 
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
