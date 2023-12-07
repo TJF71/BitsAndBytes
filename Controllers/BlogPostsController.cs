@@ -16,7 +16,7 @@ using Blog.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Blog.Services;
 using System.Runtime.Versioning;
-
+using System.Runtime.InteropServices;
 
 namespace Blog.Controllers
 {
@@ -498,14 +498,15 @@ namespace Blog.Controllers
                     _context.Update(blogPost);
                     await _context.SaveChangesAsync();
 
-
+                    await _blogServices.RemoveTagAsync(blogPost.Id);
 
                     if (string.IsNullOrEmpty(stringTags) == false)
                     {
                         IEnumerable<string> tags = stringTags.Split(',');
-
-                        await _blogServices.AddTagsToBlogPostAsync(tags, blogPost.Id);
+                        
+                        await _blogServices.AddTagsToBlogPostAsync(tags, blogPost.Id);                         
                     }
+
 
                 }
                 catch (DbUpdateConcurrencyException)
