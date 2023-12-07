@@ -521,6 +521,8 @@ namespace Blog.Controllers
                         throw;
                     }
                 }
+
+
                 return RedirectToAction(nameof(Index));
 
 
@@ -529,6 +531,7 @@ namespace Blog.Controllers
 
 
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", blogPost.CategoryId);
+            ViewData["Tags"] = new MultiSelectList(_context.Tags, "Id", "Name", blogPost.Tags);
             return View(blogPost);
 
         }
