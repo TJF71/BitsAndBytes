@@ -16,7 +16,7 @@
 
         Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
     </div>
-    @Html.PagedListPager(Model, pageNum => Url.Action("Categories", new { pageNum }),
+    @Html.PagedListPager(Model, pageNum => Url.Action("Categories", new { pageNum, categoryId = ViewBag.CategoryId}),
     new PagedListRenderOptions
     {
     LiElementClasses = new string[] {"my-page-item"},

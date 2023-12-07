@@ -277,7 +277,7 @@ namespace Blog.Controllers
 
             IPagedList<BlogPost> blogPosts = await (await _blogServices.GetBlogPostByCategoryId(categoryId)).ToPagedListAsync(page, pageSize);
 
-            ViewData["categoryId"] = categoryId;
+            ViewData["CategoryId"] = categoryId;
 
             //return View(nameof(Index), blogPosts);
 
