@@ -131,7 +131,7 @@
                         <div class="tagcloud">
                             @foreach (Tag tags in Model.Tags)
                             {
-                                <a asp-action="" asp-controller="BlogPosts" asp-route-tagId="@tags.Id">@tags.Name</a>
+                                <a asp-action="Tags" asp-controller="BlogPosts" asp-route-tagId="@tags.Id"> @tags.Name </a>
                             }
 
                         </div>
