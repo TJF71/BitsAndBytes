@@ -167,7 +167,7 @@ namespace Blog.Controllers.API
                                       //.ThenInclude(c => c.Author)
                                       //.Include(b => b.Tags)
                                       //.Include(b => b.Likes)
-                                      //.Take(count.Value)
+                                      .Take(count.Value)
                                       .ToListAsync();
             
 
