@@ -162,12 +162,12 @@ namespace Blog.Controllers.API
 
             IEnumerable<BlogPost>? result = await _context.BlogPosts
                                       .Where(b => b.IsDeleted == false && b.IsPublished == true)
-                                      .Include(b => b.Category)
-                                      .Include(b => b.Comments)
-                                      .ThenInclude(c => c.Author)
-                                      .Include(b => b.Tags)
-                                      .Include(b => b.Likes)
-                                      .Take(count.Value)
+                                      //.Include(b => b.Category)
+                                      //.Include(b => b.Comments)
+                                      //.ThenInclude(c => c.Author)
+                                      //.Include(b => b.Tags)
+                                      //.Include(b => b.Likes)
+                                      //.Take(count.Value)
                                       .ToListAsync();
             
 
