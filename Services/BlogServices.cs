@@ -115,7 +115,7 @@ namespace Blog.Services
                                                         .Include(b => b.Comments)
                                                         .ThenInclude(c => c.Author)
                                                         .Include(b => b.Tags)
-                                                        .Include (b => b.Likes)
+                                                        .Include(b => b.Likes)
                                                         .ToListAsync();
 
                 return blogPosts;

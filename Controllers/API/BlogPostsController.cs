@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Blog.Data;
 using Blog.Models;
+using Blog.Services.Interfaces;
+
+
 
 namespace Blog.Controllers.API
 {
@@ -29,8 +32,36 @@ namespace Blog.Controllers.API
           {
               return NotFound();
           }
-            return await _context.BlogPosts.ToListAsync();
-        }
+
+
+            try
+            {
+                IEnumerable<BlogPost> blogPosts = await _context.BlogPosts
+                              .Where(b => b.IsDeleted == false && b.IsPublished == true)
+                              .Include(b => b.Category)
+                              .Include(b => b.Comments)
+                              .ThenInclude(c => c.Author)
+                              .Include(b => b.Tags)
+                              .Include(b => b.Likes)
+                              .ToListAsync();
+
+                return Ok(blogPosts);
+
+                //return await _context.BlogPosts.ToListAsync(blogPosts);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+           
+
+}
+
+
+           
 
         // GET: api/BlogPosts/5
         [HttpGet("{id}")]
