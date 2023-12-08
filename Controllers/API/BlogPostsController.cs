@@ -28,10 +28,10 @@ namespace Blog.Controllers.API
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BlogPost>>> GetBlogPosts()
         {
-          if (_context.BlogPosts == null)
-          {
-              return NotFound();
-          }
+            if (_context.BlogPosts == null)
+            {
+                return NotFound();
+            }
 
 
             try
@@ -55,22 +55,19 @@ namespace Blog.Controllers.API
 
                 throw;
             }
-
-           
-
-}
+        }
 
 
-           
+
 
         // GET: api/BlogPosts/5
         [HttpGet("{id}")]
         public async Task<ActionResult<BlogPost>> GetBlogPost(int id)
         {
-          if (_context.BlogPosts == null)
-          {
-              return NotFound();
-          }
+            if (_context.BlogPosts == null)
+            {
+                return NotFound();
+            }
             var blogPost = await _context.BlogPosts.FindAsync(id);
 
             if (blogPost == null)
@@ -117,10 +114,10 @@ namespace Blog.Controllers.API
         [HttpPost]
         public async Task<ActionResult<BlogPost>> PostBlogPost(BlogPost blogPost)
         {
-          if (_context.BlogPosts == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.BlogPosts'  is null.");
-          }
+            if (_context.BlogPosts == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.BlogPosts'  is null.");
+            }
             _context.BlogPosts.Add(blogPost);
             await _context.SaveChangesAsync();
 
@@ -154,7 +151,7 @@ namespace Blog.Controllers.API
 
         [HttpGet]
         [Route("portfolio/{count}")]
-        
+
         public async Task<ActionResult<IEnumerable<BlogPost>>> GetPortfolioBlogPosts(int? count)
         {
 
@@ -163,7 +160,15 @@ namespace Blog.Controllers.API
                 return NotFound();
             }
 
-            IEnumerable<BlogPost>? result = await _context.BlogPosts.Take(count.Value).ToListAsync();
+            IEnumerable<BlogPost>? result = await _context.BlogPosts.Take(count.Value)
+                                      .Where(b => b.IsDeleted == false && b.IsPublished == true)
+                                      .Include(b => b.Category)
+                                      .Include(b => b.Comments)
+                                      .ThenInclude(c => c.Author)
+                                      .Include(b => b.Tags)
+                                      .Include(b => b.Likes)
+                                      .ToListAsync();
+            
 
             if (result.Any())
             {
@@ -173,6 +178,7 @@ namespace Blog.Controllers.API
             return BadRequest();
 
         }
+
 
 
     }
