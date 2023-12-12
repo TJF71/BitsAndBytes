@@ -45,8 +45,6 @@
                                     <div class="post-content">
                                         <div class="post-cat">
                                             <div class="post-cat-list">
-
-                                          
                                                 <h3 class="hover-flip-item-wrapper" href="#">
                                                     <span class="hover-flip-item">
                                                         <span data-text="Category:  @Model.Category?.Name">Category:   @Model.Category?.Name</span>
@@ -119,8 +117,9 @@
                         <!--Blog Image here-->
                         @* [Image] *@
 
-                        <img src="@_ImageService.ConvertByteArrayToFile(null, null, DefaultImage.AuthorImage)"
-                             alt="Show the blog's Image here or a default Image" style="height:240px;width:240px" />
+                        @*Image of the individual Blog hee*@
+                        <img src="@_ImageService.ConvertByteArrayToFile(Model?.ImageData, Model?.ImageType, DefaultImage.BlogPostImage)"
+                             alt="Show the blog's Image here or a default Image" style="height:240px;width:440px; object-fit: cover;" />
 
                     </figure>
                     @Html.Raw((Model?.Content!).ToString())
@@ -187,7 +186,10 @@
                                 </div>
                                 <div class="content">
                                     <p class="b1 description">
-                                        I'm a coder, you're a coder, he's a coder, she's a coder ... wouldn't you like to be a coder too!?
+
+                                        I'm passionate about code.  My goals are simple.  Work with code and work with nice people.
+                                        Ready to engage with someone who loves to code, learn new things, and is easy to work with?
+                                        Go ahead and contact me.
                                     </p>
                                     <ul class="social-share-transparent size-md">
                                         <li><a href="https://www.facebook.com/profile.php?id=100005064616174"><i class="fab fa-facebook-f"></i></a></li>
