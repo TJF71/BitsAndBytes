@@ -64,8 +64,7 @@
                                             <div class="post-meta">
                                                 <div class="post-author-avatar border-rounded">
                                                     @* [Your Image] add an image of yourself here*@
-                                                    <img src="@_ImageService.ConvertByteArrayToFile(null, null, DefaultImage.BlogUserImage)" alt="Author Images"
-                                                         style="height:240px;width:240px">
+                                                    <img style="height: 100px; width: 100px" src="@_ImageService.ConvertByteArrayToFile(null, null, DefaultImage.MeAtCapeMay)" alt="Author Images">
                                                 </div>
                                                 <div class="content">
                                                     <h6 class="post-author-name">
@@ -195,8 +194,11 @@
                                         <li><a href="https://www.facebook.com/profile.php?id=100005064616174"><i class="fab fa-facebook-f"></i></a></li>
                                         @*                                         <li><a href="#"><i class="fab fa-instagram"></i></a></li>
                                         <li><a href="#"><i class="fab fa-twitter"></i></a></li> *@
-                                        <li><a asp-controller="BlogPosts" asp-action="ContactMe"><i class="far fa-envelope"></i></a></li>
+                                        @* <li><a asp-controller="BlogPosts" asp-action="ContactMe"><i class="far fa-envelope"></i></a></li> *@
+                                        <li><a href="mailto:tjf7101@gmail.com" target="_blank" class="far fa-envelope"></a></li>
+
                                         <li><a href="https://www.linkedin.com/in/thomas-j-farrell-jr-75195a94"><i class="fab fa-linkedin-in"></i></a></li>
+
                                     </ul>
                                 </div>
                             </div>

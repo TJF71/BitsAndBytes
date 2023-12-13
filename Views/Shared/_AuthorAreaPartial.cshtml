@@ -21,8 +21,9 @@
                     <div class="media">
                         <div class="thumbnail">
                             <a href="#">
-                                <img src="@_ImageService.ConvertByteArrayToFile(null, null, DefaultImage.BlogUserImage)" alt="Author Images" class="authorImage">
+                                <img style="height: 200px; width: 200px;"  src="@_ImageService.ConvertByteArrayToFile(null, null, DefaultImage.MeAtCapeMay)" alt="Author Images" class="authorImage">
                             </a>
+
                         </div>
                         <div class="media-body">
                             <div class="author-info">
@@ -40,7 +41,14 @@
                                     <li><a href="https://www.facebook.com/profile.php?id=100005064616174"><i class="fab fa-facebook-f"></i></a></li>
 @*                                     <li><a href="#"><i class="fab fa-instagram"></i></a></li>
                                     <li><a href="#"><i class="fab fa-twitter"></i></a></li> *@
-                                    <li><a asp-action="ContactMe" asp-controller="BlogPosts"><i class="far fa-envelope"></i></a></li>
+                     @*                <li><a asp-action="ContactMe" asp-controller="BlogPosts"><i class="far fa-envelope"></i></a></li> *@
+
+                                    <li><a href="mailto:tjf7101@gmail.com" target="_blank" class="far fa-envelope"></a></li>
+                                        
+                   
+                               
+                               
+
                                     <li><a href="https://www.linkedin.com/in/thomas-j-farrell-jr-75195a94"><i class="fab fa-linkedin-in"></i></a></li>
                                 </ul>
                             </div>

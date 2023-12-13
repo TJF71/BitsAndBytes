@@ -1,5 +1,6 @@
 ﻿using Blog.Enums;
 using Blog.Services.Interfaces;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Blog.Services
 {
@@ -10,6 +11,7 @@ namespace Blog.Services
         private readonly string? _defaultBlogPostImage = "/img/BitsAndBytes2.svg";
         private readonly string? _defaultCategoryImage = "/img/BlogCategories.svg";
         private readonly string? _defaultAuthorImage = "/img/BlogAuthor.png";
+        private readonly string? _defaultMeAtCapeMay = "/img/AtCapeMay.jpg";
 
 
         public string? ConvertByteArrayToFile(byte[]? fileData, string? extension, DefaultImage defaultImage)
@@ -26,6 +28,7 @@ namespace Blog.Services
                         case DefaultImage.BlogPostImage: return _defaultBlogPostImage;
                         case DefaultImage.CategoryImage: return _defaultCategoryImage;
                         case DefaultImage.BlogUserImage: return _defaultBlogUserImage;
+                        case DefaultImage.MeAtCapeMay: return _defaultMeAtCapeMay; 
                     }
 
                 }

@@ -6,6 +6,6 @@
         BlogUserImage,
         BlogPostImage,
         CategoryImage,
-
+        MeAtCapeMay,
     }
 }
