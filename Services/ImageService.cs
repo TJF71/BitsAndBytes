@@ -11,7 +11,7 @@ namespace Blog.Services
         private readonly string? _defaultBlogPostImage = "/img/BitsAndBytes2.svg";
         private readonly string? _defaultCategoryImage = "/img/BlogCategories.svg";
         private readonly string? _defaultAuthorImage = "/img/BlogAuthor.png";
-        private readonly string? _defaultMeAtCapeMay = "/img/AtCapeMay.jpg";
+        private readonly string? _defaultMeAtCapeMay = "/img/atCapeMayCroped1.png";
 
 
         public string? ConvertByteArrayToFile(byte[]? fileData, string? extension, DefaultImage defaultImage)
