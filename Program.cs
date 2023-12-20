@@ -50,12 +50,12 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "Your Project name here",
+        Title = "Bits And Bytes",
         Version = "v1",
-        Description = "Your project description here",
+        Description = "A Blog",
         Contact = new OpenApiContact
         {
-            Name = "Tom Farrel",
+            Name = "Tom Farrell",
             Email = "tjf7101@gmail.com",
             Url = new Uri("https://blog-production-65b3.up.railway.app/")
         }
