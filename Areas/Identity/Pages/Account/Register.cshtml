@@ -2,7 +2,8 @@
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
-    Layout = "/Views/Shared/_LoginLayout.cshtml";
+   @* Layout = "/Views/Shared/_LoginLayout.cshtml";*@  // change this to _Layout.cshtml below to use the default layout
+    Layout = "/Views/Shared/_Layout.cshtml";
 }
 
 
@@ -71,7 +72,7 @@
                     {
                         <div>
                             <p>
-                                There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article</a>
+                                There are no external authentication services configured. See this <a  style="font-weight: bold; color: blue;" href="https://go.microsoft.com/fwlink/?LinkID=532715">article</a>
                                 about setting up this ASP.NET application to support logging in via external services
                             </p>
                         </div>
