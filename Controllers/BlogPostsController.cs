@@ -362,8 +362,8 @@ namespace Blog.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
-            ViewData["Tags"] = new MultiSelectList(_context.Tags, "Id", "Name");
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
+            ViewData["Tags"] = new MultiSelectList(_context.Tags, "Id", "Name");  //  replaced GetTagsAsync()
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");  // replaced GetCategoriesAsync()
             return View();
         }
 
@@ -377,7 +377,7 @@ namespace Blog.Controllers
                      BlogPost blogPost,
                      string? stringTags, IEnumerable<int> selected)
         {
-            ModelState.Remove("Slug");
+            ModelState.Remove("Slug"); // remove the slug from the modelstate
 
 
             if (ModelState.IsValid)
